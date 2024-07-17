@@ -1,31 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
 
-@extends('layouts.app')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Đăng nhập</title>
+    @vite('resources/css/app.css')
+</head>
 
-@section('title', 'Home Page')
+<body>
+    @extends('layouts.app')
 
-@section('content')
-    <div class="bg-white border-b flex flex-col justify-center items-center gap-5 p-5 rounded-lg">
-        <h1 class='text-2xl font-bold uppercase text-center'>Đăng nhập</h1>
-        <div class='border w-96 px-3 py-2 rounded-lg'>
-            <input type="text" placeholder='Email' class='w-full outline-none'/>
-        </div>
+    @section('content')
+        <section class="px-20">
+            layouts.app
+        </section>
+    @endsection
+</body>
 
-        <div class='border w-96 px-3 py-2 rounded-lg'>
-            <input type="text" placeholder='Password' class='w-full outline-none'/>
-            <button id="togglePassword" type="button" class="focus:outline-none">
-                Show
-            </button>
-        </div>
-
-        <div class='border w-96 px-3 py-2 rounded-lg bg-[#00bcd5] text-white'>
-            <button type="button" class='w-full outline-none'>Đăng nhập</button>
-        </div>
-    </div>
-
-    <script>
-        const togglePasswordButton = document.getElementById('togglePassword');
-        togglePasswordButton.addEventListener('click', function() {
-            alert('Show');
-    });
-    </script>
-@endsection
+</html>
