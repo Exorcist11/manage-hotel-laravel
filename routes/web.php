@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckinoutController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,5 +17,7 @@ Route::get('/login', function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('report.index');
 });
+
+Route::get('/check-in-out', [CheckinoutController::class, 'index'])->name('check-in-out');
