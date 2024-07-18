@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>Mường Thanh - Chuỗi khách sạn tư nhân lớn nhất Đông Dương</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,7 +20,6 @@
 
     @extends('layouts.app')
     @section('content')
-    
         <div class="mx-20">
             <img src="/images/muong-thanh-banner.png" alt="banner" class="object-cover object-center" />
         </div>
