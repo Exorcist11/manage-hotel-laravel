@@ -10,13 +10,15 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Product
+ * Class Bill
  * 
  * @property int $id
  * @property int $room_id
- * @property string $name
- * @property float $price
- * @property int $amount
+ * @property string $custom_name
+ * @property float $total
+ * @property Carbon $check_in
+ * @property Carbon $check_out
+ * @property string $payment_method
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
@@ -24,21 +26,24 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Product extends Model
+class Bill extends Model
 {
-	protected $table = 'products';
+	protected $table = 'bills';
 
 	protected $casts = [
 		'room_id' => 'int',
-		'price' => 'float',
-		'amount' => 'int'
+		'total' => 'float',
+		'check_in' => 'datetime',
+		'check_out' => 'datetime'
 	];
 
 	protected $fillable = [
 		'room_id',
-		'name',
-		'price',
-		'amount'
+		'custom_name',
+		'total',
+		'check_in',
+		'check_out',
+		'payment_method'
 	];
 
 	public function room()
