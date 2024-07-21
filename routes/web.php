@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckinoutController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,3 +22,6 @@ Route::get('/dashboard', function () {
 });
 
 Route::get('/check-in-out', [CheckinoutController::class, 'index'])->name('check-in-out');
+
+Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::post('/products', [ProductController::class, 'create'])->name('products');

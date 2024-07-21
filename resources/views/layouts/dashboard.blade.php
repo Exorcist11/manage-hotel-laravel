@@ -45,8 +45,13 @@
             </li>
 
             <li class="li_content flex items-center gap-2">
-                <x-bxs-inbox class="icon-size" />
+                <x-bxs-receipt class="icon-size" />
                 <a>Quản lý dịch vụ</a>
+            </li>
+
+            <li class="li_content flex items-center gap-2">
+                <x-bxs-inbox class="icon-size" />
+                <a href="{{ route('products') }}">Quản lý sản phẩm</a>
             </li>
 
             <li class="li_content flex items-center gap-2">
@@ -55,7 +60,7 @@
             </li>
         </ul>
     </nav>
-    <section class="basis-4/5 py-5">
+    <section class="basis-4/5 py-5 px-10 w-full">
         @yield('content')
     </section>
 
