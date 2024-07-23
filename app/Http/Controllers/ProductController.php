@@ -3,22 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\category;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $categories = category::all();
-        return view('product.index', compact('categories'));
+        $products = Product::all();
+        return view('product.index', compact('products'));
     }
 
     public function create(Request $request)
     {
-        $form_input = $request->input('category_name');
-        category::create([
-            'category_name' => $form_input,
+        $request -> validate([
+            'room_id' => 'required|integer',
+            'name' => 'required|string',
+            'price' => 'integer|numeric',
+            'amount' => 'required|integer'
         ]);
-        return redirect()->back()->with('success', 'Thêm mới danh mục thành công!');;
+
+        Product::create([
+            'room_id' => $request->room_id,
+            'name' => $request->name,
+            'price' => $request->price,
+            'amount' => $request->amount,
+        ]);
+        // return redirect()->route('product.index')->with('success', 'Thêm mới sản phẩm thành công!');
+        return redirect()->back()->with('success', 'Thêm mới danh mục thành công!');
     }
 }

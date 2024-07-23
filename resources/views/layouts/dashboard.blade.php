@@ -7,12 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
     @vite('resources/css/app.css')
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
 </head>
 
 <body class="flex ">
-    <nav class="basis-1/5 flex flex-col gap-5 border-r py-5 h-screen">
+    <nav class="basis-1/5 flex flex-col gap-5 border-r py-5 h-screen bg-slate-50">
         <div class="flex flex-col gap-2 items-center justify-center">
-            <img src="{{ asset('images/muong-thanh-logo.png') }}" alt="logo" class="object-cover object-center w-40">
+            <img src="{{ asset('images/muong-thanh-logo.png') }}" alt="logo"
+                class="object-cover object-center w-40">
             <h1 class="uppercase font-bold text-center text-xl">Muong Thanh Hotel</h1>
         </div>
         <ul class="px-5 flex flex-col gap-5">
@@ -26,7 +31,7 @@
             </li>
             <li class="li_content flex items-center gap-2">
                 <x-bxs-bed class="icon-size" />
-                <a>Quản lý phòng</a>
+                <a href="{{ route('rooms') }}">Quản lý phòng</a>
             </li>
 
             <li class="li_content flex items-center gap-2">
@@ -36,7 +41,7 @@
 
             <li class="li_content flex items-center gap-2">
                 <x-bxs-user class="icon-size" />
-                <a>Quản lý nhân viên</a>
+                <a href="{{ route('staff') }}">Quản lý nhân viên</a>
             </li>
 
             <li class="li_content flex items-center gap-2">
