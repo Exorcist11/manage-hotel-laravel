@@ -14,11 +14,13 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('login');
 })->name('login');
-
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', function () {
-    return view('report.index');
+Route::middleware(['check.admin'])->group(function() {
+    Route::get('/dashboard', function () {
+        return view('report.index');
+    });
 });
 
 Route::get('/check-in-out', [CheckinoutController::class, 'index'])->name('check-in-out');
