@@ -27,7 +27,6 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
  *
  * @package App\Models
  */
-// class User extends Model
 class User extends Authenticatable implements AuthenticatableContract
 {
 	protected $table = 'users';
