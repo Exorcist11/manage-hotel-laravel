@@ -31,9 +31,15 @@ class User extends Authenticatable implements AuthenticatableContract
 {
 	protected $table = 'users';
 
-	protected $casts = [
-		'is_admin' => 'bool'
+	const ROLES = [
+		0 => 'Nhân viên',
+		1 => 'Quản lý',
+		2 => 'Lễ tân'
 	];
+
+	protected $casts = [
+        'role' => 'integer',
+    ];
 
 	protected $hidden = [
 		'password'
@@ -42,7 +48,7 @@ class User extends Authenticatable implements AuthenticatableContract
 	protected $fillable = [
 		'email',
 		'password',
-		'is_admin'
+		'role'
 	];
 
 	public function bookings()
@@ -54,4 +60,17 @@ class User extends Authenticatable implements AuthenticatableContract
 	{
 		return $this->hasOne(Profile::class);
 	}
+
+    public function getRoleAttribute($value)
+    {
+        return self::ROLES[$value];
+    }
+
+    public function setRoleAttribute($value)
+    {
+        $role = array_search($value, self::ROLES);
+        if ($role !== false) {
+            $this->attributes['role'] = $role;
+        }
+    }
 }
