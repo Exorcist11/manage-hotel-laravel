@@ -12,7 +12,7 @@ class CheckAdmin
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            if (Auth::user()->role == 1) {
+            if (Auth::user()->role == 'Quản lý') {
                 return $next($request);
             } else {
                 return redirect('/')->with('error', 'You do not have admin access');

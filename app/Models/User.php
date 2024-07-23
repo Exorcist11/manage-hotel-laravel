@@ -37,6 +37,10 @@ class User extends Authenticatable implements AuthenticatableContract
 		2 => 'Lễ tân'
 	];
 
+	protected $casts = [
+        'role' => 'integer',
+    ];
+
 	protected $hidden = [
 		'password'
 	];
@@ -56,4 +60,17 @@ class User extends Authenticatable implements AuthenticatableContract
 	{
 		return $this->hasOne(Profile::class);
 	}
+
+    public function getRoleAttribute($value)
+    {
+        return self::ROLES[$value];
+    }
+
+    public function setRoleAttribute($value)
+    {
+        $role = array_search($value, self::ROLES);
+        if ($role !== false) {
+            $this->attributes['role'] = $role;
+        }
+    }
 }
