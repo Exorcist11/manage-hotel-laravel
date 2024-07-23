@@ -11,3 +11,11 @@
 .icon-size {
     @apply w-5 h-5;
 }
+
+.table_heading {
+    @apply px-6 align-middle border border-solid  py-3 text-base uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left;
+}
+
+.table_td {
+    @apply border-t-0 px-6 align-middle border-l-0 border-r-0 text-base whitespace-nowrap p-4;
+}
