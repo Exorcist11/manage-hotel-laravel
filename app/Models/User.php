@@ -31,8 +31,10 @@ class User extends Authenticatable implements AuthenticatableContract
 {
 	protected $table = 'users';
 
-	protected $casts = [
-		'is_admin' => 'bool'
+	const ROLES = [
+		0 => 'Nhân viên',
+		1 => 'Quản lý',
+		2 => 'Lễ tân'
 	];
 
 	protected $hidden = [
@@ -42,7 +44,7 @@ class User extends Authenticatable implements AuthenticatableContract
 	protected $fillable = [
 		'email',
 		'password',
-		'is_admin'
+		'role'
 	];
 
 	public function bookings()
