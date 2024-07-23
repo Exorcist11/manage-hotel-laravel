@@ -56,7 +56,10 @@
 
             <li class="li_content flex items-center gap-2">
                 <x-bxs-log-out class="icon-size" />
-                <a>Đăng xuất</a>
+                <a href="#" onclick="document.getElementById('logout-form').submit();">Đăng xuất</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none">
+                    @csrf
+                </form>
             </li>
         </ul>
     </nav>
