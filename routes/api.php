@@ -12,6 +12,7 @@ Route::get('/hello', function(){
 });
 
 Route::post('/abc', [StaffController::class, 'create']);
+
 Route::get('/rooms', [RoomController::class, 'index']);
 Route::post('/rooms/create', [RoomController::class, 'store']);
 Route::delete('/rooms/{id}', [RoomController::class, 'destroy']);
