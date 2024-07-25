@@ -48,6 +48,17 @@ class RoomController extends Controller
             ], 500);
         }
     }
+
+    public function show($id){
+        $room = Room::find($id);
+        if ($room) {
+            return response()->json($room);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Phòng không tồn tại!'
+        ], 404);
+    }
  
     public function destroy($id)
     {
