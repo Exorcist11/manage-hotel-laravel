@@ -75,4 +75,34 @@ class RoomController extends Controller
             'message' => 'Phòng không tồn tại!'
         ], 404);
     }
+
+    public function update(Request $request, $id)
+    {
+        $room = Room::find($id);
+        if ($room) {
+            $validatedData = $request->validate([
+                'room_no' => 'required|string|max:255',
+                'max_number' => 'required|integer',
+                'price' => 'required|numeric'
+            ]);
+
+            $room->room_no = $validatedData['room_no'];
+            $room->max_number = $validatedData['max_number'];
+            $room->price = $validatedData['price'];
+            
+            $room->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật thông tin phòng thành công!',
+                'room' => $room
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Phòng không tồn tại!'
+        ], 404);
+    }
+
 }
