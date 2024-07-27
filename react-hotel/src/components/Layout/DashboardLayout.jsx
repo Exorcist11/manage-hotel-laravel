@@ -7,7 +7,7 @@ export default function DashboardLayout({ children }) {
         { name: "Check In-Out", icon: <RiDashboardLine />, link: "" },
         { name: "Quản lý phòng", icon: <RiDashboardLine />, link: "/rooms" },
         { name: "Quản lý khách hàng", icon: <RiDashboardLine />, link: "" },
-        { name: "Quản lý nhân viên", icon: <RiDashboardLine />, link: "" },
+        { name: "Quản lý nhân viên", icon: <RiDashboardLine />, link: "/staff" },
         { name: "Quản lý tài khoản", icon: <RiDashboardLine />, link: "" },
         { name: "Quản lý dịch vụ", icon: <RiDashboardLine />, link: "" },
         { name: "Quản lý sản phẩm", icon: <RiDashboardLine />, link: "" },

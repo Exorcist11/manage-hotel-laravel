@@ -4,10 +4,12 @@ import { MdDelete, MdCreate } from "react-icons/md";
 
 export default function Room() {
     const [rooms, setRooms] = useState([]);
+    const [isApiSuccess, setIsApiSuccess] = useState(false);
     const [form, setForm] = useState({
         room_no: "",
         max_number: "",
         price: "",
+        id: "",
     });
     const floors = [
         { flor: 1, name: "Tầng 1" },
@@ -47,10 +49,11 @@ export default function Room() {
             .get(`http://127.0.0.1:8000/api/rooms/${id}`)
             .then((response) => setForm(response.data))
             .catch((e) => console.log(e));
+        setIsApiSuccess(true);
     };
 
     const handleDelete = async (id) => {
-        const confirm = window.confirm("Are you sure you want to delete");
+        const confirm = window.confirm("Are you sure you want to delete?");
         if (confirm) {
             await axios
                 .delete(`http://127.0.0.1:8000/api/rooms/${id}`)
@@ -58,6 +61,25 @@ export default function Room() {
                 .catch(() => alert("Lỗi khi xóa"));
             fetchRooms();
         }
+    };
+
+    const handleUpdate = async (id) => {
+        if (id) {
+            await axios
+                .put(`http://127.0.0.1:8000/api/rooms/${id}`, form)
+                .then(() => {
+                    alert("Cập nhật phòng thành công!");
+                    setForm({
+                        room_no: "",
+                        max_number: "",
+                        price: "",
+                        id: "",
+                    });
+                })
+                .catch((e) => console.log(e));
+            setIsApiSuccess(false);
+        }
+        fetchRooms();
     };
 
     const fetchRooms = async () => {
@@ -111,7 +133,11 @@ export default function Room() {
                                 </th>
                                 <td>{room?.room_no}</td>
                                 <td>{room?.max_number}</td>
-                                <td>{room?.price}</td>
+                                <td>
+                                    {Number(room?.price).toLocaleString(
+                                        "vn-VI"
+                                    )}{" "}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -169,48 +195,54 @@ export default function Room() {
                     <h3 className="font-bold text-lg">
                         Thông tin chi tiết phòng {form.room_no}
                     </h3>
-                    <div className="flex flex-col gap-5">
-                        <input
-                            type="text"
-                            name="room_no"
-                            placeholder="Mã phòng"
-                            value={form.room_no}
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
-                        <select
-                            className="select select-primary w-full max-w-lg focus:outline-none focus:ring-0"
-                            name="max_number"
-                            onChange={handleChange}
-                        >
-                            <option disabled selected>
-                                Chọn tầng
-                            </option>
-                            {floors.map((floor, index) => (
-                                <option
-                                    key={index}
-                                    value={floor.flor}
-                                    selected={form.max_number}
-                                >
-                                    {floor.name}
+                    {isApiSuccess ? (
+                        <div className="flex flex-col gap-5">
+                            <input
+                                type="text"
+                                name="room_no"
+                                placeholder="Mã phòng"
+                                value={form.room_no}
+                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                            <select
+                                className="select select-primary w-full max-w-lg focus:outline-none focus:ring-0"
+                                name="max_number"
+                                onChange={handleChange}
+                                defaultValue={form.max_number}
+                            >
+                                <option disabled selected>
+                                    Chọn tầng
                                 </option>
-                            ))}
-                        </select>
-                        <input
-                            type="number"
-                            name="price"
-                            placeholder="Nhập giá"
-                            value={form.price}
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
-                    </div>
+                                {floors.map((floor, index) => (
+                                    <option key={index} value={floor.flor}>
+                                        {floor.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <input
+                                type="number"
+                                name="price"
+                                placeholder="Nhập giá"
+                                value={form.price}
+                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </div>
+                    ) : (
+                        <div className="flex items-center justify-center">
+                            <span className="loading loading-spinner loading-lg"></span>
+                        </div>
+                    )}
                     <div className="modal-action">
                         <form method="dialog">
                             <div className="flex items-end gap-2">
                                 <button className="btn">Cancel</button>
-                                <button className="btn" onClick={handleSave}>
-                                    Thêm mới
+                                <button
+                                    className="btn"
+                                    onClick={() => handleUpdate(form.id)}
+                                >
+                                    Chỉnh sửa
                                 </button>
                             </div>
                         </form>
