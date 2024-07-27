@@ -17,3 +17,5 @@ Route::get('/rooms', [RoomController::class, 'index']);
 Route::get('/rooms/{id}', [RoomController::class, 'show']);
 Route::post('/rooms/create', [RoomController::class, 'store']);
 Route::delete('/rooms/{id}', [RoomController::class, 'destroy']);
+Route::put('/rooms/{id}', [RoomController::class, 'update']);
+
