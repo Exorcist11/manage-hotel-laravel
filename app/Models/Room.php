@@ -51,8 +51,8 @@ class Room extends Model
 		return $this->hasMany(BookingDetail::class);
 	}
 
-	public function products()
+	public function product_rooms()
 	{
-		return $this->hasMany(Product::class);
+		return $this->hasMany(ProductRoom::class);
 	}
 }
