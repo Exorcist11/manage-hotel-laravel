@@ -44,4 +44,8 @@ Route::controller(StaffController::class)->group(function () {
 
 Route::controller(CustomerController::class)->group(function () {
   Route::get('/customers', 'index');
+  Route::post('/customers', 'store');
+  Route::get('/customers/{id}', 'show');
+  Route::put('/customers/{id}', 'update');
+  Route::delete('/customers/{id}', 'destroy');
 });
