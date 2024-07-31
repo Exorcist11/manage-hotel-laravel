@@ -36,14 +36,32 @@ class AuthController extends Controller
         ], 401);
     }
 
-    // public function logout(Request $request) {
-    //     Auth::logout();
 
-    //     $request->session()->invalidate();
-    //     $request->session()->regenerateToken();
+    public function signin(Request $request){
+        $credentials = $request->only('email', 'password');
 
-    //     return redirect('/');
-    // }
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Login successful',
+                'token' => $token,
+                'user' => $user
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Invalid email or password'
+        ], 401);
+    }
+
+    public function logout(Request $request) {
+        Auth::logout();
+        return redirect('/');
+    }
 
     public function logout(Request $request)
     {
