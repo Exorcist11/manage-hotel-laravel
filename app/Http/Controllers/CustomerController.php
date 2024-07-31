@@ -111,8 +111,7 @@ class CustomerController extends Controller
                  'message' => 'Customer deleted successfully.'
              ], 200);
          }
- 
-         // Nếu không tìm thấy customer, trả về lỗi
+         
          return response()->json([
              'success' => false,
              'message' => 'Customer not found.'

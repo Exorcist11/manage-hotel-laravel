@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CustomerController;
-
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
 
 Route::get('/hello', function(){
   return response()->json(['message' => 'Devil may cry']);
@@ -48,4 +50,25 @@ Route::controller(CustomerController::class)->group(function () {
   Route::get('/customers/{id}', 'show');
   Route::put('/customers/{id}', 'update');
   Route::delete('/customers/{id}', 'destroy');
+});
+
+Route::controller(ProductController::class)->group(function () {
+  Route::get('/products', 'index');
+  Route::post('/products', 'create');
+  Route::get('/products/{id}', 'show');
+  Route::put('/products/{id}', 'update');
+  Route::delete('/products/{id}', 'destroy');
+});
+
+Route::controller(AuthController::class)->group(function () {
+  Route::post('/login', 'login');
+  Route::post('/logout', 'logout');
+});
+
+Route::controller(BookingController::class)->group(function () {
+  Route::get('/bookings', 'index');
+  Route::post('/bookings', 'store');
+  Route::get('/bookings/{id}', 'show');
+  Route::put('/bookings/{id}', 'update');
+  Route::delete('/bookings/{id}', 'destroy');
 });

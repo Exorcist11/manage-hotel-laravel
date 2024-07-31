@@ -34,7 +34,8 @@ class Product extends Model
 	protected $fillable = [
 		'name',
 		'price',
-		'amount'
+		'amount',
+		'image'
 	];
 
 	public function product_rooms()
