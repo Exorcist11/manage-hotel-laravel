@@ -16,7 +16,7 @@ export default function clientLayout({ children }) {
                         <li className="li_content">Về chúng tôi</li>
                         <li className="li_content">Liên hệ</li>
                         <li className="li_content">
-                            <a href="{{ route('login') }}">Đăng nhập</a>
+                            <a href="/login">Đăng nhập</a>
                         </li>
                     </ul>
                 </div>
