@@ -21,12 +21,13 @@ class ProductController extends Controller
             if ($request->hasFile('image')){
                 $image = $request->file('image');
                 $imagePath = $image->store('public/images');
+                $imageUrl = Storage::url($imagePath);
             }
             $product = Product::create([
                 'name' => $request->name,
                 'price' => $request->price,
                 'amount' => $request->amount,
-                'image' => $imagePath,
+                'image' => $imageUrl,
             ]);
             return response()->json([
                 'success' => true,
