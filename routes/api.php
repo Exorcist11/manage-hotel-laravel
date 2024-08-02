@@ -9,6 +9,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/hello', function(){
   return response()->json(['message' => 'Devil may cry']);
@@ -52,12 +53,14 @@ Route::controller(CustomerController::class)->group(function () {
   Route::delete('/customers/{id}', 'destroy');
 });
 
-Route::controller(ProductController::class)->group(function () {
-  Route::get('/products', 'index');
-  Route::post('/products', 'create');
-  Route::get('/products/{id}', 'show');
-  Route::patch('/products/{id}', 'update');
-  Route::delete('/products/{id}', 'destroy');
+Route::prefix('products')->group(function () {
+  Route::controller(ProductController::class)->group(function () {
+    Route::get('', 'index');
+    Route::post('', 'create');
+    Route::get('/{id}', 'show');
+    Route::patch('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+  });
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -71,4 +74,14 @@ Route::controller(BookingController::class)->group(function () {
   Route::get('/bookings/{id}', 'show');
   Route::put('/bookings/{id}', 'update');
   Route::delete('/bookings/{id}', 'destroy');
+});
+
+Route::prefix('categories')->group(function () {
+  Route::controller(CategoryController::class)->group(function () {
+    Route::get('', 'index');
+    Route::post('', 'store');
+    Route::get('/{id}', 'show');
+    Route::patch('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+  });
 });
