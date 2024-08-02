@@ -55,4 +55,9 @@ class Room extends Model
 	{
 		return $this->hasMany(ProductRoom::class);
 	}
+
+	public function category()
+	{
+		return $this->belongsTo(Category::class);
+	}
 }
