@@ -101,7 +101,6 @@ export default function Staff() {
         document.getElementById("modal_add_mail").showModal();
         setForm({ ...form, id: id, name: name });
     };
-    console.log(form);
 
     const handleAddMail = async () => {
         if (form.id) {
@@ -144,7 +143,7 @@ export default function Staff() {
             </button>
 
             <div className="overflow-x-auto">
-                <table className="table">
+                <table className="table table-zebra">
                     <thead>
                         <tr>
                             <th></th>

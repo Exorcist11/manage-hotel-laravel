@@ -9,8 +9,8 @@ export default function DashboardLayout({ children }) {
         { name: "Quản lý khách hàng", icon: <RiDashboardLine />, link: "" },
         { name: "Quản lý nhân viên", icon: <RiDashboardLine />, link: "/staff" },
         { name: "Quản lý tài khoản", icon: <RiDashboardLine />, link: "" },
-        { name: "Quản lý cơ sở vật chất", icon: <RiDashboardLine />, link: "" },
-        { name: "Quản lý sản phẩm", icon: <RiDashboardLine />, link: "" },
+        { name: "Quản lý cơ sở vật chất", icon: <RiDashboardLine />, link: "/products" },
+        { name: "Lịch sử đặt phòng", icon: <RiDashboardLine />, link: "" },
     ];
     return (
         <div className="flex">

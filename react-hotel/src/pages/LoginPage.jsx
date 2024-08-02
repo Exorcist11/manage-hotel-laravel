@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 export default function LoginPage() {
@@ -10,8 +11,16 @@ export default function LoginPage() {
         }));
     };
 
-    const handleLogin = () => {
-        alert(user.email);
+    const handleLogin = async () => {
+        await axios
+            .post("http://127.0.0.1:8000/api/login", user)
+            .then((res) => {
+                if (res.status === 200) {
+                    localStorage.setItem("user", JSON.stringify(res.data.user));
+                    window.location.href = "/dashboard";
+                }
+            })
+            .catch((err) => alert(err.response.data.message));
     };
     return (
         <section className="px-20 w-full flex items-center justify-center bg-[#f2f2f2] main-section py-10">

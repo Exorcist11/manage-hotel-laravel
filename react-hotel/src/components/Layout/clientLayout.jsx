@@ -16,6 +16,10 @@ export default function clientLayout({ children }) {
                         <li className="li_content">Về chúng tôi</li>
                         <li className="li_content">Liên hệ</li>
                         <li className="li_content">
+                            <a href="/list-room">Danh sách phòng</a>
+                        </li>
+                        <li className="li_content">Đặt phòng</li>
+                        <li className="li_content">
                             <a href="/login">Đăng nhập</a>
                         </li>
                     </ul>
