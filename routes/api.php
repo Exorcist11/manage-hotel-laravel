@@ -18,7 +18,7 @@ Route::post('/abc', [StaffController::class, 'create']);
 
 Route::controller(RoomController::class)->group(function () {
   Route::get('/rooms', 'index');
-  Route::get('/rooms{id}', 'show');
+  Route::get('/rooms/{id}', 'show');
   Route::post('/rooms/create', 'store');
   Route::delete('/rooms/{id}', 'destroy');
   Route::put('/rooms/{id}', 'update');
@@ -56,7 +56,7 @@ Route::controller(ProductController::class)->group(function () {
   Route::get('/products', 'index');
   Route::post('/products', 'create');
   Route::get('/products/{id}', 'show');
-  Route::put('/products/{id}', 'update');
+  Route::patch('/products/{id}', 'update');
   Route::delete('/products/{id}', 'destroy');
 });
 

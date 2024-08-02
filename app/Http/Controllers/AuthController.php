@@ -58,10 +58,10 @@ class AuthController extends Controller
         ], 401);
     }
 
-    public function logout(Request $request) {
-        Auth::logout();
-        return redirect('/');
-    }
+    // public function logout(Request $request) {
+    //     Auth::logout();
+    //     return redirect('/');
+    // }
 
     public function logout(Request $request)
     {
