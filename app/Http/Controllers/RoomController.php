@@ -18,7 +18,8 @@ class RoomController extends Controller
             $room = Room::create([
                 'room_no' => $request->room_no,
                 'max_number' => $request->max_number,
-                'price' => $request->price
+                'price' => $request->price,
+                'category_id' => $request->category_id
             ]);
     
             return response()->json([
@@ -67,17 +68,13 @@ class RoomController extends Controller
     {
         $room = Room::find($id);
         if ($room) {
-            $validatedData = $request->validate([
-                'room_no' => 'required|string|max:255',
-                'max_number' => 'required|integer',
-                'price' => 'required|numeric'
-            ]);
-
-            $room->room_no = $validatedData['room_no'];
-            $room->max_number = $validatedData['max_number'];
-            $room->price = $validatedData['price'];
-            
-            $room->save();
+            $updateData = array_filter($request->only([
+                'room_no', 'floor', 'price', 'category_id'
+            ]), function ($value) {
+                return $value !== null;
+            });
+    
+            $room->update($updateData);    
 
             return response()->json([
                 'success' => true,

@@ -38,7 +38,8 @@ class Room extends Model
 	protected $fillable = [
 		'room_no',
 		'max_number',
-		'price'
+		'price',
+		'category_id'
 	];
 
 	public function bills()
