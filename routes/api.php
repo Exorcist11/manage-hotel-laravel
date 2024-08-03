@@ -20,7 +20,7 @@ Route::post('/abc', [StaffController::class, 'create']);
 Route::controller(RoomController::class)->group(function () {
   Route::get('/rooms', 'index');
   Route::get('/rooms/{id}', 'show');
-  Route::post('/rooms/create', 'store');
+  Route::post('/rooms', 'store');
   Route::delete('/rooms/{id}', 'destroy');
   Route::put('/rooms/{id}', 'update');
 });
