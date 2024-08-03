@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -27,13 +28,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-            $imagePath = null;
-            if ($request->hasFile('image')){
+        try {
+            $imageUrl = null;
+            if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imagePath = $image->store('public/images');
                 $imageUrl = Storage::url($imagePath);
             }
+
             $category = Category::create([
                 'name' => $request->name,
                 'max_occupancy' => $request->max_occupancy,
@@ -41,14 +43,24 @@ class CategoryController extends Controller
                 'description' => $request->description,
                 'image' => $imageUrl,
             ]);
+
             return response()->json([
                 'success' => true,
-                'cat$category' => $category
+                'category' => $category
             ], 201);
-        } catch (\Throwable $th){
-            return response()->json($th);
+
+        } catch (\Throwable $th) {
+            // Log lỗi để dễ dàng debug
+            \Log::error($th);
+            
+            // Trả về lỗi với message chi tiết hơn
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
         }
     }
+
 
     /**
      * Hiển thị chi tiết một thể loại cụ thể.

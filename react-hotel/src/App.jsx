@@ -6,7 +6,7 @@ import DashboardLayout from "./components/Layout/DashboardLayout";
 
 function App() {
     return (
-        <div className="bg-white h-screen">
+        <div className="bg-white h-full">
             <Routes>
                 {publicRoute.map((route, index) => {
                     const Layout =

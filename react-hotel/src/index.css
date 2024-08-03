@@ -7,3 +7,17 @@
 after:absolute after:bottom-0 after:left-0 after:bg-[#5c4a3e] after:h-0.5 after:w-0 hover:after:w-full 
 after:transition-all after:ease-in-out after:duration-300;
 }
+
+.aspect-w-16 {
+    aspect-ratio: 3 / 5;
+}
+
+.aspect-h-9 {
+    aspect-ratio: 5 / 3;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}

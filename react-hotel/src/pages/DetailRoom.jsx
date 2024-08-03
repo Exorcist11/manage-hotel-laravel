@@ -1,62 +1,70 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 export default function DetailRoom() {
+    const [room, setRoom] = useState({});
+    const { category_id } = useParams();
+
+    useEffect(() => {
+        const fetchRoom = async () => {
+            try {
+                await axios
+                    .get(`http://127.0.0.1:8000/api/categories/${category_id}`)
+                    .then((response) => setRoom(response.data))
+                    .catch((error) => console.error(error));
+            } catch (error) {
+                console.error("Error fetching room:", error);
+            }
+        };
+        fetchRoom();
+    }, [category_id]);
+
     return (
         <div className="px-28 flex flex-col gap-5 mb-10">
             <div className="breadcrumbs text-sm">
                 <ul>
                     <li>
-                        <a>Trang chủ</a>
+                        <a href="/">Trang chủ</a>
                     </li>
                     <li>
-                        <a>Danh sách phòng</a>
+                        <a href="/list-room">Danh sách phòng</a>
                     </li>
                     <li>
-                        <a>Danh sách phòng</a>
+                        <a>{room?.name}</a>
                     </li>
                 </ul>
             </div>
 
             <div className="text-center text-[40px] font-semibold">
-                Phòng Deluxe
+                {room?.name}
             </div>
 
             <div className="grid grid-cols-2 gap-5 items-center">
                 <div className="object-center object-cover w-full ">
                     <img
                         className="rounded-xl w-full h-full"
-                        src="https://www.lottehotel.com/content/dam/lotte-hotel/lotte/hanoi/accommodation/standard/deluxeroom/180921-2-2000-roo-LTHA.jpg.thumb.1920.1920.jpg"
-                        alt=""
+                        src={"http://127.0.0.1:8000" + room?.image}
+                        alt={room?.name}
                     />
                 </div>
                 <div className="flex flex-col gap-5">
                     <div className="border-b">
                         <b>Thông tin phòng</b>
                         <p>
-                            <b>Kích thước</b>: 120 m2
+                            <b>Kích thước</b>: {room?.size} m2
                         </p>
                         <p>
-                            <b>Sức chứa</b>: 2 người/phòng
+                            <b>Sức chứa</b>: {room?.max_occupancy} người/phòng
                         </p>
                     </div>
 
-                    <div className="border-b">
-                        <b>Tiện nghi cơ bản</b>
-                        <p>
-                            <b>Kích thước</b>: 120 m2
-                        </p>
-                        <p>
-                            <b>Sức chứa</b>: 2 người/phòng
-                        </p>
-                    </div>
+                    
 
                     <div className="">
                         <b>Chi tiết phòng</b>
                         <p>
-                            Tại tất cả các phòng Deluxe nằm từ tầng 40 đến tầng
-                            53 của toà nhà Lotte, khách hàng đều có thể tận
-                            hưởng tầm nhìn tuyệt đẹp bao quát thành phố Hà Nội.
-                            Các tiện nghi cao cấp bao gồm hệ thống điều hoà độc
-                            đáo với 4 ống sẽ bảo đảm cho khách hàng những giờ
-                            phút nghỉ ngơi thoải mái tại khách sạn.
+                            {room?.description}
                         </p>
                     </div>
 

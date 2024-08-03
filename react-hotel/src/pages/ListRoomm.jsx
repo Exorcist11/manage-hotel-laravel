@@ -1,4 +1,22 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 export default function ListRoomm() {
+    const [categories, setCategories] = useState([]);
+    const fetchCategories = async () => {
+        try {
+            await axios
+                .get("http://127.0.0.1:8000/api/categories")
+                .then((response) => setCategories(response.data))
+                .catch((error) => error);
+        } catch (error) {
+            console.error("Error from fetch categories: " + error);
+        }
+    };
+    console.log(categories);
+    useEffect(() => {
+        fetchCategories();
+    }, []);
     return (
         <div className="px-28 flex flex-col gap-5 mb-10">
             <div className="flex justify-center flex-col gap-2 text-center leading-tight border-y py-10">
@@ -30,78 +48,50 @@ export default function ListRoomm() {
             </div>
 
             <div className="grid grid-cols-2 gap-5">
-                <div className="card bg-base-100 shadow-xl cursor-pointer group">
-                    <figure className="overflow-hidden">
-                        <img
-                            className="group-hover:scale-110 transition-transform duration-500"
-                            src="https://www.lottehotel.com/content/dam/lotte-hotel/lotte/hanoi/accommodation/club-floor/clubjuniorsuiteroom/180712-12-2000-acc-hanoi-hotel.jpg.thumb.768.768.jpg"
-                            alt="Phòng Presidential Suite"
-                        />
-                    </figure>
-                    <div className="card-body">
-                        <h2 className="card-title">Phòng Presidential Suite</h2>
-                        <p>If a dog chews shoes whose shoes does he choose?</p>
-                        <div className="card-actions justify-end">
-                            <a href="/list-room/detail-room" className="btn btn-warning">
-                                Xem chi tiết
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                {categories.map((item, index) => (
+                    <div
+                        className="card bg-base-100 shadow-xl cursor-pointer group"
+                        key={index}
+                    >
+                        <figure className="overflow-hidden aspect-w-16 aspect-h-9">
+                            <img
+                                className="group-hover:scale-110 transition-transform duration-500 object-cover w-full h-full"
+                                src={"http://127.0.0.1:8000" + item?.image}
+                                alt={item?.name}
+                            />
+                        </figure>
+                        <div className="card-body">
+                            <h2 className="card-title">{item?.name}</h2>
 
-                <div className="card bg-base-100 shadow-xl">
-                    <figure>
-                        <img
-                            src="https://www.lottehotel.com/content/dam/lotte-hotel/lotte/hanoi/accommodation/club-floor/clubjuniorsuiteroom/180712-12-2000-acc-hanoi-hotel.jpg.thumb.768.768.jpg"
-                            alt="Phòng Presidential Suite"
-                        />
-                    </figure>
-                    <div className="card-body">
-                        <h2 className="card-title">Phòng Presidential Suite</h2>
-                        <p>If a dog chews shoes whose shoes does he choose?</p>
-                        <div className="card-actions justify-end">
-                            <button className="btn btn-warning">
-                                Đặt ngay
-                            </button>
+                            <div className="flex justify-start">
+                                <p>
+                                    Kích thước{" "}
+                                    <strong>
+                                        {item?.size}
+                                        <span>
+                                            m<sup>2</sup>
+                                        </span>
+                                    </strong>
+                                </p>
+                                <p>
+                                    Sức chứa{" "}
+                                    <strong>
+                                        {item?.max_occupancy} người/phòng
+                                    </strong>
+                                </p>
+                            </div>
+                            <p>{item?.description}</p>
+                            <div className="card-actions justify-end">
+                                <a
+                                    href={`/list-room/${item?.id}`}
+                                    className="btn btn-warning"
+                                >
+                                    Xem chi tiết
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div className="card bg-base-100  shadow-xl">
-                    <figure>
-                        <img
-                            src="https://www.lottehotel.com/content/dam/lotte-hotel/lotte/hanoi/accommodation/club-floor/clubjuniorsuiteroom/180712-12-2000-acc-hanoi-hotel.jpg.thumb.768.768.jpg"
-                            alt="Phòng Presidential Suite"
-                        />
-                    </figure>
-                    <div className="card-body">
-                        <h2 className="card-title">Phòng Presidential Suite</h2>
-                        <p>If a dog chews shoes whose shoes does he choose?</p>
-                        <div className="card-actions justify-end">
-                            <button className="btn btn-warning">
-                                Đặt ngay
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="card bg-base-100  shadow-xl">
-                    <figure>
-                        <img
-                            src="https://www.lottehotel.com/content/dam/lotte-hotel/lotte/hanoi/accommodation/club-floor/clubjuniorsuiteroom/180712-12-2000-acc-hanoi-hotel.jpg.thumb.768.768.jpg"
-                            alt="Phòng Presidential Suite"
-                        />
-                    </figure>
-                    <div className="card-body">
-                        <h2 className="card-title">Phòng Presidential Suite</h2>
-                        <p>If a dog chews shoes whose shoes does he choose?</p>
-                        <div className="card-actions justify-end">
-                            <button className="btn btn-warning">
-                                Đặt ngay
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                ))}
             </div>
         </div>
     );

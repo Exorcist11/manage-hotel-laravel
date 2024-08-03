@@ -36,8 +36,6 @@ export default function Products() {
         formData.append("price", form.price);
         formData.append("amount", form.amount);
 
-        console.log("Form Data for Submit:", formData);
-
         try {
             await axios
                 .post("http://127.0.0.1:8000/api/products", formData, {

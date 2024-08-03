@@ -14,19 +14,6 @@ class RoomController extends Controller
     }
 
     public function store(Request $request){
-        $validator = Validator::make($request->all(), [
-            'room_no' => 'required|string|max:255',
-            'max_number' => 'required|integer',
-            'price' => 'required|numeric'
-        ]);
-    
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-    
         try {
             $room = Room::create([
                 'room_no' => $request->room_no,
