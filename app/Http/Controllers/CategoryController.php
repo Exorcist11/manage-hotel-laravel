@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -43,7 +44,7 @@ class CategoryController extends Controller
             ]);
             return response()->json([
                 'success' => true,
-                'cat$category' => $category
+                '$category' => $category
             ], 201);
         } catch (\Throwable $th){
             return response()->json($th);
