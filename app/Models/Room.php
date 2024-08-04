@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property string $room_no
- * @property int $max_number
+ * @property int $floor
  * @property float $price
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -31,13 +31,13 @@ class Room extends Model
 	protected $table = 'rooms';
 
 	protected $casts = [
-		'max_number' => 'int',
+		'floor' => 'int',
 		'price' => 'float'
 	];
 
 	protected $fillable = [
 		'room_no',
-		'max_number',
+		'floor',
 		'price',
 		'category_id'
 	];
