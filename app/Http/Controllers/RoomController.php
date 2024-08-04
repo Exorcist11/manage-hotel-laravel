@@ -17,7 +17,7 @@ class RoomController extends Controller
         try {
             $room = Room::create([
                 'room_no' => $request->room_no,
-                'max_number' => $request->max_number,
+                'floor' => $request->floor,
                 'price' => $request->price,
                 'category_id' => $request->category_id
             ]);
