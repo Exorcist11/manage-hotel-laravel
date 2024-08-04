@@ -1,7 +1,7 @@
 export default function clientLayout({ children }) {
     return (
         <div className="flex flex-col h-full">
-            <div className="flex items-center flex-row justify-between px-20">
+            <div className="flex items-center flex-row justify-between px-20  border-b mb-5">
                 <div className="w-44">
                     <img
                         alt="logo"
@@ -12,13 +12,17 @@ export default function clientLayout({ children }) {
 
                 <div>
                     <ul className="flex items-center font-semibold text-base list-none gap-4 cursor-pointer">
-                        <li className="li_content">Trang chủ</li>
+                        <li className="li_content">
+                            <a href="/">Trang chủ</a>
+                        </li>
                         <li className="li_content">Về chúng tôi</li>
                         <li className="li_content">Liên hệ</li>
                         <li className="li_content">
                             <a href="/list-room">Danh sách phòng</a>
                         </li>
-                        <li className="li_content">Đặt phòng</li>
+                        <li className="li_content">
+                            <a href="/booking">Đặt phòng</a>
+                        </li>
                         <li className="li_content">
                             <a href="/login">Đăng nhập</a>
                         </li>

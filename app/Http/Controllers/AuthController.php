@@ -78,7 +78,8 @@ class AuthController extends Controller
     public function deleteAccount($id){
         $user = User::find($id);
         if ($user) {
-            $user->delete();
+            $user->email = '';
+            $user->save();
             return response()->json([
                 'success' => true,
                 'message' => 'Xoá thành công!'
@@ -92,6 +93,33 @@ class AuthController extends Controller
 
     public function updatePassword(Request $request, $id)
     {
+        try {
+            $user = User::find($id);
+
+            if (!$user) {
+                return response()->json([
+                    'error' => 'User not found'
+                ], 404);
+            }
+    
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
+            $user->save();
+    
+            return response()->json([
+                'message' => 'Cập nhật mật khẩu thành công'
+            ], 200);
+        } catch (Exception $err) {
+            Log::error('Error creating room: ' . $err->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $err
+            ], 500);
+        }
+    }
+
+    public function changeRole (Request $request, $id){
         try {
             $user = User::find($id);
 

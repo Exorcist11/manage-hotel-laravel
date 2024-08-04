@@ -77,32 +77,36 @@ export default function Products() {
     };
 
     const handleUpdate = async () => {
+        const formData = new FormData();
+
+        formData.append("name", form.name);
+        formData.append("price", form.price);
+        formData.append("amount", form.amount);
+        
+
+        if (selectedFile) {
+            formData.append("image", selectedFile);
+        }
+
+        console.log("Form after appending:", form);
         try {
-            const formData = new FormData();
-            formData.append("name", form.name);
-            formData.append("price", form.price);
-            formData.append("amount", form.amount);
-
-            if (selectedFile) {
-                formData.append("image", selectedFile);
-            }
-
-            if (formData) {
-                await axios
-                    .patch(
-                        `http://127.0.0.1:8000/api/products/${form.id}`,
-                        formData,
-                        {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }
-                    )
-                    .then((response) => {
-                        console.log(response);
-                        getProducts();
-                    });
-            }
+            await axios
+                .patch(
+                    `http://127.0.0.1:8000/api/products/${form.id}`,
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                )
+                .then((response) => {
+                    console.log(response);
+                    getProducts();
+                })
+                .catch((error) => {
+                    console.error("Error response:", error.response);
+                });
         } catch (error) {
             console.error("There was an error updating the file!", error);
         }

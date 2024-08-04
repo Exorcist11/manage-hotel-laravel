@@ -59,18 +59,17 @@ export default function DetailRoom() {
                         </p>
                     </div>
 
-                    
-
                     <div className="">
                         <b>Chi tiết phòng</b>
-                        <p>
-                            {room?.description}
-                        </p>
+                        <p>{room?.description}</p>
                     </div>
 
-                    <button className="btn btn-primary w-full">
+                    <a
+                        href={`/booking/${category_id}`}
+                        className="btn btn-primary w-full"
+                    >
                         Đặt phòng ngay
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

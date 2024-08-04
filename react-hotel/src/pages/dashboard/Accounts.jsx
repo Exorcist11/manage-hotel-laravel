@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 
 export default function Accounts() {
     const [accounts, setAccounts] = useState([]);
+    const [form, setForm] = useState({
+        id: "",
+        password: "",
+        res_pass: "",
+    });
     const fetchAccount = async () => [
         await axios
             .get("http://127.0.0.1:8000/api/getAccount")
@@ -12,12 +17,33 @@ export default function Accounts() {
 
     const handleDeleteAccount = async (id) => {
         await axios
-            .delete(`http://127.0.0.1:8000/api/deleteAccount/${id}`)
+            .patch(`http://127.0.0.1:8000/api/deleteAccount/${id}`)
             .then(() => {
                 alert("Xóa tài khoản thành công!");
                 fetchAccount();
             })
             .catch((error) => console.error(error));
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setForm((preState) => ({
+            ...preState,
+            [name]: value,
+        }));
+    };
+
+    const handleUpdatePass = async () => {
+        if (form?.id && form?.password === form?.res_pass) {
+            await axios
+                .put(`http://127.0.0.1:8000/api/updatePassword/${form.id}`, {
+                    password: form.password,
+                })
+                .then((response) => console.log(response))
+                .catch((err) => console.error(err));
+        } else {
+            alert("Mật khẩu nhập lại không đúng!");
+        }
     };
 
     useEffect(() => {
@@ -41,30 +67,80 @@ export default function Accounts() {
                         </tr>
                     </thead>
                     <tbody>
-                        {accounts.map((item, index) => (
-                            <tr key={index}>
-                                <td>{item?.id}</td>
-                                <td>{item?.email}</td>
-                                <td>{item?.fullname}</td>
-                                <td>{item?.role}</td>
-                                <td className="flex gap-2">
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={() =>
-                                            handleDeleteAccount(item?.id)
-                                        }
-                                    >
-                                        Xoá tài khoản
-                                    </button>
-                                    <button className="btn btn-accent">
-                                        Cập nhật mật khẩu
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        {accounts
+                            .filter((item) => item?.email)
+                            .map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item?.id}</td>
+                                    <td>{item?.email}</td>
+                                    <td>{item?.fullname}</td>
+                                    <td>{item?.role}</td>
+                                    <td className="flex gap-2">
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() =>
+                                                handleDeleteAccount(item?.id)
+                                            }
+                                        >
+                                            Xoá tài khoản
+                                        </button>
+                                        <button
+                                            className="btn btn-accent"
+                                            onClick={() => {
+                                                setForm({
+                                                    ...form,
+                                                    id: item.id,
+                                                });
+                                                document
+                                                    .getElementById(
+                                                        "my_modal_1"
+                                                    )
+                                                    .showModal();
+                                            }}
+                                        >
+                                            Cập nhật mật khẩu
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>
+
+            <dialog id="my_modal_1" className="modal">
+                <div className="modal-box flex flex-col gap-3">
+                    <h3 className="font-bold text-lg">Cập nhật mật khẩu</h3>
+                    <div className="flex flex-col gap-5">
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Nhập mật khẩu"
+                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="password"
+                            name="res_pass"
+                            placeholder="Xác nhận mật khẩu"
+                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="modal-action">
+                        <form method="dialog">
+                            <div className="flex items-end gap-2">
+                                <button className="btn">Cancel</button>
+                                <button
+                                    className="btn"
+                                    onClick={handleUpdatePass}
+                                >
+                                    Thêm mới
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </div>
     );
 }

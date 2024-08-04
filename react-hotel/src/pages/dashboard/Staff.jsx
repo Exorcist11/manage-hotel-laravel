@@ -5,6 +5,7 @@ import { MdDelete, MdCreate, MdOutlineDrafts } from "react-icons/md";
 export default function Staff() {
     const [staffs, setStaffs] = useState([]);
     const [isApiSuccess, setIsApiSuccess] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
     const [form, setForm] = useState({
         fullname: "",
         phone_number: "",
@@ -16,6 +17,10 @@ export default function Staff() {
         email: "",
         password: "",
     });
+
+    const handleSearch = (event) => {
+        setSearchTerm(event.target.value);
+    };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -89,7 +94,7 @@ export default function Staff() {
             await axios
                 .put(`http://127.0.0.1:8000/api/staff/${id}`, form)
                 .then(() => {
-                    alert("Cập nhật phòng thành công!");
+                    alert("Cập nhật nhân viên thành công!");
                     document.getElementById("modal_get_user").close();
                     fetchRooms();
                 })
@@ -124,23 +129,37 @@ export default function Staff() {
             .then((response) => setStaffs(response.data.users));
     };
 
+    const filteredStaffs = staffs.filter((staff) =>
+        staff?.profiles?.fullname
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+    );
+
     useEffect(() => {
         fetchRooms().catch((err) => console.error(err));
     }, []);
 
     return (
-        <div className="">
+        <div className="flex flex-col gap-5">
             <h2 className="uppercase text-3xl text-center font-semibold">
                 Quản nhân viên
             </h2>
-            <button
-                className="btn btn-outline"
-                onClick={() =>
-                    document.getElementById("my_modal_1").showModal()
-                }
-            >
-                Thêm nhân viên
-            </button>
+            <div className="flex justify-between">
+                <button
+                    className="btn btn-outline"
+                    onClick={() =>
+                        document.getElementById("my_modal_1").showModal()
+                    }
+                >
+                    Thêm nhân viên
+                </button>
+                <input
+                    type="text"
+                    placeholder="Tìm kiếm nhân viên"
+                    className="input input-bordered w-full max-w-xs"
+                    onChange={handleSearch}
+                />
+            </div>
 
             <div className="overflow-x-auto">
                 <table className="table table-zebra">
@@ -152,7 +171,7 @@ export default function Staff() {
                         </tr>
                     </thead>
                     <tbody>
-                        {staffs.map((staff, i) => (
+                        {filteredStaffs.map((staff, i) => (
                             <tr key={i}>
                                 <th className="flex items-center gap-2">
                                     <MdCreate
@@ -365,7 +384,18 @@ export default function Staff() {
                                 value={form.birth ? formatDate(form.birth) : ""}
                                 onChange={handleChange}
                             />
-                            <div className="flex gap-5 border rounded-xl">
+                            <select
+                                className="select select-bordered w-full"
+                                onChange={handleChange}
+                                name="role"
+                                value={form.role}
+                            >
+                                <option disabled>Chức vụ</option>
+                                <option value="Nhân viên">Nhân viên</option>
+                                <option value="Quản lý">Quản lý</option>
+                                <option value="Lễ tân">Lễ tân</option>
+                            </select>
+                            <div className="flex gap-5  rounded-xl">
                                 <div className="form-control">
                                     <label className="label cursor-pointer">
                                         <input
@@ -397,17 +427,6 @@ export default function Staff() {
                                     </label>
                                 </div>
                             </div>
-                            <select
-                                className="select select-bordered w-full"
-                                onChange={handleChange}
-                                name="role"
-                                value={form.role}
-                            >
-                                <option disabled>Chức vụ</option>
-                                <option value="0">Nhân viên</option>
-                                <option value="1">Quản lý</option>
-                                <option value="2">Lễ tân</option>
-                            </select>
                         </div>
                     ) : (
                         <div className="flex items-center justify-center">
