@@ -4,13 +4,16 @@ import { MdDelete, MdCreate } from "react-icons/md";
 
 export default function Room() {
     const [rooms, setRooms] = useState([]);
+    const [cateogory, setCategory] = useState([]);
     const [isApiSuccess, setIsApiSuccess] = useState(false);
     const [form, setForm] = useState({
         room_no: "",
         max_number: "",
         price: "",
         id: "",
+        category_id: "",
     });
+
     const floors = [
         { flor: 1, name: "Tầng 1" },
         { flor: 2, name: "Tầng 2" },
@@ -30,14 +33,9 @@ export default function Room() {
 
     const handleSave = async () => {
         await axios
-            .post("http://127.0.0.1:8000/api/rooms/create", form)
+            .post("http://127.0.0.1:8000/api/rooms", form)
             .then(() => {
                 alert("Thêm mới phòng thành công!");
-                setForm({
-                    room_no: "",
-                    max_number: "",
-                    price: "",
-                });
             })
             .catch((e) => console.log(e));
         fetchRooms();
@@ -82,6 +80,12 @@ export default function Room() {
         fetchRooms();
     };
 
+    const fetchCateogry = async () => {
+        await axios
+            .get("http://127.0.0.1:8000/api/categories")
+            .then((response) => setCategory(response.data));
+    };
+
     const fetchRooms = async () => {
         await axios
             .get("http://127.0.0.1:8000/api/rooms")
@@ -90,7 +94,10 @@ export default function Room() {
 
     useEffect(() => {
         fetchRooms().catch((err) => console.error(err));
+        fetchCateogry().catch((err) => console.error(err));
     }, []);
+
+    console.log(form)
 
     return (
         <div className="">
@@ -157,6 +164,20 @@ export default function Room() {
                         />
                         <select
                             className="select select-primary w-full max-w-lg focus:outline-none focus:ring-0"
+                            name="category_id"
+                            onChange={handleChange}
+                        >
+                            <option disabled selected>
+                                Chọn loại phòng
+                            </option>
+                            {cateogory.map((item, index) => (
+                                <option key={index} value={item.id}>
+                                    {item.name}
+                                </option>
+                            ))}
+                        </select>
+                        <select
+                            className="select select-primary w-full max-w-lg focus:outline-none focus:ring-0"
                             name="max_number"
                             onChange={handleChange}
                         >
@@ -205,6 +226,21 @@ export default function Room() {
                                 className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <select
+                                className="select select-primary w-full max-w-lg focus:outline-none focus:ring-0"
+                                name="category_id"
+                                onChange={handleChange}
+                                value={form.category_id}
+                            >
+                                <option disabled selected>
+                                    Chọn loại phòng
+                                </option>
+                                {cateogory.map((item, index) => (
+                                    <option key={index} value={item.id}>
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </select>
                             <select
                                 className="select select-primary w-full max-w-lg focus:outline-none focus:ring-0"
                                 name="max_number"

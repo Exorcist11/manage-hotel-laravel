@@ -56,8 +56,9 @@ Route::controller(AuthController::class)->group(function () {
   Route::post('/login', 'login');
   Route::post('/logout', 'logout');
   Route::get('/getAccount', 'getAccount');
-  Route::delete('/deleteAccount/{id}', 'deleteAccount');
+  Route::patch('/deleteAccount/{id}', 'deleteAccount');
   Route::put('/updatePassword/{id}', 'updatePassword');
+  Route::put('/changeRole/{id}', 'changeRole');
 });
 
 Route::controller(BookingController::class)->group(function () {

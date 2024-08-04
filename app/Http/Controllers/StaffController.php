@@ -18,8 +18,6 @@ class StaffController extends Controller
     {
         try {
             $user = User::create([
-                // 'email' => $request->email,
-                // 'password' => Hash::make($request->password),
                 'role' => $request->role,
             ]);
     
@@ -81,12 +79,16 @@ class StaffController extends Controller
     public function updateProfile(Request $request, $id)
     {
         $profile = Profile::find($id);
-        if (!$profile) {
+        $user = User::find($id);
+        if (!$profile || !$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Profile not found'
+                'message' => 'Staff not found'
             ], 404);
         }
+
+        $user->role = $request->role;
+        $user->save();
 
         $profile->fullname = $request->fullname;
         $profile->birth = $request->birth;
