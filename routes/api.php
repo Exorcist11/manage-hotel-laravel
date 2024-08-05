@@ -23,6 +23,7 @@ Route::controller(RoomController::class)->group(function () {
   Route::post('/rooms', 'store');
   Route::delete('/rooms/{id}', 'destroy');
   Route::put('/rooms/{id}', 'update');
+  Route::get('/rooms/floor/{id}', 'getRoomsByFloor');
 });
 
 Route::controller(StaffController::class)->group(function () {
@@ -76,5 +77,6 @@ Route::prefix('categories')->group(function () {
     Route::get('/{id}', 'show');
     Route::patch('/{id}', 'update');
     Route::delete('/{id}', 'destroy');
+    Route::get('/{id}/rooms', 'getListRoomByCategory');
   });
 });

@@ -137,4 +137,24 @@ class CategoryController extends Controller
 
         return response()->json(['message' => 'Category deleted successfully']);
     }
+
+    public function getListRoomByCategory($id){
+     
+        $category = Category::with('rooms')->find($id);
+
+     
+        if (!$category) {
+            return response()->json([
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+    
+        return response()->json([
+            'category_name' => $category->name,
+            'rooms' => $category->rooms
+        ]);
+
+
+    }
 }

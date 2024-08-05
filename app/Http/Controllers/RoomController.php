@@ -89,4 +89,17 @@ class RoomController extends Controller
         ], 404);
     }
 
+    public function getRoomsByFloor($floor)
+    {
+        $rooms = Room::where('floor', $floor)->get();
+
+        if ($rooms->isEmpty()) {
+            return response()->json([
+                'message' => 'No rooms found on this floor'
+            ], 404);
+        }
+
+        return response()->json($rooms);
+    }
+
 }
