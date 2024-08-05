@@ -47,7 +47,7 @@ Route::prefix('products')->group(function () {
     Route::get('', 'index');
     Route::post('', 'create');
     Route::get('/{id}', 'show');
-    Route::patch('/{id}', 'update');
+    Route::put('/{id}', 'update');
     Route::delete('/{id}', 'destroy');
   });
 });

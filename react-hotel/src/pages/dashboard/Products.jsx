@@ -36,6 +36,8 @@ export default function Products() {
         formData.append("price", form.price);
         formData.append("amount", form.amount);
 
+        console.log(formData)
+
         try {
             await axios
                 .post("http://127.0.0.1:8000/api/products", formData, {
@@ -77,40 +79,32 @@ export default function Products() {
     };
 
     const handleUpdate = async () => {
-        const formData = new FormData();
-
-        formData.append("name", form.name);
-        formData.append("price", form.price);
-        formData.append("amount", form.amount);
-        
-
+        const data = {
+            name: form.name,
+            price: form.price,
+            amount: form.amount,
+        };
         if (selectedFile) {
-            formData.append("image", selectedFile);
+            data.image = selectedFile;
         }
-
-        console.log("Form after appending:", form);
+    
         try {
             await axios
-                .patch(
-                    `http://127.0.0.1:8000/api/products/${form.id}`,
-                    formData,
-                    {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }
-                )
+                .put(`http://127.0.0.1:8000/api/products/${form.id}`, data, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
                 .then((response) => {
                     console.log(response);
                     getProducts();
-                })
-                .catch((error) => {
-                    console.error("Error response:", error.response);
+                    document.getElementById("my_modal_2").close();
                 });
         } catch (error) {
-            console.error("There was an error updating the file!", error);
+            console.error("There was an error updating the product!", error);
         }
     };
+    
 
     const getProducts = async () => {
         await axios
