@@ -104,7 +104,6 @@ export default function Products() {
             console.error("There was an error updating the product!", error);
         }
     };
-    
 
     const getProducts = async () => {
         await axios

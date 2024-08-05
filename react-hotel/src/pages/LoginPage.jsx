@@ -17,6 +17,7 @@ export default function LoginPage() {
             .then((res) => {
                 if (res.status === 200) {
                     localStorage.setItem("user", JSON.stringify(res.data.user));
+                    console.log(res.data.user)
                     window.location.href = "/dashboard";
                 }
             })

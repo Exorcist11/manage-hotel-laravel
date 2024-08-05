@@ -8,7 +8,7 @@ export default function Room() {
     const [isApiSuccess, setIsApiSuccess] = useState(false);
     const [form, setForm] = useState({
         room_no: "",
-        max_number: "",
+        floor: "",
         price: "",
         id: "",
         category_id: "",
@@ -69,7 +69,7 @@ export default function Room() {
                     alert("Cập nhật phòng thành công!");
                     setForm({
                         room_no: "",
-                        max_number: "",
+                        floor: "",
                         price: "",
                         id: "",
                     });
@@ -139,7 +139,7 @@ export default function Room() {
                                     />
                                 </th>
                                 <td>{room?.room_no}</td>
-                                <td>{room?.max_number}</td>
+                                <td>{room?.floor}</td>
                                 <td>
                                     {Number(room?.price).toLocaleString(
                                         "vn-VI"
@@ -178,7 +178,7 @@ export default function Room() {
                         </select>
                         <select
                             className="select select-primary w-full max-w-lg focus:outline-none focus:ring-0"
-                            name="max_number"
+                            name="floor"
                             onChange={handleChange}
                         >
                             <option disabled selected>
@@ -243,9 +243,9 @@ export default function Room() {
                             </select>
                             <select
                                 className="select select-primary w-full max-w-lg focus:outline-none focus:ring-0"
-                                name="max_number"
+                                name="floor"
                                 onChange={handleChange}
-                                defaultValue={form.max_number}
+                                defaultValue={form.floor}
                             >
                                 <option disabled selected>
                                     Chọn tầng

@@ -22,7 +22,7 @@ export default function CategoryRoom() {
         currentPage * itemsPerPage
     );
 
-    const handleView = () => {};
+    const handleView = () => { };
 
     const handleDelete = async (id) => {
         await axios
@@ -75,6 +75,7 @@ export default function CategoryRoom() {
             .then((response) => setCategories(response.data))
             .catch((error) => console.error(error));
     };
+
 
     useEffect(() => {
         getCategories();
@@ -156,11 +157,10 @@ export default function CategoryRoom() {
                     {Array.from({ length: totalPages }, (_, index) => (
                         <button
                             key={index}
-                            className={`btn ${
-                                currentPage === index + 1
-                                    ? "btn-primary"
-                                    : "btn-outline"
-                            } mx-1`}
+                            className={`btn ${currentPage === index + 1
+                                ? "btn-primary"
+                                : "btn-outline"
+                                } mx-1`}
                             onClick={() => handlePageChange(index + 1)}
                         >
                             {index + 1}

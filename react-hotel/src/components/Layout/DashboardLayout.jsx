@@ -1,34 +1,52 @@
 import PropTypes from "prop-types";
-import { RiDashboardLine } from "react-icons/ri";
+import { RiDashboardLine, RiBarChart2Fill, RiEditBoxFill, RiPhoneCameraLine, RiSoundModuleFill, RiUserFill, RiUser5Line, RiUser2Fill, RiArchiveDrawerLine, RiArchive2Line } from "react-icons/ri";
 
 export default function DashboardLayout({ children }) {
+    localStorage.clear
     const menus = [
-        { name: "Thống kê - báo cáo", icon: <RiDashboardLine />, link: "" },
-        { name: "Check In-Out", icon: <RiDashboardLine />, link: "" },
-        { name: "Quản lý phòng", icon: <RiDashboardLine />, link: "/rooms" },
+        { name: "Thống kê - báo cáo", icon: <RiBarChart2Fill />, link: "/dashboard" },
+        { name: "Check In-Out", icon: <RiEditBoxFill />, link: "" },
+        { name: "Quản lý phòng", icon: <RiPhoneCameraLine />, link: "/rooms" },
         {
             name: "Quản lý thể loại phòng",
-            icon: <RiDashboardLine />,
+            icon: <RiSoundModuleFill />,
             link: "/category-room",
         },
-        { name: "Quản lý khách hàng", icon: <RiDashboardLine />, link: "" },
+        { name: "Quản lý khách hàng", icon: <RiUser5Line />, link: "" },
         {
             name: "Quản lý nhân viên",
-            icon: <RiDashboardLine />,
+            icon: <RiUser2Fill />,
             link: "/staff",
         },
         {
             name: "Quản lý tài khoản",
-            icon: <RiDashboardLine />,
+            icon: <RiUserFill />,
             link: "/accounts",
         },
         {
             name: "Quản lý cơ sở vật chất",
-            icon: <RiDashboardLine />,
+            icon: <RiArchiveDrawerLine />,
             link: "/products",
+        },
+        {
+            name: "Danh sách phòng trống",
+            icon: <RiArchive2Line />,
+            link: "/room-empty",
         },
         { name: "Lịch sử đặt phòng", icon: <RiDashboardLine />, link: "" },
     ];
+
+    const info = JSON.parse(localStorage.getItem("user"))
+
+    const restrictedMenusForEmployee = ['Quản lý phòng', 'Quản lý thể loại phòng', "Quản lý khách hàng", "Quản lý nhân viên", "Quản lý tài khoản", "Quản lý cơ sở vật chất"];
+
+
+    const filteredMenus = menus.filter(menu => {
+        if (info?.role === 'Nhân viên') {
+            return !restrictedMenusForEmployee.includes(menu.name);
+        }
+        return true;
+    });
     return (
         <div className="flex h-screen">
             <nav className="basis-1/5 flex flex-col gap-5 border-r py-5 bg-slate-50 h-full">
@@ -43,7 +61,7 @@ export default function DashboardLayout({ children }) {
                     </h1>
                 </div>
                 <ul className="px-5 flex flex-col gap-5">
-                    {menus.map((menu, i) => (
+                    {filteredMenus.map((menu, i) => (
                         <li
                             className="li_content flex items-center gap-2"
                             key={i}
