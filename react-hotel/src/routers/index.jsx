@@ -2,8 +2,10 @@ import Booking from "@/pages/Booking";
 import BookingDetail from "@/pages/BookingDetail";
 import Accounts from "@/pages/dashboard/Accounts";
 import CategoryRoom from "@/pages/dashboard/CategoryRoom";
+import ClientHistory from "@/pages/dashboard/ClientHistory";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import Products from "@/pages/dashboard/Products";
+import RequestRoom from "@/pages/dashboard/RequestRoom";
 import Room from "@/pages/dashboard/Room";
 import Staff from "@/pages/dashboard/Staff";
 import DetailRoom from "@/pages/DetailRoom";
@@ -27,6 +29,8 @@ const dashboardRoute = [
     { path: "/products", page: Products },
     { path: "/accounts", page: Accounts },
     { path: "/category-room", page: CategoryRoom },
+    { path: "/request", page: RequestRoom },
+    { path: "/history", page: ClientHistory },
 ];
 
 export { publicRoute, dashboardRoute };

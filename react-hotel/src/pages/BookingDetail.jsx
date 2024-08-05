@@ -138,7 +138,7 @@ export default function BookingDetail() {
                     <div className="flex items-center pb-5 gap-5 ">
                         <div className="w-2/5 flex justify-center h-32">
                             <img
-                                src={`https://kingdomhotel.vn/wp-content/uploads/2021/02/cua-lo-755x350.jpg`}
+                                src={`http://127.0.0.1:8000${detail?.image}`}
                                 alt="img romom"
                                 className="object-cover object-center w-full h-full rounded-xl"
                             />

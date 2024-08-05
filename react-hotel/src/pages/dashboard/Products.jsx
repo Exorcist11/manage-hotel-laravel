@@ -35,9 +35,6 @@ export default function Products() {
         formData.append("name", form.name);
         formData.append("price", form.price);
         formData.append("amount", form.amount);
-
-        console.log(formData)
-
         try {
             await axios
                 .post("http://127.0.0.1:8000/api/products", formData, {
@@ -87,7 +84,7 @@ export default function Products() {
         if (selectedFile) {
             data.image = selectedFile;
         }
-    
+
         try {
             await axios
                 .put(`http://127.0.0.1:8000/api/products/${form.id}`, data, {

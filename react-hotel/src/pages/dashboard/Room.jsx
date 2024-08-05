@@ -97,11 +97,11 @@ export default function Room() {
         fetchCateogry().catch((err) => console.error(err));
     }, []);
 
-    console.log(form)
+    console.log(form);
 
     return (
         <div className="">
-            <h2 className="uppercase text-3xl text-center font-semibold">
+            <h2 className="uppercase text-2xl text-center font-bold">
                 Quản lý phòng
             </h2>
             <button

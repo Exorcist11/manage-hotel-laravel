@@ -141,8 +141,8 @@ export default function Staff() {
 
     return (
         <div className="flex flex-col gap-5">
-            <h2 className="uppercase text-3xl text-center font-semibold">
-                Quản nhân viên
+            <h2 className="uppercase text-2xl text-center font-bold">
+                Quản lý nhân viên
             </h2>
             <div className="flex justify-between">
                 <button
