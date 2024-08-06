@@ -31,17 +31,17 @@ class Booking extends Model
 
 	protected $casts = [
 		'staff_id' => 'int',
-		'customer_id' => 'int'
+		'order_id' => 'int'
 	];
 
 	protected $fillable = [
 		'staff_id',
-		'customer_id'
+		'order_id'
 	];
 
 	public function customer()
 	{
-		return $this->belongsTo(Customer::class);
+		return $this->belongsTo(Order::class);
 	}
 
 	public function user()

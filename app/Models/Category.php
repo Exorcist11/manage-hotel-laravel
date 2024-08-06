@@ -35,7 +35,8 @@ class Category extends Model
         'max_occupancy',
         'size',
         'description',
-        'image'
+        'image',
+        'price'
     ];
 
     public function rooms()

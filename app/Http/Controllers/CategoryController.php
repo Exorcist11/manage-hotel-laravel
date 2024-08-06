@@ -42,6 +42,7 @@ class CategoryController extends Controller
                 'size' => $request->size,
                 'description' => $request->description,
                 'image' => $imageUrl,
+                'price' => $request->price
             ]);
 
             return response()->json([
@@ -92,7 +93,7 @@ class CategoryController extends Controller
             $category = Category::findOrFail($id);
 
             $updateData = array_filter($request->only([
-                'name', 'max_occupancy', 'size', 'description', 'image'
+                'name', 'max_occupancy', 'size', 'description', 'image', 'price'
             ]), function ($value) {
                 return $value !== null;
             });

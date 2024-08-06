@@ -32,13 +32,11 @@ class Room extends Model
 
 	protected $casts = [
 		'floor' => 'int',
-		'price' => 'float'
 	];
 
 	protected $fillable = [
 		'room_no',
 		'floor',
-		'price',
 		'category_id'
 	];
 

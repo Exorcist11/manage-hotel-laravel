@@ -69,7 +69,7 @@ class Order extends Model
     public function setStatusAttribute($value)
     {
         $status = array_search($value, self::STATUSES);
-        if ($role !== false) {
+        if ($status !== false) {
             $this->attributes['status'] = $status;
         }
     }
