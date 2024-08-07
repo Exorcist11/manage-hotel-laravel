@@ -4,9 +4,33 @@ import { useParams } from "react-router-dom";
 
 export default function BookingDetail() {
     const [detail, setDetail] = useState({});
+    const [form, setForm] = useState({});
 
     const { id } = useParams();
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setForm((preState) => ({
+            ...preState,
+            [name]: value,
+        }));
+    };
 
+    const handleBooking = async () => {
+        await axios
+            .post(`http://127.0.0.1:8000/api/orders`, {
+                fullname: form.fullname,
+                gender: "male",
+                phone_number: form.phone_number,
+                citizen_number: form.citizen_number,
+                email: form.email,
+                category_id: detail.id,
+                number_of_rooms: form.number_of_rooms,
+                start_date: form.start_date,
+                end_date: form.end_date,
+            })
+            .then((res) => console.log(res))
+            .catch((err) => console.error(err));
+    };
     useEffect(() => {
         const fetchRoom = async () => {
             try {
@@ -48,6 +72,8 @@ export default function BookingDetail() {
                         </div>
                         <input
                             type="text"
+                            name="fullname"
+                            onChange={handleChange}
                             placeholder=" Họ và tên"
                             className="input input-bordered w-full "
                             required
@@ -63,6 +89,8 @@ export default function BookingDetail() {
                         </div>
                         <input
                             type="text"
+                            name="citizen_number"
+                            onChange={handleChange}
                             placeholder="Căn cước công dân/ Chứng minh nhân dân"
                             className="input input-bordered w-full "
                         />
@@ -78,7 +106,9 @@ export default function BookingDetail() {
                             </div>
                             <input
                                 type="tel"
+                                name="phone_number"
                                 placeholder="Số điện thoại"
+                                onChange={handleChange}
                                 className="input input-bordered w-full "
                                 pattern="[0-9]{3} [0-9]{3} [0-9]{4}"
                             />
@@ -93,6 +123,8 @@ export default function BookingDetail() {
                             </div>
                             <input
                                 type="email"
+                                name="email"
+                                onChange={handleChange}
                                 placeholder="Email"
                                 className="input input-bordered w-full "
                             />
@@ -109,6 +141,8 @@ export default function BookingDetail() {
                             </div>
                             <input
                                 type="date"
+                                name="start_date"
+                                onChange={handleChange}
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
                             />
@@ -123,6 +157,8 @@ export default function BookingDetail() {
                             </div>
                             <input
                                 type="date"
+                                name="end_date"
+                                onChange={handleChange}
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
                             />
@@ -143,7 +179,7 @@ export default function BookingDetail() {
                                 className="object-cover object-center w-full h-full rounded-xl"
                             />
                         </div>
-                        <div className="w-3/5 flex flex-col gap-2">
+                        <div className="w-2/5 flex flex-col gap-2">
                             <h4 className="font-bold uppercase text-lg">
                                 {detail?.name}
                             </h4>
@@ -158,9 +194,26 @@ export default function BookingDetail() {
                             </p>
                             <p className="text-[13px]">Hướng nhìn thành phố</p>
                         </div>
+                        <div className="w-1/5">
+                            <select
+                                className="select select-bordered w-full max-w-xs"
+                                name="number_of_rooms"
+                                onChange={handleChange}
+                            >
+                                <option disabled selected>
+                                    0 phòng
+                                </option>
+                                <option value={"1"}>1 phòng</option>
+                                <option value={"2"}>2 phòng</option>
+                                <option value={"3"}>3 phòng</option>
+                                <option value={"4"}>4 phòng</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <button className="btn">Đặt phòng</button>
+                    <button className="btn" onClick={handleBooking}>
+                        Đặt phòng
+                    </button>
                 </div>
             </div>
         </div>
