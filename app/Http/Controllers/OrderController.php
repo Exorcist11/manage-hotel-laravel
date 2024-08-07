@@ -16,8 +16,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        return response()->json(['orders' => $orders]);
+        $all_orders = Order::all();
+        return response()->json(['orders' => $all_orders]);
     }
 
     /**
@@ -67,6 +67,13 @@ class OrderController extends Controller
             try {
                 $order = Order::find($id);
 
+                if ($order->status == "Chấp nhận"){
+                    return response()->json([
+                        'succcess' => false,
+                        'message' => 'Order đã được chấp nhận'
+                    ]);
+                }
+
                 if ($request->status == "Từ chối")
                 {
                     $order->status = "Từ chối";
@@ -96,7 +103,7 @@ class OrderController extends Controller
                         ]);
                     }
 
-                    $order->status = "Được chấp nhận";
+                    $order->status = "Chấp nhận";
                     $order->save();
                     \DB::commit();
                     return response()->json([

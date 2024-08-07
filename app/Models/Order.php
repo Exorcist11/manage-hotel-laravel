@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Order
@@ -33,7 +34,7 @@ class Order extends Model
 
 	const STATUSES = [
 		0 => 'Đang chờ xử lý',
-		1 => 'Được chấp nhận',
+		1 => 'Chấp nhận',
 		2 => 'Từ chối'
 	];
 
@@ -72,5 +73,20 @@ class Order extends Model
         if ($status !== false) {
             $this->attributes['status'] = $status;
         }
+    }
+
+	public function scopePending(Builder $query): Builder
+    {
+        return $query->where('status', 'Đang chờ xử lý');
+    }
+
+	public function scopeAccept(Builder $query): Builder
+    {
+        return $query->where('status', 'Chấp nhận');
+    }
+
+	public function scopeReject(Builder $query): Builder
+    {
+        return $query->where('status', 'Từ chối');
     }
 }
