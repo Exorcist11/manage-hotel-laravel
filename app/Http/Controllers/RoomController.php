@@ -18,7 +18,6 @@ class RoomController extends Controller
             $room = Room::create([
                 'room_no' => $request->room_no,
                 'floor' => $request->floor,
-                'price' => $request->price,
                 'category_id' => $request->category_id
             ]);
     
@@ -69,7 +68,7 @@ class RoomController extends Controller
         $room = Room::find($id);
         if ($room) {
             $updateData = array_filter($request->only([
-                'room_no', 'floor', 'price', 'category_id'
+                'room_no', 'floor', 'category_id'
             ]), function ($value) {
                 return $value !== null;
             });

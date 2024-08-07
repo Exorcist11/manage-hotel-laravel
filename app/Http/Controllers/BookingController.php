@@ -27,7 +27,6 @@ class BookingController extends Controller
             \DB::beginTransaction();
     
             try {
-                // Create a new booking
                 $booking = Booking::create([
                     'staff_id' => $request->staff_id,
                     'customer_id' => $request->customer_id,
@@ -51,7 +50,6 @@ class BookingController extends Controller
                 ], 201);
     
             } catch (\Exception $e) {
-                // Rollback transaction
                 \DB::rollback();
                 return response()->json([
                     'success' => false,

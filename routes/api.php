@@ -5,7 +5,7 @@ use Illuminate\Routing\RouteUri;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StaffController;
-use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
@@ -35,12 +35,21 @@ Route::controller(StaffController::class)->group(function () {
   Route::put('/staff-email/{id}', 'accessEmail');
 });
 
-Route::controller(CustomerController::class)->group(function () {
-  Route::get('/customers', 'index');
-  Route::post('/customers', 'store');
-  Route::get('/customers/{id}', 'show');
-  Route::put('/customers/{id}', 'update');
-  Route::delete('/customers/{id}', 'destroy');
+// Route::controller(CustomerController::class)->group(function () {
+//   Route::get('/customers', 'index');
+//   Route::post('/customers', 'store');
+//   Route::get('/customers/{id}', 'show');
+//   Route::put('/customers/{id}', 'update');
+//   Route::delete('/customers/{id}', 'destroy');
+// });
+
+Route::prefix('orders')->group(function () {
+  Route::controller(OrderController::class)->group(function () {
+    Route::get('', 'index');
+    Route::post('', 'store');
+    Route::get('/{id}', 'show');
+    Route::patch('/{id}', 'updateStatus');
+  });
 });
 
 Route::prefix('products')->group(function () {
