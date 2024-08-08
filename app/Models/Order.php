@@ -47,7 +47,6 @@ class Order extends Model
 
 	protected $fillable = [
 		'fullname',
-		'gender',
 		'phone_number',
 		'citizen_number',
 		'email',
@@ -78,16 +77,16 @@ class Order extends Model
 
 	public function scopePending(Builder $query): Builder
     {
-        return $query->where('status', 'Đang chờ xử lý');
+        return $query->where('status', 0);
     }
 
 	public function scopeAccept(Builder $query): Builder
     {
-        return $query->where('status', 'Chấp nhận');
+        return $query->where('status', 1);
     }
 
 	public function scopeReject(Builder $query): Builder
     {
-        return $query->where('status', 'Từ chối');
+        return $query->where('status', 3);
     }
 }

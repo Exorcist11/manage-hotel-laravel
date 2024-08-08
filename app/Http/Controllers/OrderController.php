@@ -16,8 +16,12 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $all_orders = Order::all();
-        return response()->json(['orders' => $all_orders]);
+        return response()->json([
+            'all_orders' => Order::all(),
+            'pending_orders' => Order::pending()->get(),
+            'accept_orders' => Order::accept()->get(),
+            'reject_orders' => Order::reject()->get()
+        ]);
     }
 
     /**
