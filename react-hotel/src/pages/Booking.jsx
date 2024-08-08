@@ -49,7 +49,7 @@ export default function Booking() {
                             <p>Hướng nhìn thành phố</p>
                             <div className="flex justify-end">
                                 <a className="btn" href={`/booking/${item.id}`}>
-                                    3.000.000 VND
+                                    {item?.price} VND
                                 </a>
                             </div>
                         </div>
