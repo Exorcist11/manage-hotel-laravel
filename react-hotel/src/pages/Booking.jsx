@@ -48,9 +48,9 @@ export default function Booking() {
                             <p>Số người: {item?.max_occupancy} người</p>
                             <p>Hướng nhìn thành phố</p>
                             <div className="flex justify-end">
-                                <button className="btn">
-                                    <a href={`/booking/${item.id}`}>3.000.000 VND</a>
-                                </button>
+                                <a className="btn" href={`/booking/${item.id}`}>
+                                    {item?.price} VND
+                                </a>
                             </div>
                         </div>
                     </div>

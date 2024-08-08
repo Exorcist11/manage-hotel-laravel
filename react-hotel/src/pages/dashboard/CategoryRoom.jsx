@@ -13,6 +13,7 @@ export default function CategoryRoom() {
         size: "",
         max_occupancy: "",
         id: "",
+        price: "",
     });
     const [selectedFile, setSelectedFile] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -37,6 +38,7 @@ export default function CategoryRoom() {
                     size: response.data.size,
                     max_occupancy: response.data.max_occupancy,
                     id: response.data.id,
+                    price: response.data.price,
                 })
             )
             .catch((e) => console.error(e));
@@ -92,6 +94,7 @@ export default function CategoryRoom() {
         formData.append("size", form.size);
         formData.append("max_occupancy", form.max_occupancy);
         formData.append("description", form.description);
+        formData.append("price", form.price);
         await axios
             .post("http://127.0.0.1:8000/api/categories", formData, {
                 headers: {
@@ -111,6 +114,19 @@ export default function CategoryRoom() {
             ...preState,
             [name]: value,
         }));
+    };
+
+    const handleSearchChange = (event) => {
+        const keyword = event.target.value;
+        setSearchKeyword(keyword);
+        if (keyword) {
+            const filtered = categories.filter((category) =>
+                category.name.toLowerCase().includes(keyword.toLowerCase())
+            );
+            setFilteredCategories(filtered);
+        } else {
+            setFilteredCategories(categories);
+        }
     };
 
     const handlePageChange = (page) => {
@@ -135,19 +151,6 @@ export default function CategoryRoom() {
     useEffect(() => {
         getCategories();
     }, []);
-
-    const handleSearchChange = (event) => {
-        const keyword = event.target.value;
-        setSearchKeyword(keyword);
-        if (keyword) {
-            const filtered = categories.filter((category) =>
-                category.name.toLowerCase().includes(keyword.toLowerCase())
-            );
-            setFilteredCategories(filtered);
-        } else {
-            setFilteredCategories(categories);
-        }
-    };
 
     return (
         <div className="flex flex-col gap-5 max-h-full">
@@ -277,6 +280,13 @@ export default function CategoryRoom() {
                         />
                         <input
                             type="number"
+                            name="price"
+                            placeholder="Giá phòng"
+                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="number"
                             name="max_occupancy"
                             placeholder="Số lượng người"
                             className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
@@ -335,6 +345,15 @@ export default function CategoryRoom() {
                             name="max_occupancy"
                             placeholder="Số lượng người"
                             value={form?.max_occupancy}
+                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                            onChange={handleChange}
+                        />
+
+                        <input
+                            type="number"
+                            name="price"
+                            placeholder="Giá phòng"
+                            value={form?.price}
                             className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
                             onChange={handleChange}
                         />

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\BookingDetail;
 use App\Models\Room;
+use App\Models\Order;
 
 class BookingController extends Controller
 {
@@ -115,5 +116,43 @@ class BookingController extends Controller
         $booking->delete();
 
         return response()->json(['success' => true, 'message' => 'Booking deleted successfully']);
+    }
+
+    public function bookingAtCounter(Request $request){
+        try{
+            $order = Order::create([
+                'fullname' => $request->fullname,
+                'gender' => $request->gender,
+                'phone_number' => $request->phone_number,
+                'citizen_number' => $request->citizen_number,
+                'email' => $request->email,
+                'status' => "Đặt tại quầy",
+                'category_id' => $request->category_id,
+                'number_of_rooms' => $request->number_of_rooms,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+            ]);
+
+            $booking = Booking::create([
+                //Lấy current_user ở đoạn này thay cho $request->staff_id
+                'staff_id' => $request->staff_id,
+                'order_id' => $order->id,
+            ]);
+
+            BookingDetail::create([
+                'booking_id' => $booking->id,
+                'room_id' => $order->category_id,
+                'check_in' => $order->start_date,
+                'check_out' => $order->end_date,
+            ]);
+            return response()->json([
+                'success' => true,
+                'order' => $order,
+                'booking' => $booking,
+                
+            ], 201);
+        } catch (\Throwable $th){
+            return response()->json($th);
+        }
     }
 }

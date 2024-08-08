@@ -39,14 +39,6 @@ Route::controller(StaffController::class)->group(function () {
   Route::put('/staff-email/{id}', 'accessEmail');
 });
 
-// Route::controller(CustomerController::class)->group(function () {
-//   Route::get('/customers', 'index');
-//   Route::post('/customers', 'store');
-//   Route::get('/customers/{id}', 'show');
-//   Route::put('/customers/{id}', 'update');
-//   Route::delete('/customers/{id}', 'destroy');
-// });
-
 Route::prefix('orders')->group(function () {
   Route::controller(OrderController::class)->group(function () {
     Route::get('', 'index');
@@ -81,6 +73,7 @@ Route::controller(BookingController::class)->group(function () {
   Route::get('/bookings/{id}', 'show');
   Route::put('/bookings/{id}', 'update');
   Route::delete('/bookings/{id}', 'destroy');
+  Route::post('/booking-at-counter', 'bookingAtCounter');
 });
 
 Route::prefix('categories')->group(function () {

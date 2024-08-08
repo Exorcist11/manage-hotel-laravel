@@ -9,7 +9,6 @@ export default function Room() {
     const [form, setForm] = useState({
         room_no: "",
         floor: "",
-        price: "",
         id: "",
         category_id: "",
     });
@@ -97,8 +96,6 @@ export default function Room() {
         fetchCateogry().catch((err) => console.error(err));
     }, []);
 
-    console.log(form);
-
     return (
         <div className="">
             <h2 className="uppercase text-2xl text-center font-bold">
@@ -120,7 +117,6 @@ export default function Room() {
                             <th></th>
                             <th>Mã Phòng</th>
                             <th>Loại phòng</th>
-                            <th>Giá</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,11 +136,6 @@ export default function Room() {
                                 </th>
                                 <td>{room?.room_no}</td>
                                 <td>{room?.floor}</td>
-                                <td>
-                                    {Number(room?.price).toLocaleString(
-                                        "vn-VI"
-                                    )}{" "}
-                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -190,13 +181,6 @@ export default function Room() {
                                 </option>
                             ))}
                         </select>
-                        <input
-                            type="number"
-                            name="price"
-                            placeholder="Nhập giá"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
                     </div>
                     <div className="modal-action">
                         <form method="dialog">
@@ -256,14 +240,6 @@ export default function Room() {
                                     </option>
                                 ))}
                             </select>
-                            <input
-                                type="number"
-                                name="price"
-                                placeholder="Nhập giá"
-                                value={form.price}
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                                onChange={handleChange}
-                            />
                         </div>
                     ) : (
                         <div className="flex items-center justify-center">

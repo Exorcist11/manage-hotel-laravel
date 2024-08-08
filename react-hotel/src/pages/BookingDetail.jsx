@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 export default function BookingDetail() {
     const [detail, setDetail] = useState({});
     const [form, setForm] = useState({});
+    const [minDate, setMinDate] = useState("");
 
     const { id } = useParams();
     const handleChange = (event) => {
@@ -13,6 +14,14 @@ export default function BookingDetail() {
             ...preState,
             [name]: value,
         }));
+    };
+
+    const getCurrentDate = () => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
     };
 
     const handleBooking = async () => {
@@ -28,7 +37,10 @@ export default function BookingDetail() {
                 start_date: form.start_date,
                 end_date: form.end_date,
             })
-            .then((res) => console.log(res))
+            .then(() => {
+                alert("Đặt phòng thành công!");
+                window.location.href("/");
+            })
             .catch((err) => console.error(err));
     };
     useEffect(() => {
@@ -43,6 +55,9 @@ export default function BookingDetail() {
             }
         };
         fetchRoom();
+
+        const currentDate = getCurrentDate();
+        setMinDate(currentDate);
     }, [id]);
 
     return (
@@ -144,6 +159,7 @@ export default function BookingDetail() {
                                 name="start_date"
                                 onChange={handleChange}
                                 placeholder="Type here"
+                                min={minDate}
                                 className="input input-bordered w-full "
                             />
                         </label>
@@ -158,6 +174,7 @@ export default function BookingDetail() {
                             <input
                                 type="date"
                                 name="end_date"
+                                min={minDate}
                                 onChange={handleChange}
                                 placeholder="Type here"
                                 className="input input-bordered w-full "

@@ -35,7 +35,8 @@ class Order extends Model
 	const STATUSES = [
 		0 => 'Đang chờ xử lý',
 		1 => 'Chấp nhận',
-		2 => 'Từ chối'
+		2 => 'Từ chối',
+		3 => 'Đặt tại quầy'
 	];
 
 	protected $casts = [
