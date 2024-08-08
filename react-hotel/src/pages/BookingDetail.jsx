@@ -28,7 +28,10 @@ export default function BookingDetail() {
                 start_date: form.start_date,
                 end_date: form.end_date,
             })
-            .then((res) => console.log(res))
+            .then(() => {
+                alert("Đặt phòng thành công!");
+                window.location.href("/");
+            })
             .catch((err) => console.error(err));
     };
     useEffect(() => {

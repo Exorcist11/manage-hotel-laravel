@@ -1,23 +1,52 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { RiEyeLine, RiCloseLargeLine } from "react-icons/ri";
+import { RiEyeLine, RiCloseLine } from "react-icons/ri";
 
 export default function RequestRoom() {
     const [data, setData] = useState([]);
     const [check, setCheck] = useState("");
     const [detail, setDetail] = useState({});
+    console.log(localStorage.getItem("user"));
+
     const getListRoom = async () => {
+        try {
+            const response = await axios.get(
+                "http://127.0.0.1:8000/api/orders"
+            );
+            setData(response.data.orders);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleReject = async () => {
         await axios
-            .get(`http://127.0.0.1:8000/api/orders`)
-            .then((response) => setData(response.data.orders))
+            .patch(`http://127.0.0.1:8000/api/orders/${detail?.id}`, {
+                status: "Từ chối",
+            })
+            .then((response) => alert(response.data.message))
+            .catch((error) => console.error(error));
+    };
+
+    const handleAccept = async () => {
+        await axios
+            .patch(`http://127.0.0.1:8000/api/orders/${detail?.id}`, {
+                status: "Được chấp nhận",
+                staff_id: "1",
+            })
+            .then((response) => alert(response.data.message))
             .catch((error) => console.error(error));
     };
 
     const handleDetailBooking = async (id) => {
-        await axios
-            .get(`http://127.0.0.1:8000/api/orders/${id}`)
-            .then((response) => setDetail(response.data))
-            .catch((error) => console.error(error));
+        try {
+            const response = await axios.get(
+                `http://127.0.0.1:8000/api/orders/${id}`
+            );
+            setDetail(response.data);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const formatDate = (dateString) => {
@@ -28,6 +57,7 @@ export default function RequestRoom() {
     useEffect(() => {
         getListRoom();
     }, []);
+
     return (
         <div className="flex flex-col gap-5">
             <h1 className="font-bold text-2xl uppercase text-center">
@@ -43,7 +73,10 @@ export default function RequestRoom() {
                     <label
                         htmlFor="my-drawer-4"
                         className="drawer-button btn"
-                        onClick={() => setCheck("add")}
+                        onClick={() => {
+                            setCheck("add");
+                            setDetail({});
+                        }}
                     >
                         Đặt phòng
                     </label>
@@ -110,7 +143,7 @@ export default function RequestRoom() {
                                 htmlFor="my-drawer-4"
                                 className="btn-ghost cursor-pointer hover:bg-white"
                             >
-                                <RiCloseLargeLine />
+                                <RiCloseLine size={24} />
                             </label>
                         </li>
                         {/* Sidebar content here */}
@@ -125,8 +158,8 @@ export default function RequestRoom() {
                                     </div>
                                     <input
                                         type="text"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full "
+                                        placeholder="Họ và tên"
+                                        className="input input-bordered w-full"
                                     />
                                 </label>
 
@@ -138,8 +171,8 @@ export default function RequestRoom() {
                                     </div>
                                     <input
                                         type="text"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full "
+                                        placeholder="Số điện thoại"
+                                        className="input input-bordered w-full"
                                     />
                                 </label>
 
@@ -151,8 +184,8 @@ export default function RequestRoom() {
                                     </div>
                                     <input
                                         type="text"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full "
+                                        placeholder="Căn cước công dân"
+                                        className="input input-bordered w-full"
                                     />
                                 </label>
 
@@ -164,8 +197,8 @@ export default function RequestRoom() {
                                     </div>
                                     <input
                                         type="text"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full "
+                                        placeholder="Email"
+                                        className="input input-bordered w-full"
                                     />
                                 </label>
 
@@ -178,7 +211,7 @@ export default function RequestRoom() {
                                     <input
                                         type="text"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
+                                        className="input input-bordered w-full"
                                     />
                                 </label>
 
@@ -191,7 +224,7 @@ export default function RequestRoom() {
                                     <input
                                         type="date"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
+                                        className="input input-bordered w-full"
                                     />
                                 </label>
 
@@ -204,7 +237,7 @@ export default function RequestRoom() {
                                     <input
                                         type="date"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
+                                        className="input input-bordered w-full"
                                     />
                                 </label>
 
@@ -224,8 +257,9 @@ export default function RequestRoom() {
                                     <input
                                         type="text"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
-                                        value={detail?.fullname}
+                                        className="input input-bordered w-full"
+                                        disabled
+                                        defaultValue={detail?.fullname || ""}
                                     />
                                 </label>
 
@@ -238,8 +272,10 @@ export default function RequestRoom() {
                                     <input
                                         type="text"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
-                                        value={detail?.phone_number}
+                                        className="input input-bordered w-full"
+                                        defaultValue={
+                                            detail?.phone_number || ""
+                                        }
                                     />
                                 </label>
 
@@ -252,8 +288,10 @@ export default function RequestRoom() {
                                     <input
                                         type="text"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
-                                        value={detail?.citizen_number}
+                                        className="input input-bordered w-full"
+                                        defaultValue={
+                                            detail?.citizen_number || ""
+                                        }
                                     />
                                 </label>
 
@@ -266,8 +304,8 @@ export default function RequestRoom() {
                                     <input
                                         type="text"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
-                                        value={detail?.email}
+                                        className="input input-bordered w-full"
+                                        defaultValue={detail?.email || ""}
                                     />
                                 </label>
 
@@ -280,7 +318,8 @@ export default function RequestRoom() {
                                     <input
                                         type="text"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
+                                        className="input input-bordered w-full"
+                                        defaultValue={detail?.category_id || ""}
                                     />
                                 </label>
 
@@ -293,8 +332,10 @@ export default function RequestRoom() {
                                     <input
                                         type="date"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
-                                        value={formatDate(detail?.start_date)}
+                                        className="input input-bordered w-full"
+                                        defaultValue={formatDate(
+                                            detail?.start_date
+                                        )}
                                     />
                                 </label>
 
@@ -307,17 +348,25 @@ export default function RequestRoom() {
                                     <input
                                         type="date"
                                         placeholder="Type here"
-                                        className="input input-bordered w-full "
-                                        value={formatDate(detail?.end_date)}
+                                        className="input input-bordered w-full"
+                                        defaultValue={formatDate(
+                                            detail?.end_date
+                                        )}
                                     />
                                 </label>
 
                                 <div className="text-center ">
-                                    <button className="btn btn-accent mt-4">
+                                    <button
+                                        className="btn btn-accent mt-4"
+                                        onClick={handleAccept}
+                                    >
                                         Chấp nhận
                                     </button>
-                                    <button className="btn btn-error mt-4 ml-4">
-                                        Hủy bỏ
+                                    <button
+                                        className="btn btn-error mt-4 ml-4"
+                                        onClick={handleReject}
+                                    >
+                                        Từ chối
                                     </button>
                                 </div>
                             </div>
