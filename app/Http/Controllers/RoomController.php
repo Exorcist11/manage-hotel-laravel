@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Room;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Room;
+use App\Models\BookingDetail;
+use Carbon\Carbon;
 
 class RoomController extends Controller
 {
@@ -101,4 +103,133 @@ class RoomController extends Controller
         return response()->json($rooms);
     }
 
+    public function checkIn(Request $request, $id)
+    {
+        try {
+            $room = Room::findOrFail($id);
+
+            $bookingDetail = BookingDetail::where('room_id', $id)
+                                          ->where('check_in', '=', Carbon::today())
+                                          ->first();
+
+            if (!$bookingDetail) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chưa có booking cho phòng này'
+                ], 404);
+            }
+
+            $bookingDetail->check_in = Carbon::now();
+            $bookingDetail->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Check-in phòng thành công',
+                'data' => $bookingDetail
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Phòng không tồn tại'
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi khi check-in phòng',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function checkOut(Request $request, $id)
+    {
+        try {
+            $room = Room::findOrFail($id);
+
+            $bookingDetail = BookingDetail::where('room_id', $id)
+                                          ->where('check_out', '=', Carbon::today())
+                                          ->first();
+
+            if (!$bookingDetail) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Chưa có booking cho phòng này'
+                ], 404);
+            }
+
+            $bookingDetail->check_out = Carbon::now();
+            $bookingDetail->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Check-out phòng thành công',
+                'data' => $bookingDetail
+            ], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Phòng không tồn tại'
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi khi check-out phòng',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getAvailableRooms(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'from' => 'nullable|date',
+            'to' => 'nullable|date|after_or_equal:from',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $now = Carbon::now();
+
+            if ($request->has('from') && $request->has('to')) {
+                $from = Carbon::parse($request->input('from'));
+                $to = Carbon::parse($request->input('to'));
+            } else {
+                $from = $now;
+                $to = $now->copy()->addDay();
+            }
+
+            $availableRooms = Room::whereDoesntHave('booking_details', function ($query) use ($from, $to) {
+                $query->where(function ($q) use ($from, $to) {
+                    $q->where(function ($q) use ($from, $to) {
+                        $q->where('check_in', '<=', $from)
+                          ->where('check_out', '>', $from);
+                    })
+                    ->orWhere(function ($q) use ($from, $to) {
+                        $q->where('check_in', '<', $to)
+                          ->where('check_out', '>=', $to);
+                    });
+                });
+            })
+            ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $availableRooms,
+                'message' => 'Đã lấy ra phòng trống'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Có lỗi xảy ra khi lấy phòng trống',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

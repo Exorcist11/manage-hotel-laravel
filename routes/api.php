@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ServiceController;
 
 Route::get('/hello', function(){
   return response()->json(['message' => 'Devil may cry']);
@@ -24,6 +25,9 @@ Route::controller(RoomController::class)->group(function () {
   Route::delete('/rooms/{id}', 'destroy');
   Route::put('/rooms/{id}', 'update');
   Route::get('/rooms/floor/{id}', 'getRoomsByFloor');
+  Route::post('/rooms/{id}/check-in', 'checkIn');
+  Route::post('/rooms/{id}/check-out', 'checkOut');
+  Route::get('/empty-rooms', 'getAvailableRooms');
 });
 
 Route::controller(StaffController::class)->group(function () {
@@ -74,6 +78,17 @@ Route::controller(BookingController::class)->group(function () {
 
 Route::prefix('categories')->group(function () {
   Route::controller(CategoryController::class)->group(function () {
+    Route::get('', 'index');
+    Route::post('', 'store');
+    Route::get('/{id}', 'show');
+    Route::patch('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+    Route::get('/{id}/rooms', 'getListRoomByCategory');
+  });
+});
+
+Route::prefix('services')->group(function () {
+  Route::controller(ServiceController::class)->group(function () {
     Route::get('', 'index');
     Route::post('', 'store');
     Route::get('/{id}', 'show');
