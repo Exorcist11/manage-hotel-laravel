@@ -69,6 +69,7 @@ Route::controller(BookingController::class)->group(function () {
   Route::get('/bookings/{id}', 'show');
   Route::put('/bookings/{id}', 'update');
   Route::delete('/bookings/{id}', 'destroy');
+  Route::post('/booking-at-counter', 'bookingAtCounter');
 });
 
 Route::prefix('categories')->group(function () {
