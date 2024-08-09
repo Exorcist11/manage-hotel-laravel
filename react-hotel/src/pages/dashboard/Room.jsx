@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { MdDelete, MdCreate } from "react-icons/md";
+import { toast } from "sonner";
 
 export default function Room() {
     const [rooms, setRooms] = useState([]);
@@ -34,7 +35,7 @@ export default function Room() {
         await axios
             .post("http://127.0.0.1:8000/api/rooms", form)
             .then(() => {
-                alert("Thêm mới phòng thành công!");
+                toast.success("Thêm mới phòng thành công!");
             })
             .catch((e) => console.log(e));
         fetchRooms();
@@ -54,8 +55,8 @@ export default function Room() {
         if (confirm) {
             await axios
                 .delete(`http://127.0.0.1:8000/api/rooms/${id}`)
-                .then(() => alert("Xóa phòng thành công!"))
-                .catch(() => alert("Lỗi khi xóa"));
+                .then(() => toast.success("Xóa phòng thành công!"))
+                .catch(() => toast.error("Lỗi khi xóa"));
             fetchRooms();
         }
     };
@@ -65,7 +66,7 @@ export default function Room() {
             await axios
                 .put(`http://127.0.0.1:8000/api/rooms/${id}`, form)
                 .then(() => {
-                    alert("Cập nhật phòng thành công!");
+                    toast.success("Cập nhật phòng thành công!");
                     setForm({
                         room_no: "",
                         floor: "",

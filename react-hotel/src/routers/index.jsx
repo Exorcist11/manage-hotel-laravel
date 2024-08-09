@@ -4,6 +4,7 @@ import Accounts from "@/pages/dashboard/Accounts";
 import CategoryRoom from "@/pages/dashboard/CategoryRoom";
 import ClientHistory from "@/pages/dashboard/ClientHistory";
 import Dashboard from "@/pages/dashboard/Dashboard";
+import EmptyRoom from "@/pages/dashboard/EmptyRoom";
 import ListRoomByCategories from "@/pages/dashboard/ListRoomByCategories";
 import Products from "@/pages/dashboard/Products";
 import RequestRoom from "@/pages/dashboard/RequestRoom";
@@ -33,6 +34,7 @@ const dashboardRoute = [
     { path: "/category-room/:id/rooms", page: ListRoomByCategories },
     { path: "/request", page: RequestRoom },
     { path: "/history", page: ClientHistory },
+    { path: "/room-empty", page: EmptyRoom },
 ];
 
 export { publicRoute, dashboardRoute };

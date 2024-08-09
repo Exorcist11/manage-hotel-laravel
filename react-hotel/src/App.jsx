@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import clientLayout from "./components/Layout/clientLayout";
 import DashboardLayout from "./components/Layout/DashboardLayout";
 
+
 function App() {
     return (
         <div className="bg-white h-full">
@@ -42,6 +43,7 @@ function App() {
                     );
                 })}
             </Routes>
+            
         </div>
     );
 }
