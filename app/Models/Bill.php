@@ -30,19 +30,20 @@ class Bill extends Model
 {
 	protected $table = 'bills';
 
+	const METHODS = [
+		0 => 'Tiền mặt',
+		1 => 'Chuyển khoản'
+	];
+
 	protected $casts = [
-		'room_id' => 'int',
-		'total' => 'float',
-		'check_in' => 'datetime',
-		'check_out' => 'datetime'
+		'payment_method' => 'int',
+		'booking_id' => 'int',
+		'total' => 'float'
 	];
 
 	protected $fillable = [
-		'room_id',
-		'custom_name',
+		'booking_id',
 		'total',
-		'check_in',
-		'check_out',
 		'payment_method'
 	];
 
@@ -50,4 +51,17 @@ class Bill extends Model
 	{
 		return $this->belongsTo(Room::class);
 	}
+
+	public function getStatusAttribute($value)
+    {
+        return self::METHODS[$value];
+    }
+
+    public function setStatusAttribute($value)
+    {
+        $payment_method = array_search($value, self::METHODS);
+        if ($payment_method !== false) {
+            $this->attributes['payment_method'] = $payment_method;
+        }
+    }
 }
