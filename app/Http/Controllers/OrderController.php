@@ -20,7 +20,8 @@ class OrderController extends Controller
             'all_orders' => Order::all(),
             'pending_orders' => Order::pending()->get(),
             'accept_orders' => Order::accept()->get(),
-            'reject_orders' => Order::reject()->get()
+            'reject_orders' => Order::reject()->get(),
+            'counter_orders' => Order::counter()->get()
         ]);
     }
 

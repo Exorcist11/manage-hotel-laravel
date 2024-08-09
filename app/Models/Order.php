@@ -87,6 +87,11 @@ class Order extends Model
 
 	public function scopeReject(Builder $query): Builder
     {
-        return $query->where('status', 3);
+        return $query->where('status', 2);
     }
+
+	public function scopeCounter(Builder $query): Builder
+	{
+		return $query->where('status', 3);
+	}
 }
