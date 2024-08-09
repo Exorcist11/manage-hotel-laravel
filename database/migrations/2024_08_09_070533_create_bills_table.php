@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('room_id');
-            $table->string('custom_name');
-            $table->decimal('total', 8, 2);
-            $table->dateTime('check_in');
-            $table->dateTime('check_out');
-            $table->string('payment_method');
+            $table->decimal('total', 13, 2)->nullable();
+            $table->unsignedTinyInteger('payment_method');
+            $table->unsignedInteger('booking_id');
             $table->timestamps();
+            
+            $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('cascade');
         });
     }
 

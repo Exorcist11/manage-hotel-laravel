@@ -119,10 +119,10 @@ class BookingController extends Controller
     }
 
     public function bookingAtCounter(Request $request){
+        \DB::beginTransaction();
         try{
             $order = Order::create([
                 'fullname' => $request->fullname,
-                'gender' => $request->gender,
                 'phone_number' => $request->phone_number,
                 'citizen_number' => $request->citizen_number,
                 'email' => $request->email,
@@ -145,6 +145,8 @@ class BookingController extends Controller
                 'check_in' => $order->start_date,
                 'check_out' => $order->end_date,
             ]);
+
+            \DB::commit();
             return response()->json([
                 'success' => true,
                 'order' => $order,
@@ -152,6 +154,7 @@ class BookingController extends Controller
                 
             ], 201);
         } catch (\Throwable $th){
+            \DB::rollback();
             return response()->json($th);
         }
     }
