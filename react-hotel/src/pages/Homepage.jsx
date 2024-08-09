@@ -1,4 +1,34 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 export default function Homepage() {
+    const [categories, setCategories] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const handlePrev = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? categories.length - 3 : prevIndex - 3
+        );
+    };
+
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex >= categories.length - 3 ? 0 : prevIndex + 3
+        );
+    };
+    const fetchCategories = async () => {
+        try {
+            await axios
+                .get("http://127.0.0.1:8000/api/categories")
+                .then((response) => setCategories(response.data))
+                .catch((error) => error);
+        } catch (error) {
+            console.error("Error from fetch categories: " + error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
     return (
         <div className="">
             <div className="mx-20">
@@ -14,7 +44,9 @@ export default function Homepage() {
                     <h2 className="uppercase text-xl font-semibold">
                         Về chúng tôi
                     </h2>
-                    <h3 className="text-4xl  ">TẬP ĐOÀN KHÁCH SẠN MƯỜNG THANH</h3>
+                    <h3 className="text-4xl  ">
+                        TẬP ĐOÀN KHÁCH SẠN MƯỜNG THANH
+                    </h3>
 
                     <p className="font-semibold">
                         CÂU CHUYỆN VỀ MƯỜNG THANH <br />
@@ -65,6 +97,109 @@ export default function Homepage() {
                     />
                 </div>
             </div>
+
+            <div className="px-20 py-10 bg-[#f4f4f5]">
+                <h3 className="text-xl font-bold uppercase">Các hạng phòng</h3>
+                <div className="carousel w-full relative mt-5 gap-5">
+                    {categories
+                        ?.slice(currentIndex, currentIndex + 3)
+                        .map((item, index) => (
+                            <div
+                                key={index}
+                                className="carousel-item w-1/3 card bg-base-100 shadow-xl cursor-pointer group "
+                            >
+                                <figure className="overflow-hidden aspect-w-16 aspect-h-9">
+                                    <img
+                                        className="group-hover:scale-110 transition-transform duration-500 object-cover w-full h-full"
+                                        src={
+                                            "http://127.0.0.1:8000" +
+                                            item?.image
+                                        }
+                                        alt={item?.name}
+                                    />
+                                </figure>
+                                <div className="card-body">
+                                    <h2 className="card-title">{item?.name}</h2>
+
+                                    <div className="flex justify-start">
+                                        <p>
+                                            Kích thước{" "}
+                                            <strong>
+                                                {item?.size}
+                                                <span>
+                                                    m<sup>2</sup>
+                                                </span>
+                                            </strong>
+                                        </p>
+                                        <p>
+                                            Sức chứa{" "}
+                                            <strong>
+                                                {item?.max_occupancy}{" "}
+                                                người/phòng
+                                            </strong>
+                                        </p>
+                                    </div>
+                                    <p>{item?.description}</p>
+                                    <div className="card-actions justify-end">
+                                        <a
+                                            href={`/list-room/${item?.id}`}
+                                            className="btn btn-warning"
+                                        >
+                                            Xem chi tiết
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+                    <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+                        <button onClick={handlePrev} className="btn btn-circle">
+                            ❮
+                        </button>
+                        <button onClick={handleNext} className="btn btn-circle">
+                            ❯
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* <div className="h-[450px]">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235.41011595578803!2d105.71325711959585!3d19.257917808959636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313774ca8aa3226b%3A0xdefe9bb19c41919e!2zS2jDoWNoIHPhuqFuIE3GsOG7nW5nIFRoYW5oIEdyYW5kIEhvw6BuZyBNYWk!5e0!3m2!1svi!2s!4v1723159489782!5m2!1svi!2s"
+                    style={{ border: 0, width: "100%", height: "100%" }}
+                    allowFullScreen={true}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+            </div> */}
+
+            {/* <div className="w-screen px-20 py-10">
+                <h3 className="font-bold text-xl">Xung quanh khách sạn</h3>
+                <div className="grid grid-cols-3 gap-10 mt-5">
+                    <div className="col-span-1">
+                        <p className="flex items-center gap-1 font-bold">
+                            <FaMountain size={20} color="#000" />
+                            <p>Cảnh đẹp thiên nhiên</p>
+                        </p>
+
+                        <p className="border-b flex justify-between mt-3">
+                            <p>Ho Vuc Mau</p>
+                            <p>7 km</p>
+                        </p>
+                    </div>
+                    <div className="col-span-1">
+                        <p className="flex items-center gap-1 font-bold">
+                            <FaPlaneDeparture size={20} color="#000" />
+                            <p>Các sân bay thành phố gần nhất</p>
+                        </p>
+
+                        <p className="border-b flex justify-between mt-3">
+                            <p>Sân bay thành phố vinh</p>
+                            <p>59.1 km</p>
+                        </p>
+                    </div>
+                </div>
+            </div> */}
         </div>
     );
 }

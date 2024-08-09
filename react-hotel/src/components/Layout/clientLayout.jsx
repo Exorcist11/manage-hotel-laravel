@@ -9,7 +9,6 @@ export default function clientLayout({ children }) {
                         className="w-full h-full object-cover object-center"
                     />
                 </div>
-
                 <div>
                     <ul className="flex items-center font-semibold text-base list-none gap-4 cursor-pointer">
                         <li className="li_content">
@@ -31,24 +30,30 @@ export default function clientLayout({ children }) {
             </div>
 
             <div style={{ flex: "1 0 auto" }}>{children}</div>
-            <footer className="footer bg-base-300 text-base-content p-10">
-                <nav>
-                    <h6 className="footer-title">Services</h6>
-                    <a className="link link-hover">Branding</a>
-                    <a className="link link-hover">Design</a>
-                    <a className="link link-hover">Marketing</a>
-                    <a className="link link-hover">Advertisement</a>
-                </nav>
-                <nav>
-                    <h6 className="footer-title">Company</h6>
-                    <a className="link link-hover">About us</a>
-                    <a className="link link-hover">Contact</a>
-                    <a className="link link-hover">Jobs</a>
-                    <a className="link link-hover">Press kit</a>
-                </nav>
-                <nav>
-                    <h6 className="footer-title">Social</h6>
-                    <div className="grid grid-flow-col gap-4">
+            <div className="bg-[#f2a900] grid grid-cols-3 gap-5 py-11">
+                <div className="col-span-1 text-center">
+                    <p className="uppercase">Nhận thông tin tuyển dụng</p>
+                    <label className="input input-bordered flex items-center gap-2 bg-[#f2a900] text-white ">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            className="h-4 w-4 opacity-70"
+                        >
+                            <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
+                            <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
+                        </svg>
+                        <input
+                            type="text"
+                            className="grow"
+                            placeholder="Email"
+                        />
+                    </label>
+                </div>
+                <div className="col-span-1 text-center">
+                    <p className="uppercase">Theo dõi</p>
+                    <div className="divider">Folow us</div>
+                    <div className="flex justify-center gap-4">
                         <a>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -83,6 +88,49 @@ export default function clientLayout({ children }) {
                             </svg>
                         </a>
                     </div>
+                </div>
+                <div className="col-span-1 text-center">
+                    <p className="uppercase">Giải đáp mọi vướng mắc</p>
+
+                    <button className="btn w-full bg-[#db9900] border-none text-white">
+                        Hỗ trợ online
+                    </button>
+                </div>
+            </div>
+            <footer className="footer text-base-content p-10 bg-[#343434] flex gap-5 items-center">
+                <nav className="w-1/3 text-right text-[#d3a53a] text-[16px] uppercase justify-end">
+                    <h6 className="footer-title ">Khách sạn Mường Thanh</h6>
+                    <a className="link link-hover">Về chúng tôi</a>
+                    <a className="link link-hover" href="/list-room">
+                        Danh sách phòng
+                    </a>
+                    <a className="link link-hover" href="/booking">
+                        Đặt phòng
+                    </a>
+                    <a className="link link-hover">Liên hệ</a>
+                </nav>
+                <nav className="w-[228px] h-[440px] text-center flex items-center justify-center ">
+                    <img
+                        src="/images/luxury_1696912907.png"
+                        alt="ui"
+                        className="object-cover object-center "
+                    />
+                </nav>
+
+                <nav className="text-[#a09f9f] flex flex-col gap-11 w-1/3 ml-24">
+                    <h3 className="text-[72px] ">24</h3>
+                    <p className="uppercase ">Khách sạn</p>
+                    <h3 className="text-[72px] ">18 </h3>
+                    <p className="uppercase ">tỉnh thành</p>
+                    <p>
+                        Mường Thanh Luxury là phân khúc khách sạn hạng sang cao
+                        cấp nhất của Mường Thanh, nằm ở các thành phố lớn và
+                        trung tâm du lịch nổi tiếng trong nước và quốc tế. Quy
+                        mô lớn và đẳng cấp khác biệt, Mường Thanh Luxury mang
+                        đến cho khách hàng không gian nghỉ dưỡng tuyệt vời mang
+                        đậm giá trị Việt đến từ dịch vụ tận tâm và văn hóa ẩm
+                        thực bản địa độc đáo.
+                    </p>
                 </nav>
             </footer>
         </div>

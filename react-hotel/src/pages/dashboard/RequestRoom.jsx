@@ -79,7 +79,7 @@ export default function RequestRoom() {
     const handleBookingRoom = async () => {
         await axios
             .post("http://127.0.0.1:8000/api/booking-at-counter", form)
-            .then((response) => {
+            .then(() => {
                 alert("Đặt phòng thành công");
                 getListRoom();
                 document.getElementById("my-drawer-4").checked = false;
@@ -144,7 +144,7 @@ export default function RequestRoom() {
                             setDetail({});
                         }}
                     >
-                        Đặt phòng
+                        Đặt phòng tại quầy
                     </label>
 
                     <select
@@ -308,8 +308,11 @@ export default function RequestRoom() {
                                             <option disabled selected>
                                                 Chọn loại phòng
                                             </option>
-                                            {categories?.map((item) => (
-                                                <option value={item.id}>
+                                            {categories?.map((item, index) => (
+                                                <option
+                                                    value={item.id}
+                                                    key={index}
+                                                >
                                                     {item?.name}
                                                 </option>
                                             ))}

@@ -160,6 +160,7 @@ export default function BookingDetail() {
                                 onChange={handleChange}
                                 placeholder="Type here"
                                 min={minDate}
+                                max={form.end_date}
                                 className="input input-bordered w-full "
                             />
                         </label>
@@ -174,7 +175,7 @@ export default function BookingDetail() {
                             <input
                                 type="date"
                                 name="end_date"
-                                min={minDate}
+                                min={form.start_date}
                                 onChange={handleChange}
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
