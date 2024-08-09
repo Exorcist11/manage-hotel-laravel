@@ -205,24 +205,25 @@ class RoomController extends Controller
                 $to = $now->copy()->addDay();
             }
 
-            $availableRooms = Room::whereDoesntHave('booking_details', function ($query) use ($from, $to) {
-                $query->where(function ($q) use ($from, $to) {
-                    $q->where(function ($q) use ($from, $to) {
-                        $q->where('check_in', '<=', $from)
-                          ->where('check_out', '>', $from);
-                    })
-                    ->orWhere(function ($q) use ($from, $to) {
-                        $q->where('check_in', '<', $to)
-                          ->where('check_out', '>=', $to);
+            $availableRooms = Room::with('category') 
+                ->whereDoesntHave('booking_details', function ($query) use ($from, $to) {
+                    $query->where(function ($q) use ($from, $to) {
+                        $q->where(function ($q) use ($from) {
+                            $q->where('check_in', '<=', $from)
+                            ->where('check_out', '>', $from);
+                        })
+                        ->orWhere(function ($q) use ($to) {
+                            $q->where('check_in', '<', $to)
+                            ->where('check_out', '>=', $to);
+                        });
                     });
-                });
-            })
-            ->get();
+                })
+                ->get();
 
             return response()->json([
                 'success' => true,
                 'data' => $availableRooms,
-                'message' => 'Đã lấy ra phòng trống'
+                'message' => 'Đã lấy ra phòng trống cùng thể loại'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

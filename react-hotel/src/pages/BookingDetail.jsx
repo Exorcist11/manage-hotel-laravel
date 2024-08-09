@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function BookingDetail() {
     const [detail, setDetail] = useState({});
@@ -38,7 +39,7 @@ export default function BookingDetail() {
                 end_date: form.end_date,
             })
             .then(() => {
-                alert("Đặt phòng thành công!");
+                toast.success("Đặt phòng thành công!");
                 window.location.href("/");
             })
             .catch((err) => console.error(err));
@@ -160,6 +161,7 @@ export default function BookingDetail() {
                                 onChange={handleChange}
                                 placeholder="Type here"
                                 min={minDate}
+                                max={form.end_date}
                                 className="input input-bordered w-full "
                             />
                         </label>
@@ -174,7 +176,7 @@ export default function BookingDetail() {
                             <input
                                 type="date"
                                 name="end_date"
-                                min={minDate}
+                                min={form.start_date}
                                 onChange={handleChange}
                                 placeholder="Type here"
                                 className="input input-bordered w-full "

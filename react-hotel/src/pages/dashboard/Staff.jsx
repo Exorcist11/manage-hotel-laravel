@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { MdDelete, MdCreate, MdOutlineDrafts } from "react-icons/md";
+import { toast } from "sonner";
 
 export default function Staff() {
     const [staffs, setStaffs] = useState([]);
@@ -43,7 +44,7 @@ export default function Staff() {
             .post("http://127.0.0.1:8000/api/staff", form)
             .then((res) => {
                 console.log(res);
-                alert("Thêm mới nhân viên thành công!");
+                toast.success("Thêm mới nhân viên thành công!");
                 setForm({});
             })
             .catch((e) => console.log(e));
@@ -55,8 +56,8 @@ export default function Staff() {
         if (confirm) {
             await axios
                 .delete(`http://127.0.0.1:8000/api/staff/${id}`)
-                .then(() => alert("Xóa phòng thành công!"))
-                .catch(() => alert("Lỗi khi xóa"));
+                .then(() => toast.success("Xóa nhân viên thành công!"))
+                .catch(() => toast.error("Lỗi khi xóa"));
             fetchRooms();
         }
     };
@@ -94,7 +95,7 @@ export default function Staff() {
             await axios
                 .put(`http://127.0.0.1:8000/api/staff/${id}`, form)
                 .then(() => {
-                    alert("Cập nhật nhân viên thành công!");
+                    toast.success("Cập nhật nhân viên thành công!");
                     document.getElementById("modal_get_user").close();
                     fetchRooms();
                 })
@@ -115,7 +116,7 @@ export default function Staff() {
                     password: form.password,
                 })
                 .then(() => {
-                    alert("Thêm mới email thành công");
+                    toast.success("Thêm mới email thành công");
                 })
                 .catch((error) => {
                     console.error(error);

@@ -12,6 +12,7 @@ import {
     RiArchive2Line,
     RiLogoutBoxLine,
 } from "react-icons/ri";
+import { Toaster } from "sonner";
 
 export default function DashboardLayout({ children }) {
     const menus = [
@@ -114,6 +115,7 @@ export default function DashboardLayout({ children }) {
             <section className="basis-4/5 py-5 px-10 h-full overflow-auto">
                 {children}
             </section>
+            <Toaster />
         </div>
     );
 }

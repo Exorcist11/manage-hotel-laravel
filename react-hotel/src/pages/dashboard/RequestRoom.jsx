@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { RiEyeLine, RiCloseLine } from "react-icons/ri";
+import { toast } from "sonner";
 
 export default function RequestRoom() {
     const [data, setData] = useState([]);
@@ -9,6 +10,7 @@ export default function RequestRoom() {
     const [categories, setCategories] = useState([]);
     const [minDate, setMinDate] = useState("");
     const [type, setType] = useState("Tất cả");
+    const [emptyRoom, setEmptyRoom] = useState([]);
     const [form, setForm] = useState({
         fullname: "",
         gender: "male",
@@ -45,12 +47,18 @@ export default function RequestRoom() {
         }));
     };
 
+    const getEmptyRoom = async () => {
+        await axios
+            .get("http://127.0.0.1:8000/api/empty-rooms")
+            .then((response) => setEmptyRoom(response));
+    };
+
     const getListRoom = async () => {
         try {
             const response = await axios.get(
                 "http://127.0.0.1:8000/api/orders"
             );
-            setData(response.data.orders);
+            setData(response.data.all_orders);
         } catch (error) {
             console.error(error);
         }
@@ -69,7 +77,7 @@ export default function RequestRoom() {
                 status: "Từ chối",
             })
             .then((response) => {
-                alert(response.data.message);
+                toast.success(response.data.message);
                 getListRoom();
                 document.getElementById("my-drawer-4").checked = false;
             })
@@ -79,8 +87,8 @@ export default function RequestRoom() {
     const handleBookingRoom = async () => {
         await axios
             .post("http://127.0.0.1:8000/api/booking-at-counter", form)
-            .then((response) => {
-                alert("Đặt phòng thành công");
+            .then(() => {
+                toast.success("Đặt phòng thành công");
                 getListRoom();
                 document.getElementById("my-drawer-4").checked = false;
             })
@@ -94,7 +102,7 @@ export default function RequestRoom() {
                 staff_id: "1",
             })
             .then((response) => {
-                alert(response.data.message);
+                toast.error(response.data.message);
                 getListRoom();
                 document.getElementById("my-drawer-4").checked = false;
             })
@@ -117,9 +125,12 @@ export default function RequestRoom() {
         return dateString.split("T")[0];
     };
 
+   
+
     useEffect(() => {
         getListRoom();
         getCategoryRoom();
+        getEmptyRoom();
         const currentDate = getCurrentDate();
         setMinDate(currentDate);
     }, []);
@@ -144,7 +155,7 @@ export default function RequestRoom() {
                             setDetail({});
                         }}
                     >
-                        Đặt phòng
+                        Đặt phòng tại quầy
                     </label>
 
                     <select
@@ -308,15 +319,38 @@ export default function RequestRoom() {
                                             <option disabled selected>
                                                 Chọn loại phòng
                                             </option>
-                                            {categories?.map((item) => (
-                                                <option value={item.id}>
+                                            {categories?.map((item, index) => (
+                                                <option
+                                                    value={item.id}
+                                                    key={index}
+                                                >
                                                     {item?.name}
                                                 </option>
                                             ))}
                                         </select>
                                     </label>
-
                                     <label className="form-control w-full">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Danh sách phòng trống
+                                            </span>
+                                        </div>
+                                        <select
+                                            className="select select-bordered w-full max-w-xs"
+                                            name="number_of_rooms"
+                                            onChange={handleChange}
+                                        >
+                                            <option disabled selected>
+                                                0 phòng
+                                            </option>
+                                            <option value={"1"}>1 phòng</option>
+                                            <option value={"2"}>2 phòng</option>
+                                            <option value={"3"}>3 phòng</option>
+                                            <option value={"4"}>4 phòng</option>
+                                        </select>
+                                    </label>
+
+                                    {/* <label className="form-control w-full">
                                         <div className="label">
                                             <span className="label-text">
                                                 Số lượng phòng
@@ -335,7 +369,7 @@ export default function RequestRoom() {
                                             <option value={"3"}>3 phòng</option>
                                             <option value={"4"}>4 phòng</option>
                                         </select>
-                                    </label>
+                                    </label> */}
                                 </div>
 
                                 <label className="form-control w-full">

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Accounts() {
     const [accounts, setAccounts] = useState([]);
@@ -19,7 +20,7 @@ export default function Accounts() {
         await axios
             .patch(`http://127.0.0.1:8000/api/deleteAccount/${id}`)
             .then(() => {
-                alert("Xóa tài khoản thành công!");
+                toast.success("Xóa tài khoản thành công!");
                 fetchAccount();
             })
             .catch((error) => console.error(error));
@@ -42,7 +43,7 @@ export default function Accounts() {
                 .then((response) => console.log(response))
                 .catch((err) => console.error(err));
         } else {
-            alert("Mật khẩu nhập lại không đúng!");
+            toast.error("Mật khẩu nhập lại không đúng!");
         }
     };
 

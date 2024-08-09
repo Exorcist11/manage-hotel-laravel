@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { MdDelete, MdCreate } from "react-icons/md";
+import { toast } from "sonner";
 
 export default function CategoryRoom() {
     const [categories, setCategories] = useState([]);
@@ -81,7 +82,7 @@ export default function CategoryRoom() {
         await axios
             .delete(`http://127.0.0.1:8000/api/categories/${id}`)
             .then(() => {
-                alert("Xóa thể loại thành công!");
+                toast.success("Xóa thể loại thành công!");
                 getCategories();
             })
             .catch((error) => console.error(error));
@@ -102,10 +103,10 @@ export default function CategoryRoom() {
                 },
             })
             .then(() => {
-                alert("Thêm mới thành công");
+                toast.success("Thêm mới thành công");
                 getCategories();
             })
-            .catch((err) => alert(err));
+            .catch((err) => toast.error(err));
     };
 
     const handleChange = (event) => {

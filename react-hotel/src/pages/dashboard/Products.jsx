@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { MdDelete, MdCreate } from "react-icons/md";
+import { toast } from "sonner";
 
 export default function Products() {
     const [products, setProducts] = useState([]);
@@ -23,8 +24,8 @@ export default function Products() {
         if (confirm) {
             await axios
                 .delete(`http://127.0.0.1:8000/api/products/${productID}`)
-                .then(() => alert("Xoá sản phẩm"))
-                .catch(() => alert("Lỗi khi xóa"));
+                .then(() => toast.success("Xoá sản phẩm"))
+                .catch(() => toast.error("Lỗi khi xóa"));
             getProducts();
         }
     };

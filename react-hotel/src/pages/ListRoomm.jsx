@@ -13,7 +13,7 @@ export default function ListRoomm() {
             console.error("Error from fetch categories: " + error);
         }
     };
-    console.log(categories);
+   
     useEffect(() => {
         fetchCategories();
     }, []);
