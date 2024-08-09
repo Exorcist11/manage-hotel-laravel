@@ -39,8 +39,8 @@ export default function BookingDetail() {
                 end_date: form.end_date,
             })
             .then(() => {
+                window.location.href = "/success";
                 toast.success("Đặt phòng thành công!");
-                window.location.href("/");
             })
             .catch((err) => console.error(err));
     };

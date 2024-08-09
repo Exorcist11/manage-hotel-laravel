@@ -49,8 +49,11 @@ export default function RequestRoom() {
 
     const getEmptyRoom = async () => {
         await axios
-            .get("http://127.0.0.1:8000/api/empty-rooms")
-            .then((response) => setEmptyRoom(response));
+            .get(
+                `http://127.0.0.1:8000/api/empty-rooms-category?category_id=${form?.category_id}`
+            )
+            .then((response) => setEmptyRoom(response.data.data))
+            .catch((error) => console.error(error));
     };
 
     const getListRoom = async () => {
@@ -125,16 +128,14 @@ export default function RequestRoom() {
         return dateString.split("T")[0];
     };
 
-   
-
     useEffect(() => {
         getListRoom();
         getCategoryRoom();
         getEmptyRoom();
         const currentDate = getCurrentDate();
         setMinDate(currentDate);
-    }, []);
-
+    }, [form?.category_id]);
+    
     return (
         <div className="flex flex-col gap-5">
             <h1 className="font-bold text-2xl uppercase text-center">
@@ -227,7 +228,6 @@ export default function RequestRoom() {
                         className="drawer-overlay"
                     ></label>
                     <ul className="bg-white text-base-content min-h-full w-[600px] p-4">
-                        {/* Button close */}
                         <li className="flex justify-end mb-4">
                             <label
                                 htmlFor="my-drawer-4"
@@ -236,7 +236,7 @@ export default function RequestRoom() {
                                 <RiCloseLine size={24} />
                             </label>
                         </li>
-                        {/* Sidebar content here */}
+
                         {check === "add" ? (
                             <div className="flex flex-col gap-3">
                                 <h1 className="font-bold">Đặt phòng</h1>
@@ -341,35 +341,18 @@ export default function RequestRoom() {
                                             onChange={handleChange}
                                         >
                                             <option disabled selected>
-                                                0 phòng
+                                                Chọn phòng
                                             </option>
-                                            <option value={"1"}>1 phòng</option>
-                                            <option value={"2"}>2 phòng</option>
-                                            <option value={"3"}>3 phòng</option>
-                                            <option value={"4"}>4 phòng</option>
+                                            {emptyRoom?.map((item, index) => (
+                                                <option
+                                                    value={item?.id}
+                                                    key={index}
+                                                >
+                                                    {item.room_no}
+                                                </option>
+                                            ))}
                                         </select>
                                     </label>
-
-                                    {/* <label className="form-control w-full">
-                                        <div className="label">
-                                            <span className="label-text">
-                                                Số lượng phòng
-                                            </span>
-                                        </div>
-                                        <select
-                                            className="select select-bordered w-full max-w-xs"
-                                            name="number_of_rooms"
-                                            onChange={handleChange}
-                                        >
-                                            <option disabled selected>
-                                                0 phòng
-                                            </option>
-                                            <option value={"1"}>1 phòng</option>
-                                            <option value={"2"}>2 phòng</option>
-                                            <option value={"3"}>3 phòng</option>
-                                            <option value={"4"}>4 phòng</option>
-                                        </select>
-                                    </label> */}
                                 </div>
 
                                 <label className="form-control w-full">

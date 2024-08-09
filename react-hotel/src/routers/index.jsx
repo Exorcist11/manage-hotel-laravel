@@ -1,5 +1,6 @@
 import Booking from "@/pages/Booking";
 import BookingDetail from "@/pages/BookingDetail";
+import BookingSuccess from "@/pages/BookingSuccess";
 import Accounts from "@/pages/dashboard/Accounts";
 import CategoryRoom from "@/pages/dashboard/CategoryRoom";
 import ClientHistory from "@/pages/dashboard/ClientHistory";
@@ -22,6 +23,7 @@ const publicRoute = [
     { path: "/list-room/:category_id", page: DetailRoom },
     { path: "/booking", page: Booking },
     { path: "/booking/:id", page: BookingDetail },
+    { path: "/success", page: BookingSuccess },
 ];
 
 const dashboardRoute = [

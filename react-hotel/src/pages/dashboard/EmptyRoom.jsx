@@ -19,17 +19,6 @@ export default function EmptyRoom() {
         return `${year}-${month}-${day}`;
     };
 
-    const getRoom = async () => {
-        await axios
-            .get("http://127.0.0.1:8000/api/empty-rooms", {
-                from: time.start_date,
-                to: time.end_date,
-            })
-            .then((response) => {
-                setRooms(response.data.data);
-            })
-            .catch((error) => console.error(error));
-    };
     const handleChange = (event) => {
         const { name, value } = event.target;
         setTime((preState) => ({
@@ -37,14 +26,38 @@ export default function EmptyRoom() {
             [name]: value,
         }));
     };
-    const handleSearchRoom = () => {
-        getRoom();
+
+    const getRoom = async () => {
+        try {
+            const response = await axios.get(
+                "http://127.0.0.1:8000/api/empty-rooms",
+                {
+                    params: {
+                        from: time.start_date,
+                        to: time.end_date,
+                    },
+                }
+            );
+            setRooms(response.data.data);
+        } catch (error) {
+            console.error(error);
+        }
     };
+
+    const handleSearchRoom = async () => {
+        await getRoom();
+    };
+
     useEffect(() => {
         getRoom();
         const currentDate = getCurrentDate();
         setMinDate(currentDate);
     }, []);
+
+    useEffect(() => {
+        getRoom();
+    }, [time.start_date, time.end_date]);
+
     return (
         <div className="flex flex-col gap-5">
             <h1 className="text-center text-2xl font-bold uppercase">
