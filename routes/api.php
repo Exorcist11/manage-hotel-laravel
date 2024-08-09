@@ -28,6 +28,7 @@ Route::controller(RoomController::class)->group(function () {
   Route::post('/rooms/{id}/check-in', 'checkIn');
   Route::post('/rooms/{id}/check-out', 'checkOut');
   Route::get('/empty-rooms', 'getAvailableRooms');
+  Route::get('/empty-rooms-category', 'getAvailableRoomsByCategory');
 });
 
 Route::controller(StaffController::class)->group(function () {

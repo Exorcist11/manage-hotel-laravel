@@ -232,4 +232,64 @@ class RoomController extends Controller
             ], 500);
         }
     }
+
+    public function getAvailableRoomsByCategory(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'from' => 'nullable|date',
+            'to' => 'nullable|date|after_or_equal:from',
+            'category_id' => 'nullable|exists:categories,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $now = Carbon::now();
+
+            if ($request->has('from') && $request->has('to')) {
+                $from = Carbon::parse($request->input('from'));
+                $to = Carbon::parse($request->input('to'));
+            } else {
+                $from = $now;
+                $to = $now->copy()->addDay();
+            }
+
+            $query = Room::whereDoesntHave('booking_details', function ($query) use ($from, $to) {
+                $query->where(function ($q) use ($from, $to) {
+                    $q->where(function ($q) use ($from, $to) {
+                        $q->where('check_in', '<=', $from)
+                          ->where('check_out', '>', $from);
+                    })
+                    ->orWhere(function ($q) use ($from, $to) {
+                        $q->where('check_in', '<', $to)
+                          ->where('check_out', '>=', $to);
+                    });
+                });
+            });
+
+            if ($request->has('category_id')) {
+                $query->where('category_id', $request->input('category_id'));
+            }
+
+            $availableRooms = $query->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $availableRooms,
+                'message' => 'Available rooms retrieved successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while retrieving available rooms',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
