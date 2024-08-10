@@ -73,6 +73,7 @@ export default function DashboardLayout({ children }) {
         "Quản lý tài khoản",
         "Quản lý cơ sở vật chất",
     ];
+    console.log(info)
 
     const filteredMenus = menus.filter((menu) => {
         if (info?.role === "Nhân viên") {

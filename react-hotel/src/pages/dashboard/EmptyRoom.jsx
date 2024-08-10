@@ -38,6 +38,7 @@ export default function EmptyRoom() {
                     },
                 }
             );
+   
             setRooms(response.data.data);
         } catch (error) {
             console.error(error);
@@ -52,10 +53,6 @@ export default function EmptyRoom() {
         getRoom();
         const currentDate = getCurrentDate();
         setMinDate(currentDate);
-    }, []);
-
-    useEffect(() => {
-        getRoom();
     }, [time.start_date, time.end_date]);
 
     return (

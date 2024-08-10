@@ -11,6 +11,7 @@ export default function RequestRoom() {
     const [minDate, setMinDate] = useState("");
     const [type, setType] = useState("Tất cả");
     const [emptyRoom, setEmptyRoom] = useState([]);
+    const currentUser = JSON.parse(localStorage.getItem("user"));
     const [form, setForm] = useState({
         fullname: "",
         gender: "male",
@@ -18,10 +19,11 @@ export default function RequestRoom() {
         citizen_number: "",
         email: "",
         category_id: "1",
-        number_of_rooms: "",
+        number_of_rooms: "1",
         start_date: "2024-08-03",
         end_date: "2024-08-03",
-        staff_id: 1,
+        staff_id: currentUser.id,
+        room_id: "",
     });
 
     const filterData = () => {
@@ -90,7 +92,8 @@ export default function RequestRoom() {
     const handleBookingRoom = async () => {
         await axios
             .post("http://127.0.0.1:8000/api/booking-at-counter", form)
-            .then(() => {
+            .then((res) => {
+                console.log(res);
                 toast.success("Đặt phòng thành công");
                 getListRoom();
                 document.getElementById("my-drawer-4").checked = false;
@@ -129,13 +132,22 @@ export default function RequestRoom() {
     };
 
     useEffect(() => {
-        getListRoom();
-        getCategoryRoom();
-        getEmptyRoom();
-        const currentDate = getCurrentDate();
-        setMinDate(currentDate);
+        // Fetch data functions
+        const fetchData = async () => {
+            try {
+                await getListRoom();
+                await getCategoryRoom();
+                await getEmptyRoom();
+                const currentDate = getCurrentDate();
+                setMinDate(currentDate);
+            } catch (error) {
+                console.error("Failed to fetch data:", error);
+            }
+        };
+
+        fetchData();
     }, [form?.category_id]);
-    
+
     return (
         <div className="flex flex-col gap-5">
             <h1 className="font-bold text-2xl uppercase text-center">
@@ -337,7 +349,7 @@ export default function RequestRoom() {
                                         </div>
                                         <select
                                             className="select select-bordered w-full max-w-xs"
-                                            name="number_of_rooms"
+                                            name="room_id"
                                             onChange={handleChange}
                                         >
                                             <option disabled selected>

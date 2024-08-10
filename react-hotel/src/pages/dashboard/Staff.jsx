@@ -117,6 +117,7 @@ export default function Staff() {
                 })
                 .then(() => {
                     toast.success("Thêm mới email thành công");
+                    fetchRooms();
                 })
                 .catch((error) => {
                     console.error(error);
@@ -282,7 +283,6 @@ export default function Staff() {
                             </option>
                             <option value={0}>Nhân viên</option>
                             <option value={1}>Quản lý</option>
-                            <option value={2}>Lễ tân</option>
                         </select>
                     </div>
 
