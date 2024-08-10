@@ -21,14 +21,22 @@ export default function DashboardLayout({ children }) {
             icon: <RiBarChart2Fill />,
             link: "/dashboard",
         },
-        { name: "Check In-Out", icon: <RiEditBoxFill />, link: "/request" },
+        {
+            name: "Quản lý đặt phòng",
+            icon: <RiEditBoxFill />,
+            link: "/request",
+        },
         { name: "Quản lý phòng", icon: <RiPhoneCameraLine />, link: "/rooms" },
         {
             name: "Quản lý thể loại phòng",
             icon: <RiSoundModuleFill />,
             link: "/category-room",
         },
-        { name: "Quản lý khách hàng", icon: <RiUser5Line />, link: "" },
+        {
+            name: "Check IN Check Out",
+            icon: <RiUser5Line />,
+            link: "/check-in",
+        },
         {
             name: "Quản lý nhân viên",
             icon: <RiUser2Fill />,
@@ -61,7 +69,6 @@ export default function DashboardLayout({ children }) {
     const restrictedMenusForEmployee = [
         "Quản lý phòng",
         "Quản lý thể loại phòng",
-        "Quản lý khách hàng",
         "Quản lý nhân viên",
         "Quản lý tài khoản",
         "Quản lý cơ sở vật chất",

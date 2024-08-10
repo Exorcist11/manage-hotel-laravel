@@ -1,9 +1,27 @@
+import Slider from "@/components/Slider/Slider";
 import axios from "axios";
 import { useEffect, useState } from "react";
 export default function Homepage() {
     const [categories, setCategories] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-
+    const images = [
+        {
+            imgURL: "/images/muong-thanh-banner.png",
+            imgAlt: "img-1",
+        },
+        {
+            imgURL: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+            imgAlt: "img-2",
+        },
+        {
+            imgURL: "https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+            imgAlt: "img-3",
+        },
+        {
+            imgURL: "https://images.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+            imgAlt: "img-4",
+        },
+    ];
     const handlePrev = () => {
         setCurrentIndex((prevIndex) =>
             prevIndex === 0 ? categories.length - 3 : prevIndex - 3
@@ -31,12 +49,26 @@ export default function Homepage() {
     }, []);
     return (
         <div className="">
-            <div className="mx-20">
+            {/* <div className="mx-20">
                 <img
                     src="/images/muong-thanh-banner.png"
                     alt="banner"
                     className="object-cover object-center"
                 />
+            </div> */}
+
+            <div className="mx-20">
+                <Slider>
+                    {images.map((image, index) => {
+                        return (
+                            <img
+                                key={index}
+                                src={image.imgURL}
+                                alt={image.imgAlt}
+                            />
+                        );
+                    })}
+                </Slider>
             </div>
 
             <div className="grid grid-cols-4 px-20 mt-20 items-center gap-8">

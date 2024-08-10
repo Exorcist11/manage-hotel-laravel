@@ -76,7 +76,6 @@ export default function EmptyRoom() {
                         name="start_date"
                         onChange={handleChange}
                         min={minDate}
-                        max={time.end_date}
                         value={time.start_date}
                         className="input input-bordered w-full "
                     />

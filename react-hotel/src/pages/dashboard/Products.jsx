@@ -43,8 +43,8 @@ export default function Products() {
                         "Content-Type": "multipart/form-data",
                     },
                 })
-                .then((response) => {
-                    console.log(response);
+                .then(() => {
+                    toast.success("Thêm mới sản phẩm thành công!");
                     getProducts();
                 });
         } catch (error) {
@@ -93,8 +93,8 @@ export default function Products() {
                         "Content-Type": "application/json",
                     },
                 })
-                .then((response) => {
-                    console.log(response);
+                .then(() => {
+                    toast.success("Cập nhật sản phẩm thành công");
                     getProducts();
                     document.getElementById("my_modal_2").close();
                 });
