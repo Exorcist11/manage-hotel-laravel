@@ -36,9 +36,7 @@ class Bill extends Model
 	];
 
 	protected $casts = [
-		'payment_method' => 'int',
-		'booking_id' => 'int',
-		'total' => 'float'
+		'payment_method' => 'int'
 	];
 
 	protected $fillable = [
@@ -47,21 +45,26 @@ class Bill extends Model
 		'payment_method'
 	];
 
-	public function room()
+	public function booking()
 	{
-		return $this->belongsTo(Room::class);
+		return $this->belongsTo(Booking::class);
 	}
 
-	public function getStatusAttribute($value)
+	// Get accessor for payment_method attribute
+    public function getPaymentMethodAttribute($value)
     {
-        return self::METHODS[$value];
+        return self::METHODS[$value] ?? null;
     }
 
-    public function setStatusAttribute($value)
+    // Set accessor for payment_method attribute
+    public function setPaymentMethodAttribute($value)
     {
-        $payment_method = array_search($value, self::METHODS);
-        if ($payment_method !== false) {
-            $this->attributes['payment_method'] = $payment_method;
+        $paymentMethod = array_search($value, self::METHODS);
+        if ($paymentMethod !== false) {
+            $this->attributes['payment_method'] = $paymentMethod;
+        } else {
+            // Handle invalid payment method if necessary
+            throw new \InvalidArgumentException("Invalid payment method: $value");
         }
     }
 }

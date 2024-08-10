@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\BillController;
 
 Route::get('/hello', function(){
   return response()->json(['message' => 'Devil may cry']);
@@ -75,6 +76,7 @@ Route::controller(BookingController::class)->group(function () {
   Route::put('/bookings/{id}', 'update');
   Route::delete('/bookings/{id}', 'destroy');
   Route::post('/booking-at-counter', 'bookingAtCounter');
+  Route::post('/bookings/{id}/export-bill', 'exportBill');
 });
 
 Route::prefix('categories')->group(function () {
@@ -96,5 +98,11 @@ Route::prefix('services')->group(function () {
     Route::patch('/{id}', 'update');
     Route::delete('/{id}', 'destroy');
     Route::get('/{id}/rooms', 'getListRoomByCategory');
+  });
+});
+
+Route::prefix('bills')->group(function () {
+  Route::controller(BillController::class)->group(function () {
+    Route::get('', 'index');
   });
 });
