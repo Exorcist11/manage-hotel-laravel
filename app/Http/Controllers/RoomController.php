@@ -120,6 +120,7 @@ class RoomController extends Controller
             }
 
             $bookingDetail->check_in = Carbon::now();
+            $bookingDetail->is_check_in = true;
             $bookingDetail->save();
 
             return response()->json([
@@ -158,6 +159,7 @@ class RoomController extends Controller
             }
 
             $bookingDetail->check_out = Carbon::now();
+            $bookingDetail->is_check_out = true;
             $bookingDetail->save();
 
             return response()->json([
