@@ -126,4 +126,20 @@ class OrderController extends Controller
             }
         }
     }
+
+    public function listChecked() {
+        $checked_in_orders = Order::whereDoesntHave('booking.booking_details', function ($query) {
+            $query->where('is_check_in', false);
+        })->get();
+
+        $checked_out_orders = Order::whereDoesntHave('booking.booking_details', function ($query) {
+            $query->where('is_check_out', false);
+        })->get();
+
+        return response()->json([
+            'success' => true,
+            'checked_in' => $checked_in_orders,
+            'checked_out' => $checked_out_orders
+        ], 200);
+    }
 }

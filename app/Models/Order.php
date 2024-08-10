@@ -57,7 +57,7 @@ class Order extends Model
 		'status'
 	];
 
-	public function bookings()
+	public function booking()
 	{
 		return $this->hasOne(Booking::class);
 	}

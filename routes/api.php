@@ -45,8 +45,9 @@ Route::prefix('orders')->group(function () {
   Route::controller(OrderController::class)->group(function () {
     Route::get('', 'index');
     Route::post('', 'store');
-    Route::get('/{id}', 'show');
+    Route::get('/{id}', 'show')->where('id', '[0-9]+');
     Route::patch('/{id}', 'updateStatus');
+    Route::get('/list-checked', 'listChecked');
   });
 });
 
