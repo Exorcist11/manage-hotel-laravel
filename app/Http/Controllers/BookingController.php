@@ -220,4 +220,18 @@ class BookingController extends Controller
             ]);
         }
     }
+
+    public function getHistory()
+    {
+        $bookings = Booking::whereDoesntHave('booking_details', function ($query) {
+            $query->where('is_check_in', false)
+                  ->orWhere('is_check_out', false);
+        })->with(['booking_details.room', 'order', 'services']) 
+          ->get();
+          
+        return response()->json([
+            'success' => true,
+            'bookings' => $bookings
+        ]);
+    }
 }

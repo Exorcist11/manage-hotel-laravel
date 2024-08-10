@@ -46,7 +46,8 @@ Route::prefix('orders')->group(function () {
     Route::get('', 'index');
     Route::post('', 'store');
     Route::get('/{id}', 'show')->where('id', '[0-9]+');
-    Route::patch('/{id}', 'updateStatus');
+    // Route::patch('/{id}', 'updateStatus');
+    Route::patch('/{id}/reject', 'reject');
     Route::get('/list-checked', 'listChecked');
   });
 });
@@ -73,11 +74,12 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(BookingController::class)->group(function () {
   Route::get('/bookings', 'index');
   Route::post('/bookings', 'store');
-  Route::get('/bookings/{id}', 'show');
+  Route::get('/bookings/{id}', 'show')->where('id', '[0-9]+');
   Route::put('/bookings/{id}', 'update');
   Route::delete('/bookings/{id}', 'destroy');
   Route::post('/booking-at-counter', 'bookingAtCounter');
   Route::post('/bookings/{id}/export-bill', 'exportBill');
+  Route::get('/bookings/history', 'getHistory');
 });
 
 Route::prefix('categories')->group(function () {

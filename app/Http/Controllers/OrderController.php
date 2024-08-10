@@ -65,6 +65,24 @@ class OrderController extends Controller
         return response()->json($order);
     }
 
+    public function reject(string $id, Request $request)
+    {
+        $order = Order::find($id);
+        
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        $order->status = "Từ chối";
+        $order->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Order đã bị từ chối',
+            'order' => $order,
+        ], 201);
+    }
+
     public function updateStatus(string $id, Request $request)
     {
         {
