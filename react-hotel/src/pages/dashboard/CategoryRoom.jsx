@@ -57,6 +57,7 @@ export default function CategoryRoom() {
         if (selectedFile) {
             data.image = selectedFile;
         }
+        
 
         try {
             await axios
@@ -136,7 +137,7 @@ export default function CategoryRoom() {
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
-        console.log("File selected:", event.target.files[0]);
+        
     };
 
     const getCategories = async () => {

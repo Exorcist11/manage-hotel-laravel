@@ -49,7 +49,10 @@ export default function Booking() {
                             <p>Hướng nhìn thành phố</p>
                             <div className="flex justify-end">
                                 <a className="btn" href={`/booking/${item.id}`}>
-                                    {item?.price} VND
+                                    {parseInt(item?.price).toLocaleString(
+                                        "vi-VN"
+                                    )}{" "}
+                                    VND
                                 </a>
                             </div>
                         </div>

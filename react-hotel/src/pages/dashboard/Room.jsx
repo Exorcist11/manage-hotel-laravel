@@ -13,6 +13,7 @@ export default function Room() {
         id: "",
         category_id: "",
     });
+    console.log(rooms)
 
     const floors = [
         { flor: 1, name: "Tầng 1" },
@@ -92,6 +93,12 @@ export default function Room() {
             .then((response) => setRooms(response.data));
     };
 
+    const sortedRooms = rooms.slice().sort((a, b) => {
+        if (a.room_no < b.room_no) return -1;
+        if (a.room_no > b.room_no) return 1;
+        return 0;
+    });
+
     useEffect(() => {
         fetchRooms().catch((err) => console.error(err));
         fetchCateogry().catch((err) => console.error(err));
@@ -117,11 +124,12 @@ export default function Room() {
                         <tr>
                             <th></th>
                             <th>Mã Phòng</th>
-                            <th>Loại phòng</th>
+                            <th>Loại Phòng</th>
+                            <th>Tầng</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {rooms.map((room, i) => (
+                        {sortedRooms.map((room, i) => (
                             <tr key={i}>
                                 <th className="flex items-center gap-2">
                                     <MdCreate
@@ -136,6 +144,7 @@ export default function Room() {
                                     />
                                 </th>
                                 <td>{room?.room_no}</td>
+                                <td>{room?.category.name}</td>
                                 <td>{room?.floor}</td>
                             </tr>
                         ))}

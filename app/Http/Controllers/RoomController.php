@@ -11,7 +11,7 @@ use Carbon\Carbon;
 class RoomController extends Controller
 {
     public function index(){
-        $rooms = Room::all();
+        $rooms = Room::with('category')->get();;
         return response()->json($rooms);
     }
 

@@ -7,9 +7,10 @@ export default function CheckIn() {
     const getRoom = async () => {
         await axios
             .get("http://127.0.0.1:8000/api/orders")
-            .then((response) => setRooms(response.data.accept_orders))
-            .catch((error) => console.log(error));
+            .then((response) => setRooms(response.data.pending_orders))
+            .catch((error) => console.error(error));
     };
+   
     useEffect(() => {
         getRoom();
     }, []);

@@ -18,12 +18,6 @@ export default function DetailCheckIn() {
         if (!dateString) return "";
         return dateString.split("T")[0];
     };
-    const getDetail = async () => {
-        await axios
-            .get(`http://127.0.0.1:8000/api/orders/${id}`)
-            .then((response) => setForm(response.data))
-            .catch((error) => console.error(error));
-    };
 
     const handleCheckIn = async () => {
         await axios
@@ -32,8 +26,15 @@ export default function DetailCheckIn() {
             .catch((error) => console.error(error));
     };
     useEffect(() => {
+        const getDetail = async () => {
+            await axios
+                .get(`http://127.0.0.1:8000/api/bookings/${id}`)
+                .then((response) => setForm(response.data))
+                .catch((error) => console.error(error));
+        };
         getDetail();
-    }, []);
+    }, [id]);
+
 
     return (
         <div>
@@ -64,7 +65,7 @@ export default function DetailCheckIn() {
                             placeholder=" Họ và tên"
                             className="input input-bordered w-full "
                             required
-                            value={form.fullname}
+                            value={form?.order?.fullname}
                             disabled
                         />
                     </label>
@@ -82,7 +83,7 @@ export default function DetailCheckIn() {
                             onChange={handleChange}
                             placeholder="Căn cước công dân/ Chứng minh nhân dân"
                             className="input input-bordered w-full"
-                            value={form.citizen_number}
+                            value={form?.order?.citizen_number}
                             disabled
                         />
                     </label>
@@ -102,7 +103,7 @@ export default function DetailCheckIn() {
                                 onChange={handleChange}
                                 className="input input-bordered w-full "
                                 pattern="[0-9]{3} [0-9]{3} [0-9]{4}"
-                                value={form.phone_number}
+                                value={form?.order?.phone_number}
                             />
                         </label>
 
@@ -119,7 +120,7 @@ export default function DetailCheckIn() {
                                 onChange={handleChange}
                                 placeholder="Email"
                                 className="input input-bordered w-full "
-                                value={form.email}
+                                value={form?.order?.email}
                             />
                         </label>
                     </div>
@@ -138,7 +139,7 @@ export default function DetailCheckIn() {
                                 onChange={handleChange}
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
-                                value={formatDate(form.start_date)}
+                                value={formatDate(form?.order?.start_date)}
                             />
                         </label>
 
@@ -152,11 +153,11 @@ export default function DetailCheckIn() {
                             <input
                                 type="date"
                                 name="end_date"
-                                min={form.start_date}
+                                min={form?.order?.start_date}
                                 onChange={handleChange}
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
-                                value={formatDate(form.end_date)}
+                                value={formatDate(form?.order?.end_date)}
                             />
                         </label>
                     </div>
@@ -173,7 +174,7 @@ export default function DetailCheckIn() {
                                 type="text"
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
-                                value={form.status}
+                                value={form?.order?.status}
                             />
                         </label>
 
@@ -188,7 +189,7 @@ export default function DetailCheckIn() {
                                 type="text"
                                 name="end_date"
                                 className="input input-bordered w-full "
-                                value={form.category_id}
+                                value={form?.order?.category_id}
                             />
                         </label>
                     </div>
