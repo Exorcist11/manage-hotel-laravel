@@ -29,6 +29,12 @@ class BookingController extends Controller
             \DB::beginTransaction();
     
             try {
+                $order = Order::find($request->order_id);
+
+                if (!$order) {
+                    return response()->json(['message' => 'Order not found'], 404);
+                }
+
                 $booking = Booking::create([
                     'staff_id' => $request->staff_id,
                     'order_id' => $request->order_id,
@@ -38,10 +44,13 @@ class BookingController extends Controller
                     BookingDetail::create([
                         'booking_id' => $booking->id,
                         'room_id' => $roomData['id'],
-                        'check_in' => $roomData['check_in'],
-                        'check_out' => $roomData['check_out'],
+                        'check_in' => $order->start_date,
+                        'check_out' => $order->end_date,
                     ]);
                 }
+
+                $order->status = "Chấp nhận";
+                $order->save();
     
                 \DB::commit();
     

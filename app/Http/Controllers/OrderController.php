@@ -34,7 +34,6 @@ class OrderController extends Controller
         try{
             $order = Order::create([
                 'fullname' => $request->fullname,
-                'gender' => $request->gender,
                 'phone_number' => $request->phone_number,
                 'citizen_number' => $request->citizen_number,
                 'email' => $request->email,
