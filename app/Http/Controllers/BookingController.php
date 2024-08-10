@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\BookingDetail;
 use App\Models\Room;
 use App\Models\Order;
+use App\Models\Bill;
 
 class BookingController extends Controller
 {
@@ -15,7 +16,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $booking = Booking::with(['user', 'customer', 'booking_details.room'])->get();
+        $booking = Booking::with(['user', 'order', 'booking_details.room'])->get();
         return response()->json($booking);
     }
 
@@ -30,7 +31,7 @@ class BookingController extends Controller
             try {
                 $booking = Booking::create([
                     'staff_id' => $request->staff_id,
-                    'customer_id' => $request->customer_id,
+                    'order_id' => $request->order_id,
                 ]);
     
                 foreach ($request->rooms as $roomData) {
@@ -65,7 +66,7 @@ class BookingController extends Controller
      */
     public function show(string $id)
     {
-        $booking = Booking::with(['user', 'customer', 'booking_details.room'])->find($id);
+        $booking = Booking::with(['user', 'order', 'booking_details.room'])->find($id);
 
         if (!$booking) {
             return response()->json(['message' => 'Booking not found'], 404);
@@ -84,7 +85,7 @@ class BookingController extends Controller
             return response()->json(['message' => 'Booking not found'], 404);
         }
 
-        $booking->update($request->only('staff_id', 'customer_id'));
+        $booking->update($request->only('staff_id', 'order_id'));
 
         if ($request->has('rooms')) {
             foreach ($request->rooms as $roomData) {
@@ -156,6 +157,58 @@ class BookingController extends Controller
         } catch (\Throwable $th){
             \DB::rollback();
             return response()->json($th);
+        }
+    }
+
+    public function exportBill(Request $request, string $id)
+    {
+        \DB::beginTransaction();
+        try{
+            $booking = Booking::with(['booking_details.room', 'services'])->find($id);
+
+            if (!$booking) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Booking không tồn tại!'
+                ], 404);
+            }
+
+            $total = 0;
+
+            foreach($booking->booking_details as $booking_detail){
+                $checkIn = $booking_detail->check_in;
+                $checkOut = $booking_detail->check_out;
+                $room = $booking_detail->room;
+
+                if (!$checkIn || !$checkOut || !$room) {
+                    continue; 
+                }
+
+                $days = $checkIn->diffInDays($checkOut);
+
+                $total += $days * $room->category->price;
+            }
+
+            foreach($booking->services as $service){
+                $total += $service->price;
+            }
+
+            $bill = Bill::create([
+                'payment_method' => $request->payment_method,
+                'total' => $total,
+                'booking_id' => $id
+            ]);
+
+            \DB::commit();
+            return response()->json([
+                "bill" => $bill
+            ]);
+        } catch (\Throwable $th){
+            \DB::rollback();
+            return response()->json([
+                "error" => true,
+                "throw" => $th
+            ]);
         }
     }
 }

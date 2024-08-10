@@ -39,7 +39,7 @@ class Booking extends Model
 		'order_id'
 	];
 
-	public function customer()
+	public function order()
 	{
 		return $this->belongsTo(Order::class);
 	}
