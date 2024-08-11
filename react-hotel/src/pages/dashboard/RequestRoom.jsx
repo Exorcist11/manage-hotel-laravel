@@ -1,17 +1,21 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { RiEyeLine, RiCloseLine } from "react-icons/ri";
+import { MultiSelect } from "react-multi-select-component";
+
 import { toast } from "sonner";
 
 export default function RequestRoom() {
     const [data, setData] = useState([]);
     const [check, setCheck] = useState("");
-    const [detail, setDetail] = useState({});
+    const [detail, setDetail] = useState(null);
     const [categories, setCategories] = useState([]);
     const [minDate, setMinDate] = useState("");
     const [type, setType] = useState("Tất cả");
     const [emptyRoom, setEmptyRoom] = useState([]);
     const currentUser = JSON.parse(localStorage.getItem("user"));
+    const [selected, setSelected] = useState([]);
+
     const [form, setForm] = useState({
         fullname: "",
         gender: "male",
@@ -20,11 +24,16 @@ export default function RequestRoom() {
         email: "",
         category_id: "1",
         number_of_rooms: "1",
-        start_date: "2024-08-03",
-        end_date: "2024-08-03",
+        start_date: "",
+        end_date: "",
         staff_id: currentUser.id,
         room_id: "",
     });
+
+    const options = emptyRoom?.map((item) => ({
+        label: item.room_no,
+        value: item.id,
+    }));
 
     const filterData = () => {
         if (type === "Tất cả") {
@@ -43,19 +52,17 @@ export default function RequestRoom() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setForm((preState) => ({
-            ...preState,
-            [name]: value,
-        }));
-    };
+        let updatedValue = value;
 
-    const getEmptyRoom = async () => {
-        await axios
-            .get(
-                `http://127.0.0.1:8000/api/empty-rooms-category?category_id=${form?.category_id}`
-            )
-            .then((response) => setEmptyRoom(response.data.data))
-            .catch((error) => console.error(error));
+        if (name === "room_id") {
+            const selectedOptions = Array.from(event.target.selectedOptions);
+            updatedValue = selectedOptions.map((option) => option.value);
+        }
+
+        setForm((prevState) => ({
+            ...prevState,
+            [name]: updatedValue,
+        }));
     };
 
     const getListRoom = async () => {
@@ -78,7 +85,7 @@ export default function RequestRoom() {
 
     const handleReject = async () => {
         await axios
-            .patch(`http://127.0.0.1:8000/api/orders/${detail?.id}`, {
+            .patch(`http://127.0.0.1:8000/api/orders/${detail?.id}/reject`, {
                 status: "Từ chối",
             })
             .then((response) => {
@@ -90,6 +97,11 @@ export default function RequestRoom() {
     };
 
     const handleBookingRoom = async () => {
+        if (selected.length !== detail.num_of_room) {
+            toast.error(`Vui lòng chọn đủ ${detail.num_of_room} phòng.`);
+            return;
+        }
+
         await axios
             .post("http://127.0.0.1:8000/api/booking-at-counter", form)
             .then((res) => {
@@ -102,10 +114,17 @@ export default function RequestRoom() {
     };
 
     const handleAccept = async () => {
+        if (selected.length !== detail.number_of_rooms) {
+            toast.error(
+                `Vui lòng chọn đúng số lượng phòng: ${detail.num_of_room}`
+            );
+            return;
+        }
         await axios
-            .patch(`http://127.0.0.1:8000/api/orders/${detail?.id}`, {
-                status: "Được chấp nhận",
-                staff_id: "1",
+            .post(`http://127.0.0.1:8000/api/bookings`, {
+                order_id: detail.id,
+                staff_id: currentUser.id,
+                rooms: selected.map((room) => ({ id: room.value })),
             })
             .then((response) => {
                 toast.error(response.data.message);
@@ -131,13 +150,54 @@ export default function RequestRoom() {
         return dateString.split("T")[0];
     };
 
+    const getEmptyRoom = async () => {
+        try {
+            const response = await axios.get(
+                `http://127.0.0.1:8000/api/empty-rooms-category`,
+                {
+                    params: {
+                        category_id: form?.category_id,
+                        from: form.start_date,
+                        to: form.end_date,
+                    },
+                }
+            );
+            setEmptyRoom(response.data.data);
+        } catch (error) {
+            console.error("Failed to fetch empty rooms:", error);
+        }
+    };
+
+    const checkDetailRoomEmpty = async () => {
+        try {
+            const response = await axios.get(
+                `http://127.0.0.1:8000/api/empty-rooms-category`,
+                {
+                    params: {
+                        category_id: detail?.category_id,
+                        from: detail?.start_date,
+                        to: detail?.end_date,
+                    },
+                }
+            );
+            setEmptyRoom(response.data.data);
+        } catch (error) {
+            console.error("Failed to fetch empty rooms:", error);
+        }
+    };
+
     useEffect(() => {
-        // Fetch data functions
         const fetchData = async () => {
             try {
                 await getListRoom();
                 await getCategoryRoom();
-                await getEmptyRoom();
+                if (form.start_date && form.end_date) {
+                    await getEmptyRoom();
+                }
+                if (detail.start_date && detail.end_date) {
+                    await checkDetailRoomEmpty();
+                }
+
                 const currentDate = getCurrentDate();
                 setMinDate(currentDate);
             } catch (error) {
@@ -146,7 +206,7 @@ export default function RequestRoom() {
         };
 
         fetchData();
-    }, [form?.category_id]);
+    }, [form.start_date, form.end_date, form.category_id]);
 
     return (
         <div className="flex flex-col gap-5">
@@ -239,7 +299,7 @@ export default function RequestRoom() {
                         aria-label="close sidebar"
                         className="drawer-overlay"
                     ></label>
-                    <ul className="bg-white text-base-content min-h-full w-[600px] p-4">
+                    <ul className="bg-white text-base-content min-h-full w-[700px] p-4">
                         <li className="flex justify-end mb-4">
                             <label
                                 htmlFor="my-drawer-4"
@@ -316,6 +376,40 @@ export default function RequestRoom() {
                                     />
                                 </label>
 
+                                <div className="flex gap-5">
+                                    <label className="form-control w-full">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Thời gian checkin
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            placeholder="Type here"
+                                            name="start_date"
+                                            min={minDate}
+                                            onChange={handleChange}
+                                            className="input input-bordered w-full"
+                                        />
+                                    </label>
+
+                                    <label className="form-control w-full">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Thời gian checkout
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            placeholder="Type here"
+                                            onChange={handleChange}
+                                            name="end_date"
+                                            min={minDate}
+                                            className="input input-bordered w-full"
+                                        />
+                                    </label>
+                                </div>
+
                                 <div className="flex gap-3">
                                     <label className="form-control w-full">
                                         <div className="label">
@@ -347,6 +441,7 @@ export default function RequestRoom() {
                                                 Danh sách phòng trống
                                             </span>
                                         </div>
+
                                         <select
                                             className="select select-bordered w-full max-w-xs"
                                             name="room_id"
@@ -366,38 +461,6 @@ export default function RequestRoom() {
                                         </select>
                                     </label>
                                 </div>
-
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text">
-                                            Thời gian checkin
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="date"
-                                        placeholder="Type here"
-                                        name="start_date"
-                                        min={minDate}
-                                        onChange={handleChange}
-                                        className="input input-bordered w-full"
-                                    />
-                                </label>
-
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text">
-                                            Thời gian checkout
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="date"
-                                        placeholder="Type here"
-                                        onChange={handleChange}
-                                        name="end_date"
-                                        min={minDate}
-                                        className="input input-bordered w-full"
-                                    />
-                                </label>
 
                                 <button
                                     className="btn btn-accent mt-4"
@@ -427,22 +490,6 @@ export default function RequestRoom() {
                                 <label className="form-control w-full">
                                     <div className="label">
                                         <span className="label-text">
-                                            Số điện thoại
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full"
-                                        defaultValue={
-                                            detail?.phone_number || ""
-                                        }
-                                    />
-                                </label>
-
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text">
                                             Căn cước công dân
                                         </span>
                                     </div>
@@ -456,73 +503,115 @@ export default function RequestRoom() {
                                     />
                                 </label>
 
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text">
-                                            Email
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full"
-                                        defaultValue={detail?.email || ""}
-                                    />
-                                </label>
+                                <div className="flex gap-5">
+                                    <label className="form-control w-full">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Số điện thoại
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            placeholder="Type here"
+                                            className="input input-bordered w-full"
+                                            defaultValue={
+                                                detail?.phone_number || ""
+                                            }
+                                        />
+                                    </label>
 
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text">
-                                            Loại phòng
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full"
-                                        defaultValue={detail?.category_id || ""}
-                                    />
-                                </label>
+                                    <label className="form-control w-full">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Email
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            placeholder="Type here"
+                                            className="input input-bordered w-full"
+                                            defaultValue={detail?.email || ""}
+                                        />
+                                    </label>
+                                </div>
 
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text">
-                                            Thời gian nhận phòng
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="date"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full"
-                                        defaultValue={formatDate(
-                                            detail?.start_date
-                                        )}
-                                    />
-                                </label>
+                                <div className="flex gap-5">
+                                    <label className="form-control w-full">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Thời gian nhận phòng
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            placeholder="Type here"
+                                            className="input input-bordered w-full"
+                                            defaultValue={formatDate(
+                                                detail?.start_date
+                                            )}
+                                        />
+                                    </label>
 
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text">
-                                            Thời gian trả phòng
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="date"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full"
-                                        defaultValue={formatDate(
-                                            detail?.end_date
-                                        )}
-                                    />
-                                </label>
+                                    <label className="form-control w-full">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Thời gian trả phòng
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            placeholder="Type here"
+                                            className="input input-bordered w-full"
+                                            defaultValue={formatDate(
+                                                detail?.end_date
+                                            )}
+                                        />
+                                    </label>
+                                </div>
 
-                                {detail.status !== "Đặt tại quầy" && (
-                                    <div className="text-center ">
+                                <div className="flex gap-5">
+                                    <label className="form-control w-full">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Loại phòng
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            placeholder="Type here"
+                                            className="input input-bordered w-full"
+                                            defaultValue={
+                                                detail?.category_id || ""
+                                            }
+                                        />
+                                    </label>
+
+                                    <label className="form-control w-full">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Danh sách phòng trống
+                                            </span>
+                                        </div>
+                                        <MultiSelect
+                                            options={options}
+                                            value={selected}
+                                            onChange={setSelected}
+                                            labelledBy={"Select"}
+                                            isCreatable={true}
+                                        />
+                                    </label>
+                                </div>
+
+                                {!(
+                                    detail?.status === "Đặt tại quầy" ||
+                                    detail?.status === "Từ chối"
+                                ) && (
+                                    <div className="text-center">
                                         <button
                                             className="btn btn-accent mt-4"
                                             onClick={handleAccept}
                                         >
-                                            Chấp nhận
+                                            Đặt phòng
                                         </button>
 
                                         <button

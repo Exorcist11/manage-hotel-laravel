@@ -241,7 +241,7 @@ class RoomController extends Controller
         $validator = \Validator::make($request->all(), [
             'from' => 'nullable|date',
             'to' => 'nullable|date|after_or_equal:from',
-            'category_id' => 'nullable|exists:categories,id',
+            // 'category_id' => 'nullable|exists:categories,id',
         ]);
 
         if ($validator->fails()) {

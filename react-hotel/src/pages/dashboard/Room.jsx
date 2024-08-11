@@ -13,7 +13,6 @@ export default function Room() {
         id: "",
         category_id: "",
     });
-    console.log(rooms)
 
     const floors = [
         { flor: 1, name: "Tầng 1" },

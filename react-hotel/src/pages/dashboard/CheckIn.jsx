@@ -6,11 +6,19 @@ export default function CheckIn() {
     const [rooms, setRooms] = useState([]);
     const getRoom = async () => {
         await axios
-            .get("http://127.0.0.1:8000/api/orders")
-            .then((response) => setRooms(response.data.pending_orders))
+            .get("http://127.0.0.1:8000/api/bookings")
+            .then((response) => setRooms(response.data))
             .catch((error) => console.error(error));
     };
-   
+    function formatDate(isoString) {
+        const date = new Date(isoString);
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0");
+        const year = date.getFullYear().toString();
+
+        return `${day}/${month}/${year}`;
+    }
+
     useEffect(() => {
         getRoom();
     }, []);
@@ -26,18 +34,20 @@ export default function CheckIn() {
                         <tr>
                             <th>Tên khách</th>
                             <th>Số điện thoại</th>
-                            <th>Loại phòng</th>
+                            <th>Phòng</th>
                             <th>Trạng thái</th>
+                            <th>Ngày đặt</th>
                             <th width="10%"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {rooms?.map((item, i) => (
                             <tr key={i}>
-                                <td>{item?.fullname}</td>
-                                <td>{item?.phone_number}</td>
-                                <td>{item?.category_id}</td>
-                                <td>{item?.status}</td>
+                                <td>{item?.order?.fullname}</td>
+                                <td>{item?.order?.phone_number}</td>
+                                <td>{item?.booking_details?.room_id}</td>
+                                <td>{item?.order?.status}</td>
+                                <td>{formatDate(item?.order?.start_date)}</td>
                                 <td width="10%">
                                     <input
                                         id="my-drawer-4"
