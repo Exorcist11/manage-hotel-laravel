@@ -295,4 +295,18 @@ class RoomController extends Controller
             ], 500);
         }
     }
+
+    public function getRoomsNotCheckedIn()
+    {
+        $rooms = Room::whereHas('booking_details', function ($query) {
+            $query->where('is_check_in', false); 
+        })->with(['booking_details' => function ($query) {
+            $query->where('is_check_in', false); 
+        }])->get();
+
+        return response()->json([
+            'success' => true,
+            'rooms' => $rooms
+        ]);
+    }
 }
