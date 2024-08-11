@@ -12,6 +12,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\BookingDetailController;
 
 Route::get('/hello', function(){
   return response()->json(['message' => 'Devil may cry']);
@@ -108,5 +109,12 @@ Route::prefix('services')->group(function () {
 Route::prefix('bills')->group(function () {
   Route::controller(BillController::class)->group(function () {
     Route::get('', 'index');
+    Route::get('/{id}', 'show');
+  });
+});
+
+Route::prefix('bookingDetails')->group(function() {
+  Route::controller(BookingDetailController::class)->group(function() {
+    Route::get('/{id}', 'show');
   });
 });
