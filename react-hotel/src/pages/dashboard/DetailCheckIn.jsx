@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoCaretBack } from "react-icons/io5";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function DetailCheckIn() {
     const [form, setForm] = useState({});
@@ -19,22 +20,29 @@ export default function DetailCheckIn() {
         return dateString.split("T")[0];
     };
 
-    const handleCheckIn = async () => {
+    const handleCheckIn = async (room_id) => {
         await axios
-            .post(`http://127.0.0.1:8000/api/rooms/${id}/check-in`)
-            .then((response) => console.log(response))
+            .post(`http://127.0.0.1:8000/api/rooms/${room_id}/check-in`)
+            .then((response) => toast.success(response.data.message))
             .catch((error) => console.error(error));
     };
+
+    const handleCheckout = async (room_id) => {
+        await axios
+            .post(`http://127.0.0.1:8000/api/rooms/${room_id}/check-out`)
+            .then((response) => toast.success(response.data.message))
+            .catch((error) => console.error(error));
+    };
+
     useEffect(() => {
         const getDetail = async () => {
             await axios
-                .get(`http://127.0.0.1:8000/api/bookings/${id}`)
-                .then((response) => setForm(response.data))
+                .get(`http://127.0.0.1:8000/api/bookingDetails/${id}`)
+                .then((response) => setForm(response.data.booking_detail))
                 .catch((error) => console.error(error));
         };
         getDetail();
     }, [id]);
-
 
     return (
         <div>
@@ -65,7 +73,7 @@ export default function DetailCheckIn() {
                             placeholder=" Họ và tên"
                             className="input input-bordered w-full "
                             required
-                            value={form?.order?.fullname}
+                            value={form?.booking?.order?.fullname}
                             disabled
                         />
                     </label>
@@ -83,7 +91,7 @@ export default function DetailCheckIn() {
                             onChange={handleChange}
                             placeholder="Căn cước công dân/ Chứng minh nhân dân"
                             className="input input-bordered w-full"
-                            value={form?.order?.citizen_number}
+                            value={form?.booking?.order?.citizen_number}
                             disabled
                         />
                     </label>
@@ -103,7 +111,7 @@ export default function DetailCheckIn() {
                                 onChange={handleChange}
                                 className="input input-bordered w-full "
                                 pattern="[0-9]{3} [0-9]{3} [0-9]{4}"
-                                value={form?.order?.phone_number}
+                                value={form?.booking?.order?.phone_number}
                             />
                         </label>
 
@@ -120,7 +128,7 @@ export default function DetailCheckIn() {
                                 onChange={handleChange}
                                 placeholder="Email"
                                 className="input input-bordered w-full "
-                                value={form?.order?.email}
+                                value={form?.booking?.order?.email}
                             />
                         </label>
                     </div>
@@ -139,7 +147,9 @@ export default function DetailCheckIn() {
                                 onChange={handleChange}
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
-                                value={formatDate(form?.order?.start_date)}
+                                value={formatDate(
+                                    form?.booking?.order?.start_date
+                                )}
                             />
                         </label>
 
@@ -153,11 +163,12 @@ export default function DetailCheckIn() {
                             <input
                                 type="date"
                                 name="end_date"
-                                min={form?.order?.start_date}
                                 onChange={handleChange}
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
-                                value={formatDate(form?.order?.end_date)}
+                                value={formatDate(
+                                    form?.booking?.order?.end_date
+                                )}
                             />
                         </label>
                     </div>
@@ -174,14 +185,14 @@ export default function DetailCheckIn() {
                                 type="text"
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
-                                value={form?.order?.status}
+                                value={form?.booking?.order?.status}
                             />
                         </label>
 
                         <label className="form-control w-full ">
                             <div className="label">
                                 <span className="label-text">
-                                    Loại phòng{" "}
+                                    Phòng{" "}
                                     <span className="text-red-500">*</span>
                                 </span>
                             </div>
@@ -189,19 +200,28 @@ export default function DetailCheckIn() {
                                 type="text"
                                 name="end_date"
                                 className="input input-bordered w-full "
-                                value={form?.order?.category_id}
+                                value={form?.room?.room_no}
                             />
                         </label>
                     </div>
 
                     <div className="text-center ">
-                        <button
-                            className="btn mr-5 btn-success"
-                            onClick={handleCheckIn}
-                        >
-                            Check in
-                        </button>
-                        <button className="btn btn-error">Check out</button>
+                        {form?.is_check_in === 0 && (
+                            <button
+                                className="btn mr-5 btn-success"
+                                onClick={() => handleCheckIn(form?.room?.id)}
+                            >
+                                Check in
+                            </button>
+                        )}
+                        {form?.is_check_in === 1 && (
+                            <button
+                                className="btn btn-error"
+                                onClick={() => handleCheckout(form?.room?.id)}
+                            >
+                                Check out
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

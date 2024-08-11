@@ -32,9 +32,10 @@ export default function CheckIn() {
                 <table className="table table-zebra" width="100%">
                     <thead>
                         <tr>
+                            <th>Phòng</th>
                             <th>Tên khách</th>
                             <th>Số điện thoại</th>
-                            <th>Phòng</th>
+
                             <th>Trạng thái</th>
                             <th>Ngày đặt</th>
                             <th width="10%"></th>
@@ -43,9 +44,10 @@ export default function CheckIn() {
                     <tbody>
                         {rooms?.map((item, i) => (
                             <tr key={i}>
+                                <td>{item?.booking_details?.status}</td>
                                 <td>{item?.order?.fullname}</td>
                                 <td>{item?.order?.phone_number}</td>
-                                <td>{item?.booking_details?.room_id}</td>
+
                                 <td>{item?.order?.status}</td>
                                 <td>{formatDate(item?.order?.start_date)}</td>
                                 <td width="10%">

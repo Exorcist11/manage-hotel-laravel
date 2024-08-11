@@ -1,8 +1,36 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { MdDelete, MdCreate, MdOutlineDrafts } from "react-icons/md";
+import { useEffect, useState } from "react";
 
 export default function ClientHistory() {
+    const [history, setHistory] = useState([]);
+    const [searchTerm, setSearchTerm] = useState(""); // State để lưu trữ giá trị tìm kiếm
+
+    const getHistory = async () => {
+        await axios
+            .get("http://127.0.0.1:8000/api/bookings/history")
+            .then((response) => setHistory(response.data.bookings))
+            .catch((err) => console.error(err));
+    };
+
+    function convertToDateString(isoString) {
+        const date = new Date(isoString);
+
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+
+        return `${day}/${month}/${year}`;
+    }
+
+    useEffect(() => {
+        getHistory();
+    }, []);
+
+    // Lọc danh sách history dựa trên searchTerm
+    const filteredHistory = history.filter((item) =>
+        item?.order?.fullname.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div className="flex flex-col gap-5">
             <h1 className="text-2xl uppercase text-center font-bold">
@@ -14,6 +42,8 @@ export default function ClientHistory() {
                         type="text"
                         className="grow"
                         placeholder="Tìm kiếm tên khách hàng"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật searchTerm khi người dùng nhập
                     />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -34,205 +64,44 @@ export default function ClientHistory() {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Tên khách hàng</th>
-                            <th>Phòng</th>
                             <th>Ngày nhận phòng</th>
                             <th>Ngày trả phòng</th>
-
-                            <th>Favorite Color</th>
+                            <th>Phòng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Liên hệ</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>1</th>
-                            <td>Cy Ganderton</td>
-                            <td>Quality Control Specialist</td>
-                            <td>Littel, Schaden and Vandervort</td>
-                            <td>Canada</td>
+                        {filteredHistory.map((item, index) => (
+                            <tr key={index}>
+                                <th>{index + 1}</th>
+                                <td>
+                                    {convertToDateString(
+                                        item?.booking_details[0]?.check_in
+                                    )}
+                                </td>
+                                <td>
+                                    {convertToDateString(
+                                        item?.booking_details[0]?.check_out
+                                    )}
+                                </td>
+                                <td>
+                                    {item?.booking_details[0]?.room?.room_no}
+                                </td>
+                                <td>{item?.order?.fullname}</td>
 
-                            <td>Blue</td>
-                        </tr>
-                        <tr>
-                            <th>2</th>
-                            <td>Hart Hagerty</td>
-                            <td>Desktop Support Technician</td>
-                            <td>Zemlak, Daniel and Leannon</td>
-                            <td>United States</td>
-
-                            <td>Purple</td>
-                        </tr>
-                        <tr>
-                            <th>3</th>
-                            <td>Brice Swyre</td>
-                            <td>Tax Accountant</td>
-                            <td>Carroll Group</td>
-                            <td>China</td>
-
-                            <td>Red</td>
-                        </tr>
-                        <tr>
-                            <th>4</th>
-                            <td>Marjy Ferencz</td>
-                            <td>Office Assistant I</td>
-                            <td>Rowe-Schoen</td>
-                            <td>Russia</td>
-
-                            <td>Crimson</td>
-                        </tr>
-                        <tr>
-                            <th>5</th>
-                            <td>Yancy Tear</td>
-                            <td>Community Outreach Specialist</td>
-                            <td>Wyman-Ledner</td>
-                            <td>Brazil</td>
-
-                            <td>Indigo</td>
-                        </tr>
-                        <tr>
-                            <th>6</th>
-                            <td>Irma Vasilik</td>
-                            <td>Editor</td>
-                            <td>Wiza, Bins and Emard</td>
-                            <td>Venezuela</td>
-
-                            <td>Purple</td>
-                        </tr>
-                        <tr>
-                            <th>7</th>
-                            <td>Meghann Durtnal</td>
-                            <td>Staff Accountant IV</td>
-                            <td>Schuster-Schimmel</td>
-                            <td>Philippines</td>
-
-                            <td>Yellow</td>
-                        </tr>
-                        <tr>
-                            <th>8</th>
-                            <td>Sammy Seston</td>
-                            <td>Accountant I</td>
-                            <td>O'Hara, Welch and Keebler</td>
-                            <td>Indonesia</td>
-
-                            <td>Crimson</td>
-                        </tr>
-                        <tr>
-                            <th>9</th>
-                            <td>Lesya Tinham</td>
-                            <td>Safety Technician IV</td>
-                            <td>Turner-Kuhlman</td>
-                            <td>Philippines</td>
-
-                            <td>Maroon</td>
-                        </tr>
-                        <tr>
-                            <th>10</th>
-                            <td>Zaneta Tewkesbury</td>
-                            <td>VP Marketing</td>
-                            <td>Sauer LLC</td>
-                            <td>Chad</td>
-
-                            <td>Green</td>
-                        </tr>
-                        <tr>
-                            <th>11</th>
-                            <td>Andy Tipple</td>
-                            <td>Librarian</td>
-                            <td>Hilpert Group</td>
-                            <td>Poland</td>
-
-                            <td>Indigo</td>
-                        </tr>
-                        <tr>
-                            <th>12</th>
-                            <td>Sophi Biles</td>
-                            <td>Recruiting Manager</td>
-                            <td>Gutmann Inc</td>
-                            <td>Indonesia</td>
-
-                            <td>Maroon</td>
-                        </tr>
-                        <tr>
-                            <th>13</th>
-                            <td>Florida Garces</td>
-                            <td>Web Developer IV</td>
-                            <td>Gaylord, Pacocha and Baumbach</td>
-                            <td>Poland</td>
-
-                            <td>Purple</td>
-                        </tr>
-                        <tr>
-                            <th>14</th>
-                            <td>Maribeth Popping</td>
-                            <td>Analyst Programmer</td>
-                            <td>Deckow-Pouros</td>
-                            <td>Portugal</td>
-
-                            <td>Aquamarine</td>
-                        </tr>
-                        <tr>
-                            <th>15</th>
-                            <td>Moritz Dryburgh</td>
-                            <td>Dental Hygienist</td>
-                            <td>Schiller, Cole and Hackett</td>
-                            <td>Sri Lanka</td>
-
-                            <td>Crimson</td>
-                        </tr>
-                        <tr>
-                            <th>16</th>
-                            <td>Reid Semiras</td>
-                            <td>Teacher</td>
-                            <td>Sporer, Sipes and Rogahn</td>
-                            <td>Poland</td>
-
-                            <td>Green</td>
-                        </tr>
-                        <tr>
-                            <th>17</th>
-                            <td>Alec Lethby</td>
-                            <td>Teacher</td>
-                            <td>Reichel, Glover and Hamill</td>
-                            <td>China</td>
-
-                            <td>Khaki</td>
-                        </tr>
-                        <tr>
-                            <th>18</th>
-                            <td>Aland Wilber</td>
-                            <td>Quality Control Specialist</td>
-                            <td>Kshlerin, Rogahn and Swaniawski</td>
-                            <td>Czech Republic</td>
-
-                            <td>Purple</td>
-                        </tr>
-                        <tr>
-                            <th>19</th>
-                            <td>Teddie Duerden</td>
-                            <td>Staff Accountant III</td>
-                            <td>Pouros, Ullrich and Windler</td>
-                            <td>France</td>
-
-                            <td>Aquamarine</td>
-                        </tr>
-                        <tr>
-                            <th>20</th>
-                            <td>Lorelei Blackstone</td>
-                            <td>Data Coordiator</td>
-                            <td>Witting, Kutch and Greenfelder</td>
-                            <td>Kazakhstan</td>
-
-                            <td>Red</td>
-                        </tr>
+                                <td>{item?.order?.phone_number}</td>
+                            </tr>
+                        ))}
                     </tbody>
                     <tfoot>
                         <tr>
                             <th></th>
-                            <th>Name</th>
-                            <th>Job</th>
-                            <th>company</th>
-                            <th>location</th>
-
-                            <th>Favorite Color</th>
+                            <th>Ngày nhận phòng</th>
+                            <th>Ngày trả phòng</th>
+                            <th>Phòng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Liên hệ</th>
                         </tr>
                     </tfoot>
                 </table>

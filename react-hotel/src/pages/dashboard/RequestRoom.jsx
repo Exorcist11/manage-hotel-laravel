@@ -54,10 +54,10 @@ export default function RequestRoom() {
         const { name, value } = event.target;
         let updatedValue = value;
 
-        if (name === "room_id") {
-            const selectedOptions = Array.from(event.target.selectedOptions);
-            updatedValue = selectedOptions.map((option) => option.value);
-        }
+        // if (name === "room_id") {
+        //     const selectedOptions = Array.from(event.target.selectedOptions);
+        //     updatedValue = selectedOptions.map((option) => option.value);
+        // }
 
         setForm((prevState) => ({
             ...prevState,
@@ -97,11 +97,6 @@ export default function RequestRoom() {
     };
 
     const handleBookingRoom = async () => {
-        if (selected.length !== detail.num_of_room) {
-            toast.error(`Vui lòng chọn đủ ${detail.num_of_room} phòng.`);
-            return;
-        }
-
         await axios
             .post("http://127.0.0.1:8000/api/booking-at-counter", form)
             .then((res) => {
@@ -194,7 +189,7 @@ export default function RequestRoom() {
                 if (form.start_date && form.end_date) {
                     await getEmptyRoom();
                 }
-                if (detail.start_date && detail.end_date) {
+                if (detail?.start_date && detail?.end_date) {
                     await checkDetailRoomEmpty();
                 }
 
@@ -206,7 +201,13 @@ export default function RequestRoom() {
         };
 
         fetchData();
-    }, [form.start_date, form.end_date, form.category_id]);
+    }, [
+        form.start_date,
+        form.end_date,
+        form.category_id,
+        detail?.end_date,
+        detail?.start_date,
+    ]);
 
     return (
         <div className="flex flex-col gap-5">
