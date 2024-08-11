@@ -117,6 +117,8 @@ Route::prefix('bills')->group(function () {
 Route::prefix('bookingDetails')->group(function() {
   Route::controller(BookingDetailController::class)->group(function() {
     Route::get('/{id}', 'show');
+    Route::get('/', 'index');
+    Route::get('/check-out', 'checkOut');
   });
 });
 

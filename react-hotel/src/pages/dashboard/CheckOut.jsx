@@ -2,15 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { RiEyeLine } from "react-icons/ri";
 
-export default function CheckIn() {
+export default function CheckOut() {
     const [rooms, setRooms] = useState([]);
     const getRoom = async () => {
         await axios
-            .get("http://127.0.0.1:8000/api/bookingDetails")
+            .get("http://127.0.0.1:8000/api/bookingDetails/check-out")
             .then((response) => setRooms(response.data.booking_detail))
             .catch((error) => console.error(error));
     };
-    console.log(rooms);
     function formatDate(isoString) {
         const date = new Date(isoString);
         const day = date.getDate().toString().padStart(2, "0");
@@ -27,7 +26,7 @@ export default function CheckIn() {
     return (
         <div>
             <h1 className="font-bold text-2xl text-center uppercase">
-                Phòng chưa check in
+                Phòng chưa check out
             </h1>
             <div className="overflow-x-auto mt-5">
                 <table className="table table-zebra" width="100%">
@@ -50,7 +49,11 @@ export default function CheckIn() {
                                 <td>{item?.booking?.order?.phone_number}</td>
 
                                 <td>{item?.booking?.order?.status}</td>
-                                <td>{formatDate(item?.booking?.order?.start_date)}</td>
+                                <td>
+                                    {formatDate(
+                                        item?.booking?.order?.start_date
+                                    )}
+                                </td>
                                 <td width="10%">
                                     <input
                                         id="my-drawer-4"

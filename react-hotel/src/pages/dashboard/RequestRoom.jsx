@@ -54,11 +54,6 @@ export default function RequestRoom() {
         const { name, value } = event.target;
         let updatedValue = value;
 
-        // if (name === "room_id") {
-        //     const selectedOptions = Array.from(event.target.selectedOptions);
-        //     updatedValue = selectedOptions.map((option) => option.value);
-        // }
-
         setForm((prevState) => ({
             ...prevState,
             [name]: updatedValue,

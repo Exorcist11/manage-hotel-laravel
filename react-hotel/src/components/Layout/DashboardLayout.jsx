@@ -33,9 +33,14 @@ export default function DashboardLayout({ children }) {
             link: "/category-room",
         },
         {
-            name: "Check IN Check Out",
+            name: "Check IN ",
             icon: <RiUser5Line />,
             link: "/check-in",
+        },
+        {
+            name: "Check out ",
+            icon: <RiUser5Line />,
+            link: "/check-out",
         },
         {
             name: "Quản lý nhân viên",

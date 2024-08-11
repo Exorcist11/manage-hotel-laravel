@@ -154,6 +154,8 @@ class BookingController extends Controller
                 'room_id' => $request->room_id,
                 'check_in' => $order->start_date,
                 'check_out' => $order->end_date,
+                'is_check_in' => true,
+                'is_check_out' => false
             ]);
 
             \DB::commit();

@@ -26,4 +26,41 @@ class BookingDetailController extends Controller
             'booking_detail' => $bookingDetail
         ]);
     }
+    public function index()
+    {
+        $bookingDetail = BookingDetail::with(['room', 'booking.order'])
+        ->where('is_check_in', false)
+        ->get();
+
+        if (!$bookingDetail) {
+            return response()->json([
+                'success' => false,
+                'message' => 'BookingDetail not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'booking_detail' => $bookingDetail
+        ]);
+    }
+
+    public function checkOut()
+    {
+        $bookingDetail = BookingDetail::with(['room', 'booking.order'])
+        ->where('is_check_out', false)
+        ->get();
+
+        if (!$bookingDetail) {
+            return response()->json([
+                'success' => false,
+                'message' => 'BookingDetail not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'booking_detail' => $bookingDetail
+        ]);
+    }
 }
