@@ -21,7 +21,7 @@ Route::post('/abc', [StaffController::class, 'create']);
 
 Route::controller(RoomController::class)->group(function () {
   Route::get('/rooms', 'index');
-  Route::get('/rooms/{id}', 'show');
+  Route::get('/rooms/{id}', 'show')->where('id', '[0-9]+');
   Route::post('/rooms', 'store');
   Route::delete('/rooms/{id}', 'destroy');
   Route::put('/rooms/{id}', 'update');
@@ -30,6 +30,7 @@ Route::controller(RoomController::class)->group(function () {
   Route::post('/rooms/{id}/check-out', 'checkOut');
   Route::get('/empty-rooms', 'getAvailableRooms');
   Route::get('/empty-rooms-category', 'getAvailableRoomsByCategory');
+  Route::get('/rooms/not-checked', 'getRoomsNotCheckedIn');
 });
 
 Route::controller(StaffController::class)->group(function () {
