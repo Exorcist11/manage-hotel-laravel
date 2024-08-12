@@ -65,7 +65,7 @@ export default function RequestRoom() {
             const response = await axios.get(
                 "http://127.0.0.1:8000/api/orders"
             );
-            setData(response.data.all_orders);
+            setData(response.data.pending_orders);
         } catch (error) {
             console.error(error);
         }
@@ -247,7 +247,7 @@ export default function RequestRoom() {
                             <tr>
                                 <th>Tên khách</th>
                                 <th>Số điện thoại</th>
-                                <th>Loại phòng</th>
+                                <th>Số lượng phòng</th>
                                 <th>Trạng thái</th>
                                 <th width="10%"></th>
                             </tr>
@@ -257,7 +257,7 @@ export default function RequestRoom() {
                                 <tr key={i}>
                                     <td>{item?.fullname}</td>
                                     <td>{item?.phone_number}</td>
-                                    <td>{item?.category_id}</td>
+                                    <td>{item?.number_of_rooms}</td>
                                     <td>{item?.status}</td>
                                     <td width="10%">
                                         <input
@@ -594,6 +594,7 @@ export default function RequestRoom() {
                                             onChange={setSelected}
                                             labelledBy={"Select"}
                                             isCreatable={true}
+                                            
                                         />
                                     </label>
                                 </div>

@@ -131,16 +131,24 @@ export default function Room() {
                         {sortedRooms.map((room, i) => (
                             <tr key={i}>
                                 <th className="flex items-center gap-2">
-                                    <MdCreate
-                                        size={20}
-                                        className="cursor-pointer hover:text-blue-600"
-                                        onClick={() => handleGetRoom(room?.id)}
-                                    />{" "}
-                                    <MdDelete
-                                        size={20}
-                                        className="cursor-pointer hover:text-red-600"
-                                        onClick={() => handleDelete(room?.id)}
-                                    />
+                                    <div className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
+                                        <MdCreate
+                                            size={20}
+                                            onClick={() =>
+                                                handleGetRoom(room?.id)
+                                            }
+                                        />
+                                        <p>Sửa</p>
+                                    </div>
+                                    <div className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"> 
+                                        <MdDelete
+                                            size={20}
+                                            onClick={() =>
+                                                handleDelete(room?.id)
+                                            }
+                                        />
+                                        <p>Xóa</p>
+                                    </div>
                                 </th>
                                 <td>{room?.room_no}</td>
                                 <td>{room?.category.name}</td>

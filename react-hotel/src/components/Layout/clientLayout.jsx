@@ -1,21 +1,43 @@
+import { FaInstagram, FaFacebook, FaYoutube, FaPhoneAlt } from "react-icons/fa";
 export default function clientLayout({ children }) {
+    const handleScroll = () => {
+        const element = document.getElementById("about_me");
+        element.scrollIntoView({ behavior: "smooth" });
+    };
     return (
         <div className="flex flex-col h-full">
-            <div className="flex items-center flex-row justify-between px-20  border-b mb-5">
-                <div className="w-44">
+            <div className="flex items-center flex-row justify-between px-20  border-b mb-5 ">
+                <div className="basis-5/12">
+                    <ul className="flex items-center font-semibold text-base list-none gap-4 cursor-pointer">
+                        <li className="li_content flex items-center gap-2">
+                            <FaPhoneAlt size={24} /> 1900 1000
+                        </li>
+                        <li className="li_content">
+                            <FaInstagram size={24} />
+                        </li>
+                        <li className="li_content">
+                            <FaFacebook size={24} />
+                        </li>
+                        <li className="li_content">
+                            <FaYoutube size={24} />
+                        </li>
+                    </ul>
+                </div>
+                <div className="w-44 basis-1/12">
                     <img
                         alt="logo"
                         src="/images/muong-thanh-logo.png"
                         className="w-full h-full object-cover object-center"
                     />
                 </div>
-                <div>
+                <div className="basis-5/12">
                     <ul className="flex items-center font-semibold text-base list-none gap-4 cursor-pointer">
                         <li className="li_content">
                             <a href="/">Trang chủ</a>
                         </li>
-                        <li className="li_content">Về chúng tôi</li>
-                        <li className="li_content">Liên hệ</li>
+                        <li className="li_content" onClick={handleScroll}>
+                            Về chúng tôi
+                        </li>
                         <li className="li_content">
                             <a href="/list-room">Danh sách phòng</a>
                         </li>

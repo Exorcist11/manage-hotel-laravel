@@ -1,3 +1,4 @@
+import { ClearForm } from "@/middleware/ClearForm";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { MdDelete, MdCreate, MdOutlineDrafts } from "react-icons/md";
@@ -43,11 +44,10 @@ export default function Staff() {
         await axios
             .post("http://127.0.0.1:8000/api/staff", form)
             .then((res) => {
-                console.log(res);
+                ClearForm();
                 toast.success("Thêm mới nhân viên thành công!");
-                setForm({});
             })
-            .catch((e) => console.log(e));
+            .catch((e) => console.error(e));
         fetchRooms();
     };
 
@@ -72,12 +72,7 @@ export default function Staff() {
             setForm({
                 id: userData.id,
                 email: userData.email,
-                role:
-                    userData.role === "Nhân viên"
-                        ? "0"
-                        : userData.role === "Quản lý"
-                        ? "1"
-                        : "2",
+                role: userData.role,
                 fullname: userData.profiles.fullname,
                 birth: userData.profiles.birth,
                 gender: userData.profiles.gender,
@@ -164,10 +159,10 @@ export default function Staff() {
             </div>
 
             <div className="overflow-x-auto">
-                <table className="table table-zebra">
+                <table className="table table-zebra" width="100%">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th width="35%"></th>
                             <th>Tên nhân viên</th>
                             <th>Chức vụ</th>
                         </tr>
@@ -175,28 +170,39 @@ export default function Staff() {
                     <tbody>
                         {filteredStaffs.map((staff, i) => (
                             <tr key={i}>
-                                <th className="flex items-center gap-2">
-                                    <MdCreate
-                                        size={20}
-                                        className="cursor-pointer hover:text-blue-600"
-                                        onClick={() => handleGetUser(staff?.id)}
-                                    />
-                                    <MdDelete
-                                        size={20}
-                                        className="cursor-pointer hover:text-red-600"
-                                        onClick={() => handleDelete(staff?.id)}
-                                    />
-                                    {!staff?.email && (
-                                        <MdOutlineDrafts
+                                <th className="flex items-center gap-2 max-w-fit">
+                                    <div className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
+                                        <MdCreate
                                             size={20}
-                                            className="cursor-pointer hover:text-green-600"
                                             onClick={() =>
-                                                handleOpenMail(
-                                                    staff?.id,
-                                                    staff?.profiles?.fullname
-                                                )
+                                                handleGetUser(staff?.id)
                                             }
                                         />
+                                        <p>Sửa</p>
+                                    </div>
+                                    <div className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
+                                        <MdDelete
+                                            size={20}
+                                            onClick={() =>
+                                                handleDelete(staff?.id)
+                                            }
+                                        />
+                                        <p>Xóa</p>
+                                    </div>
+                                    {!staff?.email && (
+                                        <div className="bg-blue-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
+                                            <MdOutlineDrafts
+                                                size={20}
+                                                onClick={() =>
+                                                    handleOpenMail(
+                                                        staff?.id,
+                                                        staff?.profiles
+                                                            ?.fullname
+                                                    )
+                                                }
+                                            />
+                                            <p>Thêm email</p>
+                                        </div>
                                     )}
                                 </th>
                                 <td>{staff?.profiles?.fullname}</td>
@@ -243,7 +249,7 @@ export default function Staff() {
                             placeholder="Ngày sinh"
                             onChange={handleChange}
                         />
-                        <div className="flex gap-5 border rounded-xl">
+                        <div className="flex gap-5 rounded-xl">
                             <div className="form-control">
                                 <label className="label cursor-pointer">
                                     <input
@@ -273,17 +279,6 @@ export default function Staff() {
                                 </label>
                             </div>
                         </div>
-                        <select
-                            className="select select-bordered w-full"
-                            onChange={handleChange}
-                            name="role"
-                        >
-                            <option disabled selected>
-                                Chức vụ
-                            </option>
-                            <option value={0}>Nhân viên</option>
-                            <option value={1}>Quản lý</option>
-                        </select>
                     </div>
 
                     <div className="modal-action">
@@ -394,7 +389,6 @@ export default function Staff() {
                                 <option disabled>Chức vụ</option>
                                 <option value="Nhân viên">Nhân viên</option>
                                 <option value="Quản lý">Quản lý</option>
-                                <option value="Lễ tân">Lễ tân</option>
                             </select>
                             <div className="flex gap-5  rounded-xl">
                                 <div className="form-control">

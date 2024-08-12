@@ -62,15 +62,11 @@ export default function CategoryRoom() {
 
         try {
             await axios
-                .patch(
-                    `http://127.0.0.1:8000/api/categories/${form.id}`,
-                    data,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                )
+                .put(`http://127.0.0.1:8000/api/categories/${form.id}`, data, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
                 .then(() => {
                     getCategories();
                     document.getElementById("detail_category").close();
@@ -81,13 +77,16 @@ export default function CategoryRoom() {
     };
 
     const handleDelete = async (id) => {
-        await axios
-            .delete(`http://127.0.0.1:8000/api/categories/${id}`)
-            .then(() => {
-                toast.success("Xóa thể loại thành công!");
-                getCategories();
-            })
-            .catch((error) => console.error(error));
+        const confirm = window.confirm("Bạn muốn xóa thể loại phòng này chứ?");
+        if (confirm) {
+            await axios
+                .delete(`http://127.0.0.1:8000/api/categories/${id}`)
+                .then(() => {
+                    toast.success("Xóa thể loại thành công!");
+                    getCategories();
+                })
+                .catch((error) => console.error(error));
+        }
     };
 
     const handleSave = async () => {
@@ -246,23 +245,38 @@ export default function CategoryRoom() {
                                 <td width="30%">{item?.description}</td>
                                 <td width="10%">
                                     <div className="flex items-center justify-center gap-2">
-                                        <MdCreate
-                                            size={20}
-                                            className="cursor-pointer hover:text-blue-600"
-                                            onClick={() => handleView(item?.id)}
-                                        />
-                                        <MdDelete
-                                            size={20}
-                                            className="cursor-pointer hover:text-red-600"
-                                            onClick={() =>
-                                                handleDelete(item?.id)
-                                            }
-                                        />
+                                        <div className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
+                                            <MdCreate
+                                                size={20}
+                                                onClick={() =>
+                                                    handleView(item?.id)
+                                                }
+                                            />
+                                            <p>Sửa</p>
+                                        </div>
+                                        <div className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
+                                            <MdDelete
+                                                size={20}
+                                                onClick={() =>
+                                                    handleDelete(item?.id)
+                                                }
+                                            />
+                                            <p>Xóa</p>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Loại phòng</th>
+                            <th>Hình ảnh</th>
+                            <th>Mô tả</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                 </table>
 
                 <div className="flex justify-center mt-4">

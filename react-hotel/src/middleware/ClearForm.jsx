@@ -1,9 +1,23 @@
 export const ClearForm = () => {
-    document.querySelector('input[type="file"]').value = null;
-    document
-        .querySelectorAll('input[type="text"], textarea')
-        .forEach((input) => (input.value = null));
-    document
-        .querySelectorAll('input[type="number"]')
-        .forEach((input) => (input.value = null));
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) {
+        fileInput.value = null;
+    }
+
+    const textInputs = document.querySelectorAll(
+        'input[type="text"], textarea'
+    );
+    if (textInputs.length > 0) {
+        textInputs.forEach((input) => (input.value = null));
+    }
+
+    const numberInputs = document.querySelectorAll('input[type="number"]');
+    if (numberInputs.length > 0) {
+        numberInputs.forEach((input) => (input.value = null));
+    }
+
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    if (dateInputs.length > 0) {
+        dateInputs.forEach((input) => (input.value = null));
+    }
 };

@@ -79,7 +79,6 @@ export default function DashboardLayout({ children }) {
         "Quản lý cơ sở vật chất",
     ];
 
-
     const filteredMenus = menus.filter((menu) => {
         if (info?.role === "Nhân viên") {
             return !restrictedMenusForEmployee.includes(menu.name);
@@ -88,7 +87,7 @@ export default function DashboardLayout({ children }) {
     });
     return (
         <div className="flex h-screen">
-            <nav className="basis-1/5 flex flex-col gap-5 border-r py-5 bg-slate-50 h-full">
+            <nav className="basis-1/5 flex flex-col gap-5 border-r py-5 bg-[#e2dfd4] h-full">
                 <div className="flex flex-col gap-2 items-center justify-center">
                     <img
                         src="/images/muong-thanh-logo.png"

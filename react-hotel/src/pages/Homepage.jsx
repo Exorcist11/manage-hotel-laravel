@@ -1,27 +1,10 @@
-import Slider from "@/components/Slider/Slider";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { FaMountain, FaPlaneDeparture } from "react-icons/fa";
 export default function Homepage() {
     const [categories, setCategories] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const images = [
-        {
-            imgURL: "/images/muong-thanh-banner.png",
-            imgAlt: "img-1",
-        },
-        {
-            imgURL: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-            imgAlt: "img-2",
-        },
-        {
-            imgURL: "https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-            imgAlt: "img-3",
-        },
-        {
-            imgURL: "https://images.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
-            imgAlt: "img-4",
-        },
-    ];
+
     const handlePrev = () => {
         setCurrentIndex((prevIndex) =>
             prevIndex === 0 ? categories.length - 3 : prevIndex - 3
@@ -49,30 +32,19 @@ export default function Homepage() {
     }, []);
     return (
         <div className="">
-            {/* <div className="mx-20">
+            <div className="mx-20">
                 <img
                     src="/images/muong-thanh-banner.png"
                     alt="banner"
                     className="object-cover object-center"
                 />
-            </div> */}
-
-            <div className="mx-20">
-                <Slider>
-                    {images.map((image, index) => {
-                        return (
-                            <img
-                                key={index}
-                                src={image.imgURL}
-                                alt={image.imgAlt}
-                            />
-                        );
-                    })}
-                </Slider>
             </div>
 
             <div className="grid grid-cols-4 px-20 mt-20 items-center gap-8">
-                <div className="col-span-2 text-center tracking-wide p-10 gap-4 flex flex-col">
+                <div
+                    className="col-span-2 text-center tracking-wide p-10 gap-4 flex flex-col"
+                    id="about_me"
+                >
                     <h2 className="uppercase text-xl font-semibold">
                         Về chúng tôi
                     </h2>
@@ -195,7 +167,7 @@ export default function Homepage() {
                 </div>
             </div>
 
-            {/* <div className="h-[450px]">
+            <div className="h-[500px] mx-20 my-20">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235.41011595578803!2d105.71325711959585!3d19.257917808959636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313774ca8aa3226b%3A0xdefe9bb19c41919e!2zS2jDoWNoIHPhuqFuIE3GsOG7nW5nIFRoYW5oIEdyYW5kIEhvw6BuZyBNYWk!5e0!3m2!1svi!2s!4v1723159489782!5m2!1svi!2s"
                     style={{ border: 0, width: "100%", height: "100%" }}
@@ -203,7 +175,7 @@ export default function Homepage() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
-            </div> */}
+            </div>
 
             {/* <div className="w-screen px-20 py-10">
                 <h3 className="font-bold text-xl">Xung quanh khách sạn</h3>

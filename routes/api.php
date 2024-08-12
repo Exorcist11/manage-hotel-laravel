@@ -90,7 +90,7 @@ Route::prefix('categories')->group(function () {
     Route::get('', 'index');
     Route::post('', 'store');
     Route::get('/{id}', 'show');
-    Route::patch('/{id}', 'update');
+    Route::put('/{id}', 'update');
     Route::delete('/{id}', 'destroy');
     Route::get('/{id}/rooms', 'getListRoomByCategory');
   });

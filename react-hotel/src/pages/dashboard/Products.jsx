@@ -151,8 +151,8 @@ export default function Products() {
                     </label>
                 </div>
             </div>
-            <div className="">
-                <table className="table table-zebra">
+            <div className="mt-5">
+                <table className="table table-zebra" width="100%">
                     {/* head */}
                     <thead>
                         <tr>
@@ -160,7 +160,7 @@ export default function Products() {
                             <th></th>
                             <th>Số lượng</th>
                             <th>Giá</th>
-                            <th></th>
+                            <th width="10%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -188,20 +188,24 @@ export default function Products() {
                                 <td>{item?.price} VND</td>
                                 <td className="">
                                     <div className="flex items-center justify-center gap-2">
-                                        <MdCreate
-                                            size={20}
-                                            className="cursor-pointer hover:text-blue-600"
-                                            onClick={() =>
-                                                handleViewProduct(item?.id)
-                                            }
-                                        />{" "}
-                                        <MdDelete
-                                            size={20}
-                                            className="cursor-pointer hover:text-red-600"
-                                            onClick={() =>
-                                                handleDelete(item?.id)
-                                            }
-                                        />
+                                        <div className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90">
+                                            <MdCreate
+                                                size={20}
+                                                onClick={() =>
+                                                    handleViewProduct(item?.id)
+                                                }
+                                            />
+                                            <p>Sửa</p>
+                                        </div>
+                                        <div className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90">
+                                            <MdDelete
+                                                size={20}
+                                                onClick={() =>
+                                                    handleDelete(item?.id)
+                                                }
+                                            />
+                                            <p>Xóa</p>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

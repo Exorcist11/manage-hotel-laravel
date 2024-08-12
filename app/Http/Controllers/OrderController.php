@@ -22,7 +22,7 @@ class OrderController extends Controller
             'accept_orders' => Order::accept()->get(),
             'reject_orders' => Order::reject()->get(),
             'counter_orders' => Order::counter()->with('booking')->get(),
-            'pending_orders' => Order::whereIn('status', [3, 1])->get()
+            // 'pending_orders' => Order::whereIn('status', [3, 1])->get()
         ]);
     }
 
