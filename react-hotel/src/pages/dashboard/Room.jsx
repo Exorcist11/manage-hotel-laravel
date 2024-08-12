@@ -33,17 +33,24 @@ export default function Room() {
     };
 
     const handleSave = async () => {
-        await axios
-            .post("http://127.0.0.1:8000/api/rooms", form)
-            .then(() => {
-                ClearForm();
-                toast.success("Thêm mới phòng thành công!");
-            })
-            .catch((e) => {
-                ClearForm();
+        if (!form.room_no || !form.floor || !form.category_id) {
+            toast.error("Vui lòng nhập đầy đủ thông tin phòng");
+            return;
+        }
+
+        try {
+            await axios.post("http://127.0.0.1:8000/api/rooms", form);
+            ClearForm();
+            toast.success("Thêm mới phòng thành công!");
+            fetchRooms();
+        } catch (e) {
+            ClearForm();
+            if (e.response && e.response.data && e.response.data.message) {
                 toast.error(e.response.data.message);
-            });
-        fetchRooms();
+            } else {
+                toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+            }
+        }
     };
 
     const handleGetRoom = async (id) => {
