@@ -49,6 +49,7 @@ class BookingDetailController extends Controller
     {
         $bookingDetail = BookingDetail::with(['room', 'booking.order'])
         ->where('is_check_out', false)
+        ->where('is_check_in', true)
         ->get();
 
         if (!$bookingDetail) {
@@ -63,4 +64,5 @@ class BookingDetailController extends Controller
             'booking_detail' => $bookingDetail
         ]);
     }
+    
 }

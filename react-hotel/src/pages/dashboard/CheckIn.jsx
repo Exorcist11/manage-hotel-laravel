@@ -79,38 +79,46 @@ export default function CheckIn() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredRooms?.map((item, i) => (
-                            <tr key={i}>
-                                <td>{item?.room?.room_no}</td>
-                                <td>{item?.booking?.order?.fullname}</td>
-                                <td>{item?.booking?.order?.phone_number}</td>
-                                <td>{item?.booking?.order?.status}</td>
-                                <td>
-                                    {formatDate(
-                                        item?.booking?.order?.start_date
-                                    )}
-                                </td>
-                                <td width="10%">
-                                    <input
-                                        id="my-drawer-4"
-                                        type="checkbox"
-                                        className="drawer-toggle"
-                                    />
-                                    <div className="drawer-content">
-                                        <a
-                                            className="tooltip"
-                                            data-tip="Xem chi tiết"
-                                            href={`/check-in/${item.id}`}
-                                        >
-                                            <RiEyeLine
-                                                className="hover:text-blue-500 cursor-pointer "
-                                                size={16}
-                                            />
-                                        </a>
-                                    </div>
-                                </td>
+                        {filteredRooms.length > 0 ? (
+                            filteredRooms?.map((item, i) => (
+                                <tr key={i}>
+                                    <td>{item?.room?.room_no}</td>
+                                    <td>{item?.booking?.order?.fullname}</td>
+                                    <td>
+                                        {item?.booking?.order?.phone_number}
+                                    </td>
+                                    <td>{item?.booking?.order?.status}</td>
+                                    <td>
+                                        {formatDate(
+                                            item?.booking?.order?.start_date
+                                        )}
+                                    </td>
+                                    <td width="10%">
+                                        <input
+                                            id="my-drawer-4"
+                                            type="checkbox"
+                                            className="drawer-toggle"
+                                        />
+                                        <div className="drawer-content">
+                                            <a
+                                                className="tooltip"
+                                                data-tip="Xem chi tiết"
+                                                href={`/check-in/${item.id}`}
+                                            >
+                                                <RiEyeLine
+                                                    className="hover:text-blue-500 cursor-pointer "
+                                                    size={16}
+                                                />
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td>Danh sách trống</td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>

@@ -31,16 +31,20 @@ class BookingDetail extends Model
 
 	protected $casts = [
 		'booking_id' => 'int',
-		'room_id' => 'int',
-		'check_in' => 'datetime',
-		'check_out' => 'datetime'
+        'room_id' => 'int',
+        'check_in' => 'datetime',
+        'check_out' => 'datetime',
+        'is_check_in' => 'boolean',
+        'is_check_out' => 'boolean'
 	];
 
 	protected $fillable = [
 		'booking_id',
-		'room_id',
-		'check_in',
-		'check_out'
+        'room_id',
+        'check_in',
+        'check_out',
+        'is_check_in',
+        'is_check_out'
 	];
 
 	public function booking()

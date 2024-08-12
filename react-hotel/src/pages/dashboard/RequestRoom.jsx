@@ -253,38 +253,44 @@ export default function RequestRoom() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filterData()?.map((item, i) => (
-                                <tr key={i}>
-                                    <td>{item?.fullname}</td>
-                                    <td>{item?.phone_number}</td>
-                                    <td>{item?.number_of_rooms}</td>
-                                    <td>{item?.status}</td>
-                                    <td width="10%">
-                                        <input
-                                            id="my-drawer-4"
-                                            type="checkbox"
-                                            className="drawer-toggle"
-                                        />
-                                        <div className="drawer-content">
-                                            <label
-                                                htmlFor="my-drawer-4"
-                                                className="drawer-button"
-                                                onClick={() => {
-                                                    setCheck("update");
-                                                    handleDetailBooking(
-                                                        item?.id
-                                                    );
-                                                }}
-                                            >
-                                                <RiEyeLine
-                                                    className="hover:text-blue-500 cursor-pointer"
-                                                    size={16}
-                                                />
-                                            </label>
-                                        </div>
-                                    </td>
+                            {filterData().length > 0 ? (
+                                filterData()?.map((item, i) => (
+                                    <tr key={i}>
+                                        <td>{item?.fullname}</td>
+                                        <td>{item?.phone_number}</td>
+                                        <td>{item?.number_of_rooms}</td>
+                                        <td>{item?.status}</td>
+                                        <td width="10%">
+                                            <input
+                                                id="my-drawer-4"
+                                                type="checkbox"
+                                                className="drawer-toggle"
+                                            />
+                                            <div className="drawer-content">
+                                                <label
+                                                    htmlFor="my-drawer-4"
+                                                    className="drawer-button"
+                                                    onClick={() => {
+                                                        setCheck("update");
+                                                        handleDetailBooking(
+                                                            item?.id
+                                                        );
+                                                    }}
+                                                >
+                                                    <RiEyeLine
+                                                        className="hover:text-blue-500 cursor-pointer"
+                                                        size={16}
+                                                    />
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td>Không có dữ liệu</td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -594,7 +600,6 @@ export default function RequestRoom() {
                                             onChange={setSelected}
                                             labelledBy={"Select"}
                                             isCreatable={true}
-                                            
                                         />
                                     </label>
                                 </div>

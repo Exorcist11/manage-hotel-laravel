@@ -9,16 +9,16 @@ export default function clientLayout({ children }) {
             <div className="flex items-center flex-row justify-between px-20  border-b mb-5 ">
                 <div className="basis-5/12">
                     <ul className="flex items-center font-semibold text-base list-none gap-4 cursor-pointer">
-                        <li className="li_content flex items-center gap-2">
+                        <li className="li_content flex items-center gap-2 hover:text-[#d1a543]">
                             <FaPhoneAlt size={24} /> 1900 1000
                         </li>
-                        <li className="li_content">
+                        <li className="li_content hover:text-[#d1a543]">
                             <FaInstagram size={24} />
                         </li>
-                        <li className="li_content">
+                        <li className="li_content hover:text-[#d1a543]">
                             <FaFacebook size={24} />
                         </li>
-                        <li className="li_content">
+                        <li className="li_content hover:text-[#d1a543]">
                             <FaYoutube size={24} />
                         </li>
                     </ul>

@@ -15,11 +15,11 @@ export default function Homepage() {
             imgAlt: "img-2",
         },
         {
-            imgURL: "https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+            imgURL: "https://booking.muongthanh.com/images/banners/original/banner-tin-tuc-uu-dai_1686539225_1686815922.jpg",
             imgAlt: "img-3",
         },
         {
-            imgURL: "https://images.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+            imgURL: "https://booking.muongthanh.com/images/banners/original/z5276457585777_bd08f9aabe5c299281c9248b45652cb6_1711166364.jpg",
             imgAlt: "img-4",
         },
     ];
@@ -196,6 +196,15 @@ export default function Homepage() {
                 <p className="uppercase text-2xl font-bold mb-5">
                     Vị trí tuyệt vời của Mường Thanh Grand Hoàng Mai
                 </p>
+
+                {/* <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9452.912471264588!2d105.71346699999998!3d19.258004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313774ca8aa3226b%3A0xdefe9bb19c41919e!2zS2jDoWNoIHPhuqFuIE3GsOG7nW5nIFRoYW5oIEdyYW5kIEhvw6BuZyBNYWk!5e1!3m2!1svi!2sus!4v1723454792712!5m2!1svi!2sus"
+                   
+                    style={{ border: 0, width: "100%", height: "100%" }}
+                    allowFullScreen={true}
+                    loading="lazy"
+                       referrerPolicy="no-referrer-when-downgrade"
+                ></iframe> */}
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235.41011595578803!2d105.71325711959585!3d19.257917808959636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313774ca8aa3226b%3A0xdefe9bb19c41919e!2zS2jDoWNoIHPhuqFuIE3GsOG7nW5nIFRoYW5oIEdyYW5kIEhvw6BuZyBNYWk!5e0!3m2!1svi!2s!4v1723159489782!5m2!1svi!2s"
                     style={{ border: 0, width: "100%", height: "100%" }}

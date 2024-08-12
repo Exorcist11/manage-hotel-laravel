@@ -44,6 +44,8 @@ export default function DetailCheckIn() {
         getDetail();
     }, [id]);
 
+    console.log(form);
+
     return (
         <div>
             <h1 className="font-bold text-2xl text-center uppercase">
@@ -206,7 +208,7 @@ export default function DetailCheckIn() {
                     </div>
 
                     <div className="text-center ">
-                        {form?.is_check_in === 0 && (
+                        {form?.is_check_in === false && (
                             <button
                                 className="btn mr-5 btn-success"
                                 onClick={() => handleCheckIn(form?.room?.id)}
@@ -214,7 +216,7 @@ export default function DetailCheckIn() {
                                 Check in
                             </button>
                         )}
-                        {form?.is_check_in === 1 && (
+                        {form?.is_check_in === true && (
                             <button
                                 className="btn btn-error"
                                 onClick={() => handleCheckout(form?.room?.id)}

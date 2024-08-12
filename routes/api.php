@@ -118,9 +118,13 @@ Route::prefix('bookingDetails')->group(function() {
   Route::controller(BookingDetailController::class)->group(function() {
     Route::get('/{id}', 'show');
     Route::get('/', 'index');
-    Route::get('/check-out', 'checkOut');
+    // Route::get('check-out', 'checkOut');
   });
 });
+
+
+
+Route::get('/booking-check-out', [BookingDetailController::class, 'checkOut']);
 
 Route::controller(StatisticsController::class)->group(function () {
   Route::get('/monthly-order-stats', 'monthlyOrderStats');
