@@ -1,3 +1,4 @@
+import { ClearForm } from "@/middleware/ClearForm";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { MdDelete, MdCreate } from "react-icons/md";
@@ -36,6 +37,7 @@ export default function Room() {
             .post("http://127.0.0.1:8000/api/rooms", form)
             .then(() => {
                 toast.success("Thêm mới phòng thành công!");
+                ClearForm();
             })
             .catch((e) => console.log(e));
         fetchRooms();

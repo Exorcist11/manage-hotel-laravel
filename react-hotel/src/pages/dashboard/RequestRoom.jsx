@@ -92,15 +92,29 @@ export default function RequestRoom() {
     };
 
     const handleBookingRoom = async () => {
-        await axios
-            .post("http://127.0.0.1:8000/api/booking-at-counter", form)
-            .then((res) => {
-                console.log(res);
-                toast.success("Đặt phòng thành công");
-                getListRoom();
-                document.getElementById("my-drawer-4").checked = false;
-            })
-            .catch((error) => console.error(error));
+        if (
+            !form.fullname ||
+            !form.phone_number ||
+            !form.start_date ||
+            !form.end_date
+        ) {
+            toast.error("Vui lòng nhập đủ thông tin");
+            return;
+        }
+
+        try {
+            const res = await axios.post(
+                "http://127.0.0.1:8000/api/booking-at-counter",
+                form
+            );
+            console.log(res);
+            toast.success("Đặt phòng thành công");
+            getListRoom();
+            document.getElementById("my-drawer-4").checked = false;
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to book the room");
+        }
     };
 
     const handleAccept = async () => {

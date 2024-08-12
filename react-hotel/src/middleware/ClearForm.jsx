@@ -20,4 +20,11 @@ export const ClearForm = () => {
     if (dateInputs.length > 0) {
         dateInputs.forEach((input) => (input.value = null));
     }
+
+    const selectElements = document.querySelectorAll("select");
+    if (selectElements.length > 0) {
+        selectElements.forEach((select) => {
+            select.selectedIndex = 0;
+        });
+    }
 };
