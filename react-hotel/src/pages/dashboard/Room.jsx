@@ -36,10 +36,13 @@ export default function Room() {
         await axios
             .post("http://127.0.0.1:8000/api/rooms", form)
             .then(() => {
-                toast.success("Thêm mới phòng thành công!");
                 ClearForm();
+                toast.success("Thêm mới phòng thành công!");
             })
-            .catch((e) => console.log(e));
+            .catch((e) => {
+                ClearForm();
+                toast.error(e.response.data.message);
+            });
         fetchRooms();
     };
 
