@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Room;
 use App\Models\BookingDetail;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 
 class RoomController extends Controller
 {
@@ -28,6 +29,20 @@ class RoomController extends Controller
                 'message' => 'Thêm mới phòng thành công!',
                 'data' => $room
             ], 201);
+        } catch (QueryException $err) {
+            if ($err->errorInfo[1] == 1062) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Trùng số phòng'
+                ], 409);
+            }
+    
+            Log::error('Error creating room: ' . $err->getMessage());
+    
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while creating the room. Please try again.'
+            ], 500);
         } catch (Exception $err) {
             Log::error('Error creating room: ' . $err->getMessage());
     
