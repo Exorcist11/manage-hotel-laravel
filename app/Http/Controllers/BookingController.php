@@ -81,7 +81,26 @@ class BookingController extends Controller
             return response()->json(['message' => 'Booking not found'], 404);
         }
 
-        return response()->json($booking);
+        $bookingDetails = $booking->booking_details;
+
+        $allCheckedIn = $bookingDetails->every(function ($detail) {
+            return $detail->is_check_in;
+        });
+
+        $allCheckedOut = $bookingDetails->every(function ($detail) {
+            return $detail->is_check_out;
+        });
+
+        if ($allCheckedIn && $allCheckedOut) {
+            $status = true;
+        } else {
+            $status = false;
+        }
+
+        return response()->json([
+            'booking' => $booking,
+            'status' => $status
+        ]);
     }
 
     /**
