@@ -1,3 +1,4 @@
+import { ClearForm } from "@/middleware/ClearForm";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { MdDelete, MdCreate } from "react-icons/md";
@@ -16,6 +17,7 @@ export default function CategoryRoom() {
         id: "",
         price: "",
     });
+
     const [selectedFile, setSelectedFile] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 3;
@@ -57,7 +59,6 @@ export default function CategoryRoom() {
         if (selectedFile) {
             data.image = selectedFile;
         }
-        
 
         try {
             await axios
@@ -105,7 +106,20 @@ export default function CategoryRoom() {
             })
             .then(() => {
                 toast.success("Thêm mới thành công");
+                setForm({
+                    name: "",
+                    description: "",
+                    image: "",
+                    size: "",
+                    max_occupancy: "",
+                    id: "",
+                    price: "",
+                });
+                setSelectedFile(null);
+                ClearForm();
+
                 getCategories();
+                document.getElementById("my_modal_1").close();
             })
             .catch((err) => toast.error(err));
     };
@@ -137,7 +151,6 @@ export default function CategoryRoom() {
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
-        
     };
 
     const getCategories = async () => {
