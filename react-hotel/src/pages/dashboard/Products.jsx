@@ -188,22 +188,22 @@ export default function Products() {
                                 <td>{item?.price} VND</td>
                                 <td className="">
                                     <div className="flex items-center justify-center gap-2">
-                                        <div className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90">
-                                            <MdCreate
-                                                size={20}
-                                                onClick={() =>
-                                                    handleViewProduct(item?.id)
-                                                }
-                                            />
+                                        <div
+                                            onClick={() =>
+                                                handleViewProduct(item?.id)
+                                            }
+                                            className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90"
+                                        >
+                                            <MdCreate size={20} />
                                             <p>Sửa</p>
                                         </div>
-                                        <div className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90">
-                                            <MdDelete
-                                                size={20}
-                                                onClick={() =>
-                                                    handleDelete(item?.id)
-                                                }
-                                            />
+                                        <div
+                                            onClick={() =>
+                                                handleDelete(item?.id)
+                                            }
+                                            className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90"
+                                        >
+                                            <MdDelete size={20} />
                                             <p>Xóa</p>
                                         </div>
                                     </div>

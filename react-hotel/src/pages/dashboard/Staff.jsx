@@ -171,36 +171,31 @@ export default function Staff() {
                         {filteredStaffs.map((staff, i) => (
                             <tr key={i}>
                                 <th className="flex items-center gap-2 max-w-fit">
-                                    <div className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
-                                        <MdCreate
-                                            size={20}
-                                            onClick={() =>
-                                                handleGetUser(staff?.id)
-                                            }
-                                        />
+                                    <div
+                                        className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                        onClick={() => handleGetUser(staff?.id)}
+                                    >
+                                        <MdCreate size={20} />
                                         <p>Sửa</p>
                                     </div>
-                                    <div className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
-                                        <MdDelete
-                                            size={20}
-                                            onClick={() =>
-                                                handleDelete(staff?.id)
-                                            }
-                                        />
+                                    <div
+                                        className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                        onClick={() => handleDelete(staff?.id)}
+                                    >
+                                        <MdDelete size={20} />
                                         <p>Xóa</p>
                                     </div>
                                     {!staff?.email && (
-                                        <div className="bg-blue-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
-                                            <MdOutlineDrafts
-                                                size={20}
-                                                onClick={() =>
-                                                    handleOpenMail(
-                                                        staff?.id,
-                                                        staff?.profiles
-                                                            ?.fullname
-                                                    )
-                                                }
-                                            />
+                                        <div
+                                            className="bg-blue-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                            onClick={() =>
+                                                handleOpenMail(
+                                                    staff?.id,
+                                                    staff?.profiles?.fullname
+                                                )
+                                            }
+                                        >
+                                            <MdOutlineDrafts size={20} />
                                             <p>Thêm email</p>
                                         </div>
                                     )}

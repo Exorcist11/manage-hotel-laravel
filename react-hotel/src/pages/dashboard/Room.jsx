@@ -131,22 +131,18 @@ export default function Room() {
                         {sortedRooms.map((room, i) => (
                             <tr key={i}>
                                 <th className="flex items-center gap-2">
-                                    <div className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
-                                        <MdCreate
-                                            size={20}
-                                            onClick={() =>
-                                                handleGetRoom(room?.id)
-                                            }
-                                        />
+                                    <div
+                                        onClick={() => handleGetRoom(room?.id)}
+                                        className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                    >
+                                        <MdCreate size={20} />
                                         <p>Sửa</p>
                                     </div>
-                                    <div className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"> 
-                                        <MdDelete
-                                            size={20}
-                                            onClick={() =>
-                                                handleDelete(room?.id)
-                                            }
-                                        />
+                                    <div
+                                        onClick={() => handleDelete(room?.id)}
+                                        className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                    >
+                                        <MdDelete size={20} />
                                         <p>Xóa</p>
                                     </div>
                                 </th>

@@ -245,22 +245,20 @@ export default function CategoryRoom() {
                                 <td width="30%">{item?.description}</td>
                                 <td width="10%">
                                     <div className="flex items-center justify-center gap-2">
-                                        <div className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
-                                            <MdCreate
-                                                size={20}
-                                                onClick={() =>
-                                                    handleView(item?.id)
-                                                }
-                                            />
+                                        <div
+                                            onClick={() => handleView(item?.id)}
+                                            className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                        >
+                                            <MdCreate size={20} />
                                             <p>Sửa</p>
                                         </div>
-                                        <div className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90">
-                                            <MdDelete
-                                                size={20}
-                                                onClick={() =>
-                                                    handleDelete(item?.id)
-                                                }
-                                            />
+                                        <div
+                                            onClick={() =>
+                                                handleDelete(item?.id)
+                                            }
+                                            className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                        >
+                                            <MdDelete size={20} />
                                             <p>Xóa</p>
                                         </div>
                                     </div>

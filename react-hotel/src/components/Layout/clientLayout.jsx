@@ -31,7 +31,7 @@ export default function clientLayout({ children }) {
                     />
                 </div>
                 <div className="basis-5/12">
-                    <ul className="flex items-center font-semibold text-base list-none gap-4 cursor-pointer">
+                    <ul className="flex items-center font-semibold  list-none gap-4 cursor-pointer text-xs">
                         <li className="li_content">
                             <a href="/">Trang chủ</a>
                         </li>
