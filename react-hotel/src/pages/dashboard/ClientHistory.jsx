@@ -94,16 +94,6 @@ export default function ClientHistory() {
                             </tr>
                         ))}
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>Ngày nhận phòng</th>
-                            <th>Ngày trả phòng</th>
-                            <th>Phòng</th>
-                            <th>Tên khách hàng</th>
-                            <th>Liên hệ</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>

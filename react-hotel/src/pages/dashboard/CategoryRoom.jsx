@@ -284,15 +284,7 @@ export default function CategoryRoom() {
                             </tr>
                         ))}
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>ID</th>
-                            <th>Loại phòng</th>
-                            <th>Hình ảnh</th>
-                            <th>Mô tả</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
+                    
                 </table>
 
                 <div className="flex justify-center mt-4">
