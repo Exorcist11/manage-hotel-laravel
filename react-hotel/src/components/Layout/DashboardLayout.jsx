@@ -53,7 +53,7 @@ export default function DashboardLayout({ children }) {
             link: "/accounts",
         },
         {
-            name: "Quản lý cơ sở vật chất",
+            name: "Quản lý dịch vụ",
             icon: <RiArchiveDrawerLine />,
             link: "/products",
         },
@@ -76,7 +76,7 @@ export default function DashboardLayout({ children }) {
         "Quản lý thể loại phòng",
         "Quản lý nhân viên",
         "Quản lý tài khoản",
-        "Quản lý cơ sở vật chất",
+        "Quản lý dịch vụ",
     ];
 
     const filteredMenus = menus.filter((menu) => {

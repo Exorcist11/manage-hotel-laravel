@@ -24,7 +24,7 @@ export default function DetailCheckIn() {
         await axios
             .post(`http://127.0.0.1:8000/api/rooms/${room_id}/check-in`)
             .then((response) => toast.success(response.data.message))
-            .catch((error) => console.error(error));
+            .catch((error) => toast.error(error.response.data.message));
     };
 
     const handleCheckout = async (room_id) => {

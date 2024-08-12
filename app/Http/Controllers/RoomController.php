@@ -115,7 +115,7 @@ class RoomController extends Controller
             if (!$bookingDetail) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Chưa có booking cho phòng này'
+                    'message' => 'Chưa đến thời gian đặt phòng'
                 ], 404);
             }
 
@@ -154,7 +154,7 @@ class RoomController extends Controller
             if (!$bookingDetail) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Chưa có booking cho phòng này'
+                    'message' => 'Chưa đến thời gian trả phòng'
                 ], 404);
             }
 
