@@ -91,25 +91,6 @@ function Slider({ children }) {
                     );
                 })}
             </div>
-
-            <button
-                className="slider__btn-next"
-                onClick={(e) => {
-                    e.preventDefault();
-                    slideNext();
-                }}
-            >
-                {">"}
-            </button>
-            <button
-                className="slider__btn-prev"
-                onClick={(e) => {
-                    e.preventDefault();
-                    slidePrev();
-                }}
-            >
-                {"<"}
-            </button>
         </div>
     );
 }
