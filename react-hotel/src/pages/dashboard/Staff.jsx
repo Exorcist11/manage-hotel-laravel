@@ -41,14 +41,40 @@ export default function Staff() {
     };
 
     const handleSave = async () => {
-        await axios
-            .post("http://127.0.0.1:8000/api/staff", form)
-            .then((res) => {
-                ClearForm();
-                toast.success("Thêm mới nhân viên thành công!");
-            })
-            .catch((e) => console.error(e));
-        fetchRooms();
+        if (
+            !form.fullname ||
+            !form.phone_number ||
+            !form.address ||
+            !form.birth ||
+            !form.email ||
+            !form.password
+        ) {
+            toast.error("Vui lòng nhập đầy đủ thông tin nhân viên.");
+            return;
+        }
+
+        try {
+            await axios.post("http://127.0.0.1:8000/api/staff", form);
+            toast.success("Thêm mới nhân viên thành công!");
+            ClearForm();
+
+            setForm({
+                fullname: "",
+                phone_number: "",
+                address: "",
+                birth: "",
+                gender: "male",
+                role: "0",
+                id: "",
+                email: "",
+                password: "",
+            });
+
+            fetchRooms();
+        } catch (e) {
+            console.error(e);
+            toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+        }
     };
 
     const handleDelete = async (id) => {

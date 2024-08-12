@@ -31,24 +31,38 @@ export default function Products() {
     };
 
     const handleSubmit = async () => {
+        if (!form.name || !form.price || !form.amount || !selectedFile) {
+            toast.error(
+                "Vui lòng nhập đầy đủ thông tin sản phẩm và chọn hình ảnh"
+            );
+            return;
+        }
+
         const formData = new FormData();
         formData.append("image", selectedFile);
         formData.append("name", form.name);
         formData.append("price", form.price);
         formData.append("amount", form.amount);
+
         try {
-            await axios
-                .post("http://127.0.0.1:8000/api/products", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then(() => {
-                    toast.success("Thêm mới sản phẩm thành công!");
-                    getProducts();
-                });
+            await axios.post("http://127.0.0.1:8000/api/products", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            toast.success("Thêm mới sản phẩm thành công!");
+            getProducts(); 
         } catch (error) {
             console.error("There was an error uploading the file!", error);
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+            }
         }
     };
 

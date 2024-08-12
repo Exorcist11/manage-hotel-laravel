@@ -90,6 +90,17 @@ export default function CategoryRoom() {
     };
 
     const handleSave = async () => {
+        if (
+            !form.name ||
+            !form.size ||
+            !form.max_occupancy ||
+            !form.price ||
+            !selectedFile
+        ) {
+            toast.error("Vui lòng nhập đầy đủ thông tin và chọn hình ảnh");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("image", selectedFile);
         formData.append("name", form.name);
@@ -97,30 +108,37 @@ export default function CategoryRoom() {
         formData.append("max_occupancy", form.max_occupancy);
         formData.append("description", form.description);
         formData.append("price", form.price);
-        await axios
-            .post("http://127.0.0.1:8000/api/categories", formData, {
+
+        try {
+            await axios.post("http://127.0.0.1:8000/api/categories", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-            })
-            .then(() => {
-                toast.success("Thêm mới thành công");
-                setForm({
-                    name: "",
-                    description: "",
-                    image: "",
-                    size: "",
-                    max_occupancy: "",
-                    id: "",
-                    price: "",
-                });
-                setSelectedFile(null);
-                ClearForm();
+            });
+            toast.success("Thêm mới thành công");
 
-                getCategories();
-                document.getElementById("my_modal_1").close();
-            })
-            .catch((err) => toast.error(err));
+            setForm({
+                name: "",
+                description: "",
+                image: "",
+                size: "",
+                max_occupancy: "",
+                id: "",
+                price: "",
+            });
+            setSelectedFile(null);
+
+            ClearForm();
+
+            getCategories();
+
+            document.getElementById("my_modal_1").close();
+        } catch (err) {
+            toast.error(
+                err.response?.data?.message ||
+                    "Có lỗi xảy ra. Vui lòng thử lại sau."
+            );
+        }
     };
 
     const handleChange = (event) => {
