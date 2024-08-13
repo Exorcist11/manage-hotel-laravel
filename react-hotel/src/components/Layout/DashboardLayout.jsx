@@ -11,6 +11,8 @@ import {
     RiArchiveDrawerLine,
     RiArchive2Line,
     RiLogoutBoxLine,
+    RiCalendarCheckFill,
+    RiCalendarCloseFill,
 } from "react-icons/ri";
 import { useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
@@ -36,12 +38,12 @@ export default function DashboardLayout({ children }) {
         },
         {
             name: "Check IN ",
-            icon: <RiUser5Line />,
+            icon: <RiCalendarCheckFill />,
             link: "/check-in",
         },
         {
             name: "Check out ",
-            icon: <RiUser5Line />,
+            icon: <RiCalendarCloseFill />,
             link: "/check-out",
         },
         {

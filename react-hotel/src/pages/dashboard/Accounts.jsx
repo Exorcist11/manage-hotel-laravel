@@ -72,7 +72,7 @@ export default function Accounts() {
                             .filter((item) => item?.email)
                             .map((item, index) => (
                                 <tr key={index}>
-                                    <td>{item?.id}</td>
+                                    <td>{index + 1}</td>
                                     <td>{item?.email}</td>
                                     <td>{item?.fullname}</td>
                                     <td>{item?.role}</td>

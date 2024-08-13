@@ -235,7 +235,7 @@ export default function CategoryRoom() {
                     <tbody>
                         {currentItems.map((item, index) => (
                             <tr key={index}>
-                                <td width="10%">{item?.id}</td>
+                                <td width="10%">{index + 1}</td>
                                 <td width="20%">
                                     <a
                                         href={`/category-room/${item.id}/rooms`}
@@ -284,7 +284,6 @@ export default function CategoryRoom() {
                             </tr>
                         ))}
                     </tbody>
-                    
                 </table>
 
                 <div className="flex justify-center mt-4">

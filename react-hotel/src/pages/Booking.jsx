@@ -5,12 +5,24 @@ export default function Booking() {
     const [categories, setCategories] = useState([]);
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("");
+    const [loading, setLoading] = useState(true); // Thêm trạng thái loading
+    const [error, setError] = useState(null); // Thêm trạng thái lỗi
+
     const fetchCategories = async () => {
-        await axios
-            .get("http://127.0.0.1:8000/api/categories")
-            .then((res) => setCategories(res.data))
-            .catch((err) => console.error(err));
+        try {
+            const response = await axios.get(
+                "http://127.0.0.1:8000/api/categories"
+            );
+            setCategories(response.data);
+            setFilteredCategories(response.data); 
+        } catch (err) {
+            console.error(err);
+            setError("Lỗi khi tải dữ liệu danh mục."); 
+        } finally {
+            setLoading(false); 
+        }
     };
+
     const handleSearchChange = (event) => {
         const keyword = event.target.value;
         setSearchKeyword(keyword);
@@ -23,9 +35,14 @@ export default function Booking() {
             setFilteredCategories(categories);
         }
     };
+
     useEffect(() => {
         fetchCategories();
     }, []);
+
+    if (loading) return <p>Đang tải dữ liệu...</p>; 
+    if (error) return <p>{error}</p>; 
+
     return (
         <div className="mx-20">
             <div className="text-right flex justify-end mb-5">
@@ -68,7 +85,7 @@ export default function Booking() {
                         <div className="w-2/5 flex justify-center h-64">
                             <img
                                 src={`http://127.0.0.1:8000${item.image}`}
-                                alt="img romom"
+                                alt="img room"
                                 className="object-cover object-center w-full h-full"
                             />
                         </div>
