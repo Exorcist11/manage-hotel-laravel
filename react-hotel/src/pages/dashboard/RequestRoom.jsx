@@ -1,3 +1,4 @@
+import { ClearForm } from "@/middleware/ClearForm";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { RiEyeLine, RiCloseLine } from "react-icons/ri";
@@ -7,7 +8,6 @@ import { toast } from "sonner";
 
 export default function RequestRoom() {
     const [data, setData] = useState([]);
-    const [check, setCheck] = useState("");
     const [detail, setDetail] = useState(null);
     const [categories, setCategories] = useState([]);
     const [minDate, setMinDate] = useState("");
@@ -15,6 +15,7 @@ export default function RequestRoom() {
     const [emptyRoom, setEmptyRoom] = useState([]);
     const currentUser = JSON.parse(localStorage.getItem("user"));
     const [selected, setSelected] = useState([]);
+    const now = new Date();
 
     const [form, setForm] = useState({
         fullname: "",
@@ -24,7 +25,7 @@ export default function RequestRoom() {
         email: "",
         category_id: "1",
         number_of_rooms: "1",
-        start_date: "",
+        start_date: now,
         end_date: "",
         staff_id: currentUser.id,
         room_id: "",
@@ -107,10 +108,10 @@ export default function RequestRoom() {
                 "http://127.0.0.1:8000/api/booking-at-counter",
                 form
             );
-            console.log(res);
+            ClearForm();
             toast.success("Đặt phòng thành công");
             getListRoom();
-            document.getElementById("my-drawer-4").checked = false;
+            // document.getElementById("booking_at_counter").open = false;
         } catch (error) {
             console.error(error);
             toast.error("Failed to book the room");
@@ -224,19 +225,14 @@ export default function RequestRoom() {
                 Danh sách yêu cầu
             </h1>
             <div className="drawer drawer-end">
-                <input
-                    id="my-drawer-4"
-                    type="checkbox"
-                    className="drawer-toggle"
-                />
-                <div className="drawer-content flex justify-between">
+                <div className="flex justify-between">
                     <label
-                        htmlFor="my-drawer-4"
-                        className="drawer-button btn"
-                        onClick={() => {
-                            setCheck("add");
-                            setDetail({});
-                        }}
+                        className=" btn"
+                        onClick={() =>
+                            document
+                                .getElementById("booking_at_counter")
+                                .showModal()
+                        }
                     >
                         Đặt phòng tại quầy
                     </label>
@@ -283,9 +279,8 @@ export default function RequestRoom() {
                                             <div className="drawer-content">
                                                 <label
                                                     htmlFor="my-drawer-4"
-                                                    className="drawer-button"
+                                                    className="drawer-button cursor-pointer"
                                                     onClick={() => {
-                                                        setCheck("update");
                                                         handleDetailBooking(
                                                             item?.id
                                                         );
@@ -296,6 +291,219 @@ export default function RequestRoom() {
                                                         size={16}
                                                     />
                                                 </label>
+                                            </div>
+
+                                            <div className="drawer-side z-40">
+                                                <label
+                                                    htmlFor="my-drawer-4"
+                                                    aria-label="close sidebar"
+                                                    className="drawer-overlay"
+                                                ></label>
+                                                <ul className="bg-white text-base-content min-h-full w-[700px] p-4">
+                                                    <li className="flex justify-end mb-4">
+                                                        <label
+                                                            htmlFor="my-drawer-4"
+                                                            className="btn-ghost cursor-pointer hover:bg-white"
+                                                        >
+                                                            <RiCloseLine
+                                                                size={24}
+                                                            />
+                                                        </label>
+                                                    </li>
+
+                                                    <div className="flex flex-col gap-3">
+                                                        <h1 className="font-bold">
+                                                            Đặt phòng
+                                                        </h1>
+                                                        <label className="form-control w-full">
+                                                            <div className="label">
+                                                                <span className="label-text">
+                                                                    Họ tên khách
+                                                                    hàng
+                                                                </span>
+                                                            </div>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Type here"
+                                                                className="input input-bordered w-full"
+                                                                disabled
+                                                                defaultValue={
+                                                                    detail?.fullname ||
+                                                                    ""
+                                                                }
+                                                            />
+                                                        </label>
+
+                                                        <label className="form-control w-full">
+                                                            <div className="label">
+                                                                <span className="label-text">
+                                                                    Căn cước
+                                                                    công dân
+                                                                </span>
+                                                            </div>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Type here"
+                                                                className="input input-bordered w-full"
+                                                                defaultValue={
+                                                                    detail?.citizen_number ||
+                                                                    ""
+                                                                }
+                                                            />
+                                                        </label>
+
+                                                        <div className="flex gap-5">
+                                                            <label className="form-control w-full">
+                                                                <div className="label">
+                                                                    <span className="label-text">
+                                                                        Số điện
+                                                                        thoại
+                                                                    </span>
+                                                                </div>
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="Type here"
+                                                                    className="input input-bordered w-full"
+                                                                    defaultValue={
+                                                                        detail?.phone_number ||
+                                                                        ""
+                                                                    }
+                                                                />
+                                                            </label>
+
+                                                            <label className="form-control w-full">
+                                                                <div className="label">
+                                                                    <span className="label-text">
+                                                                        Email
+                                                                    </span>
+                                                                </div>
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="Type here"
+                                                                    className="input input-bordered w-full"
+                                                                    defaultValue={
+                                                                        detail?.email ||
+                                                                        ""
+                                                                    }
+                                                                />
+                                                            </label>
+                                                        </div>
+
+                                                        <div className="flex gap-5">
+                                                            <label className="form-control w-full">
+                                                                <div className="label">
+                                                                    <span className="label-text">
+                                                                        Thời
+                                                                        gian
+                                                                        nhận
+                                                                        phòng
+                                                                    </span>
+                                                                </div>
+                                                                <input
+                                                                    type="date"
+                                                                    placeholder="Type here"
+                                                                    className="input input-bordered w-full"
+                                                                    defaultValue={formatDate(
+                                                                        detail?.start_date
+                                                                    )}
+                                                                />
+                                                            </label>
+
+                                                            <label className="form-control w-full">
+                                                                <div className="label">
+                                                                    <span className="label-text">
+                                                                        Thời
+                                                                        gian trả
+                                                                        phòng
+                                                                    </span>
+                                                                </div>
+                                                                <input
+                                                                    type="date"
+                                                                    placeholder="Type here"
+                                                                    className="input input-bordered w-full"
+                                                                    defaultValue={formatDate(
+                                                                        detail?.end_date
+                                                                    )}
+                                                                />
+                                                            </label>
+                                                        </div>
+
+                                                        <div className="flex gap-5">
+                                                            <label className="form-control w-full">
+                                                                <div className="label">
+                                                                    <span className="label-text">
+                                                                        Loại
+                                                                        phòng
+                                                                    </span>
+                                                                </div>
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="Type here"
+                                                                    className="input input-bordered w-full"
+                                                                    defaultValue={
+                                                                        detail?.category_id ||
+                                                                        ""
+                                                                    }
+                                                                />
+                                                            </label>
+
+                                                            <label className="form-control w-full">
+                                                                <div className="label">
+                                                                    <span className="label-text">
+                                                                        Danh
+                                                                        sách
+                                                                        phòng
+                                                                        trống
+                                                                    </span>
+                                                                </div>
+                                                                <MultiSelect
+                                                                    options={
+                                                                        options
+                                                                    }
+                                                                    value={
+                                                                        selected
+                                                                    }
+                                                                    onChange={
+                                                                        setSelected
+                                                                    }
+                                                                    labelledBy={
+                                                                        "Select"
+                                                                    }
+                                                                    isCreatable={
+                                                                        true
+                                                                    }
+                                                                />
+                                                            </label>
+                                                        </div>
+
+                                                        {!(
+                                                            detail?.status ===
+                                                                "Đặt tại quầy" ||
+                                                            detail?.status ===
+                                                                "Từ chối"
+                                                        ) && (
+                                                            <div className="text-center">
+                                                                <button
+                                                                    className="btn btn-accent mt-4"
+                                                                    onClick={
+                                                                        handleAccept
+                                                                    }
+                                                                >
+                                                                    Đặt phòng
+                                                                </button>
+
+                                                                <button
+                                                                    className="btn btn-error mt-4 ml-4"
+                                                                    onClick={
+                                                                        handleReject
+                                                                    }
+                                                                >
+                                                                    Từ chối
+                                                                </button>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </ul>
                                             </div>
                                         </td>
                                     </tr>
@@ -309,25 +517,18 @@ export default function RequestRoom() {
                     </table>
                 </div>
 
-                <div className="drawer-side z-40">
-                    <label
-                        htmlFor="my-drawer-4"
-                        aria-label="close sidebar"
-                        className="drawer-overlay"
-                    ></label>
-                    <ul className="bg-white text-base-content min-h-full w-[700px] p-4">
-                        <li className="flex justify-end mb-4">
-                            <label
-                                htmlFor="my-drawer-4"
-                                className="btn-ghost cursor-pointer hover:bg-white"
-                            >
-                                <RiCloseLine size={24} />
-                            </label>
-                        </li>
-
-                        {check === "add" ? (
+                <dialog id="booking_at_counter" className="modal">
+                    <div className="modal-box max-w-5xl">
+                        <form method="dialog">
+                            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                                ✕
+                            </button>
+                        </form>
+                        <h3 className="font-bold text-lg">
+                            Đặt phòng tại quầy
+                        </h3>
+                        <div className="py-4">
                             <div className="flex flex-col gap-3">
-                                <h1 className="font-bold">Đặt phòng</h1>
                                 <label className="form-control w-full">
                                     <div className="label">
                                         <span className="label-text">
@@ -400,10 +601,10 @@ export default function RequestRoom() {
                                             </span>
                                         </div>
                                         <input
+                                            disabled
                                             type="date"
-                                            placeholder="Type here"
                                             name="start_date"
-                                            min={minDate}
+                                            value={minDate}
                                             onChange={handleChange}
                                             className="input input-bordered w-full"
                                         />
@@ -434,7 +635,7 @@ export default function RequestRoom() {
                                             </span>
                                         </div>
                                         <select
-                                            className="select select-bordered w-full max-w-xs"
+                                            className="select select-bordered w-full "
                                             name="category_id"
                                             onChange={handleChange}
                                         >
@@ -459,7 +660,7 @@ export default function RequestRoom() {
                                         </div>
 
                                         <select
-                                            className="select select-bordered w-full max-w-xs"
+                                            className="select select-bordered w-full "
                                             name="room_id"
                                             onChange={handleChange}
                                         >
@@ -485,163 +686,9 @@ export default function RequestRoom() {
                                     Xác nhận
                                 </button>
                             </div>
-                        ) : (
-                            <div className="flex flex-col gap-3">
-                                <h1 className="font-bold">Đặt phòng</h1>
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text">
-                                            Họ tên khách hàng
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full"
-                                        disabled
-                                        defaultValue={detail?.fullname || ""}
-                                    />
-                                </label>
-
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text">
-                                            Căn cước công dân
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Type here"
-                                        className="input input-bordered w-full"
-                                        defaultValue={
-                                            detail?.citizen_number || ""
-                                        }
-                                    />
-                                </label>
-
-                                <div className="flex gap-5">
-                                    <label className="form-control w-full">
-                                        <div className="label">
-                                            <span className="label-text">
-                                                Số điện thoại
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="Type here"
-                                            className="input input-bordered w-full"
-                                            defaultValue={
-                                                detail?.phone_number || ""
-                                            }
-                                        />
-                                    </label>
-
-                                    <label className="form-control w-full">
-                                        <div className="label">
-                                            <span className="label-text">
-                                                Email
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="Type here"
-                                            className="input input-bordered w-full"
-                                            defaultValue={detail?.email || ""}
-                                        />
-                                    </label>
-                                </div>
-
-                                <div className="flex gap-5">
-                                    <label className="form-control w-full">
-                                        <div className="label">
-                                            <span className="label-text">
-                                                Thời gian nhận phòng
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="date"
-                                            placeholder="Type here"
-                                            className="input input-bordered w-full"
-                                            defaultValue={formatDate(
-                                                detail?.start_date
-                                            )}
-                                        />
-                                    </label>
-
-                                    <label className="form-control w-full">
-                                        <div className="label">
-                                            <span className="label-text">
-                                                Thời gian trả phòng
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="date"
-                                            placeholder="Type here"
-                                            className="input input-bordered w-full"
-                                            defaultValue={formatDate(
-                                                detail?.end_date
-                                            )}
-                                        />
-                                    </label>
-                                </div>
-
-                                <div className="flex gap-5">
-                                    <label className="form-control w-full">
-                                        <div className="label">
-                                            <span className="label-text">
-                                                Loại phòng
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="Type here"
-                                            className="input input-bordered w-full"
-                                            defaultValue={
-                                                detail?.category_id || ""
-                                            }
-                                        />
-                                    </label>
-
-                                    <label className="form-control w-full">
-                                        <div className="label">
-                                            <span className="label-text">
-                                                Danh sách phòng trống
-                                            </span>
-                                        </div>
-                                        <MultiSelect
-                                            options={options}
-                                            value={selected}
-                                            onChange={setSelected}
-                                            labelledBy={"Select"}
-                                            isCreatable={true}
-                                        />
-                                    </label>
-                                </div>
-
-                                {!(
-                                    detail?.status === "Đặt tại quầy" ||
-                                    detail?.status === "Từ chối"
-                                ) && (
-                                    <div className="text-center">
-                                        <button
-                                            className="btn btn-accent mt-4"
-                                            onClick={handleAccept}
-                                        >
-                                            Đặt phòng
-                                        </button>
-
-                                        <button
-                                            className="btn btn-error mt-4 ml-4"
-                                            onClick={handleReject}
-                                        >
-                                            Từ chối
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </ul>
-                </div>
+                        </div>
+                    </div>
+                </dialog>
             </div>
         </div>
     );

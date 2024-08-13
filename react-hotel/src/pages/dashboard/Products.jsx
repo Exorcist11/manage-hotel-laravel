@@ -6,6 +6,8 @@ import { toast } from "sonner";
 export default function Products() {
     const [products, setProducts] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filterProducts, setFilterProducts] = useState([]);
     const [form, setForm] = useState({
         id: "",
         name: "",
@@ -17,6 +19,18 @@ export default function Products() {
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
         console.log("File selected:", event.target.files[0]);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+        if (event.target.value) {
+            const filter = products.filter((product) =>
+                product.name.toLowerCase().includes(event.target.value)
+            );
+            setFilterProducts(filter);
+        } else {
+            setFilterProducts(products);
+        }
     };
 
     const handleDelete = async (productID) => {
@@ -51,7 +65,7 @@ export default function Products() {
                 },
             });
             toast.success("Thêm mới sản phẩm thành công!");
-            getProducts(); 
+            getProducts();
         } catch (error) {
             console.error("There was an error uploading the file!", error);
             if (
@@ -120,7 +134,10 @@ export default function Products() {
     const getProducts = async () => {
         await axios
             .get("http://127.0.0.1:8000/api/products")
-            .then((response) => setProducts(response.data.products))
+            .then((response) => {
+                setProducts(response.data.products);
+                setFilterProducts(response.data.products);
+            })
             .catch((error) => console.error(error));
     };
 
@@ -131,7 +148,7 @@ export default function Products() {
     return (
         <div>
             <h1 className="text-center text-2xl font-bold uppercase">
-                Cơ sở vật chất
+                Dịch vụ
             </h1>
             <div className="flex items-center justify-between">
                 <button
@@ -140,15 +157,17 @@ export default function Products() {
                         document.getElementById("my_modal_1").showModal()
                     }
                 >
-                    Thêm mới vật phẩm
+                    Thêm mới dịch vụ
                 </button>
 
                 <div>
-                    <label className="input input-bordered flex items-center gap-2">
+                    <label className="input input-bordered flex items-center gap-2 ">
                         <input
                             type="text"
-                            className="grow"
-                            placeholder="Search"
+                            placeholder="Tìm kiếm dịch vụ"
+                            onChange={handleSearchChange}
+                            value={searchTerm}
+                            className="w-96"
                         />
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +197,7 @@ export default function Products() {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((item, index) => (
+                        {filterProducts.map((item, index) => (
                             <tr key={index}>
                                 <th>
                                     <b>{item?.name}</b>

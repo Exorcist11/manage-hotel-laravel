@@ -12,9 +12,11 @@ import {
     RiArchive2Line,
     RiLogoutBoxLine,
 } from "react-icons/ri";
+import { useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 
 export default function DashboardLayout({ children }) {
+    const info = JSON.parse(localStorage.getItem("user"));
     const menus = [
         {
             name: "Thống kê - báo cáo",
@@ -43,6 +45,11 @@ export default function DashboardLayout({ children }) {
             link: "/check-out",
         },
         {
+            name: "Thanh toán",
+            icon: <RiUser5Line />,
+            link: "/payment",
+        },
+        {
             name: "Quản lý nhân viên",
             icon: <RiUser2Fill />,
             link: "/staff",
@@ -69,8 +76,6 @@ export default function DashboardLayout({ children }) {
         },
     ];
 
-    const info = JSON.parse(localStorage.getItem("user"));
-
     const restrictedMenusForEmployee = [
         "Quản lý phòng",
         "Quản lý thể loại phòng",
@@ -78,6 +83,7 @@ export default function DashboardLayout({ children }) {
         "Quản lý tài khoản",
         "Quản lý dịch vụ",
     ];
+    const location = useLocation();
 
     const filteredMenus = menus.filter((menu) => {
         if (info?.role === "Nhân viên") {
@@ -99,17 +105,30 @@ export default function DashboardLayout({ children }) {
                     </h1>
                 </div>
                 <ul className="px-5 flex flex-col gap-5">
-                    {filteredMenus.map((menu, i) => (
-                        <li
-                            className="li_content flex items-center gap-2"
-                            key={i}
-                        >
-                            <div className="text-blue-600">{menu.icon}</div>
-                            <a href={menu.link} className="text-blue-600">
-                                {menu.name}
-                            </a>
-                        </li>
-                    ))}
+                    {filteredMenus.map((menu, i) => {
+                        const isActive = location.pathname === menu.link;
+
+                        return (
+                            <li
+                                className={`li_content ${
+                                    isActive ? "active" : ""
+                                }`}
+                                key={i}
+                            >
+                                <a
+                                    href={menu.link}
+                                    className={`flex items-center gap-2 ${
+                                        isActive
+                                            ? "text-red-800"
+                                            : "text-blue-600"
+                                    }`}
+                                >
+                                    <div>{menu.icon}</div>
+                                    {menu.name}
+                                </a>
+                            </li>
+                        );
+                    })}
                     <li
                         className="li_content flex items-center gap-2"
                         onClick={() => {
