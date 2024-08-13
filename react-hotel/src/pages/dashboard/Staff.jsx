@@ -45,9 +45,7 @@ export default function Staff() {
             !form.fullname ||
             !form.phone_number ||
             !form.address ||
-            !form.birth ||
-            !form.email ||
-            !form.password
+            !form.birth
         ) {
             toast.error("Vui lòng nhập đầy đủ thông tin nhân viên.");
             return;
@@ -130,6 +128,9 @@ export default function Staff() {
     };
 
     const handleAddMail = async () => {
+        if (!form.id || !form.password) {
+            toast.error("Vui lòng nhập đủ thông tin!");
+        }
         if (form.id) {
             await axios
                 .put(`http://127.0.0.1:8000/api/staff-email/${form.id}`, {
