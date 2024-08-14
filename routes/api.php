@@ -81,7 +81,7 @@ Route::controller(BookingController::class)->group(function () {
   Route::put('/bookings/{id}', 'update');
   Route::delete('/bookings/{id}', 'destroy');
   Route::post('/booking-at-counter', 'bookingAtCounter');
-  Route::post('/bookings/{id}/export-bill', 'exportBill');
+  // Route::post('/bookings/{id}/export-bill', 'exportBill');
   Route::get('/bookings/history', 'getHistory');
 });
 

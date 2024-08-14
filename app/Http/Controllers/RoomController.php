@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Room;
 use App\Models\BookingDetail;
+use App\Models\Bill;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 
@@ -159,11 +160,13 @@ class RoomController extends Controller
 
     public function checkOut(Request $request, $id)
     {
+        \DB::beginTransaction();
         try {
             $room = Room::findOrFail($id);
 
             $bookingDetail = BookingDetail::where('room_id', $id)
-                                          ->where('check_out', '=', Carbon::today())
+                                          ->where('is_check_in', true)
+                                          ->where('is_check_out', false)
                                           ->first();
 
             if (!$bookingDetail) {
@@ -177,17 +180,28 @@ class RoomController extends Controller
             $bookingDetail->is_check_out = true;
             $bookingDetail->save();
 
+            $total = $bookingDetail->check_in->diffInDay($bookingDetail->check_out) * $room->category->price;
+
+            $bill = Bill::create([
+                'payment_method' => $request->payment_method,
+                'total' => $total,
+                'room_id' => $id
+            ]);
+            \DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'Check-out phòng thành công',
-                'data' => $bookingDetail
+                'data' => $bookingDetail,
+                'bill' => $bill
             ], 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            \DB::rollback();
             return response()->json([
                 'success' => false,
                 'message' => 'Phòng không tồn tại'
             ], 404);
         } catch (\Exception $e) {
+            \DB::rollback();
             return response()->json([
                 'success' => false,
                 'message' => 'Lỗi khi check-out phòng',
