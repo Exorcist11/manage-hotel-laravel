@@ -42,7 +42,8 @@ class CategoryController extends Controller
                 'size' => $request->size,
                 'description' => $request->description,
                 'image' => $imageUrl,
-                'price' => $request->price
+                'price' => $request->price,
+                'utilities' => $request->utilities
             ]);
 
             return response()->json([
@@ -77,7 +78,12 @@ class CategoryController extends Controller
             return response()->json(['message' => 'Category not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json($category);
+        $utilities = explode('#', $category->utilities);
+
+        return response()->json([
+            'category' => $category,
+            'utilities' => $utilities
+        ]);
     }
 
     /**
@@ -93,7 +99,7 @@ class CategoryController extends Controller
             $category = Category::findOrFail($id);
 
             $updateData = array_filter($request->only([
-                'name', 'max_occupancy', 'size', 'description', 'price'
+                'name', 'max_occupancy', 'size', 'description', 'price', 'utilities'
             ]), function ($value) {
                 return $value !== null;
             });
@@ -130,6 +136,9 @@ class CategoryController extends Controller
             }
             if (isset($updateData['price'])) {
                 $category->price = $updateData['price'];
+            }
+            if (isset($updateData['utilities'])) {
+                $category->utilities = $updateData['utilities'];
             }
     
             $category->save();    
