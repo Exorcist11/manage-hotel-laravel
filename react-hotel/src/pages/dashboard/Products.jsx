@@ -1,3 +1,4 @@
+import { ClearForm } from "@/middleware/ClearForm";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { MdDelete, MdCreate } from "react-icons/md";
@@ -64,6 +65,7 @@ export default function Products() {
                     "Content-Type": "multipart/form-data",
                 },
             });
+            ClearForm();
             toast.success("Thêm mới sản phẩm thành công!");
             getProducts();
         } catch (error) {
@@ -154,7 +156,7 @@ export default function Products() {
                 <button
                     className="btn btn-outline"
                     onClick={() =>
-                        document.getElementById("my_modal_1").showModal()
+                        document.getElementById("add_new_product").showModal()
                     }
                 >
                     Thêm mới dịch vụ
@@ -247,37 +249,71 @@ export default function Products() {
                 </table>
             </div>
 
-            <dialog id="my_modal_1" className="modal">
+            <dialog id="add_new_product" className="modal">
                 <div className="modal-box flex flex-col gap-3">
-                    <h3 className="font-bold text-lg">Thêm mới!</h3>
+                    <h3 className="font-bold text-lg">Thêm mới dịch vụ!</h3>
                     <div className="flex flex-col gap-5">
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Tên sản phẩm"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="number"
-                            name="amount"
-                            placeholder="Số lượng"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="number"
-                            name="price"
-                            placeholder="Đơn giá"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Tên dịch vụ{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Tên dịch vụ"
+                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
 
-                        <input
-                            type="file"
-                            className="file-input file-input-bordered w-full "
-                            onChange={handleFileChange}
-                        />
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Số lượng{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="number"
+                                name="amount"
+                                placeholder="Số lượng"
+                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
+
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Đơn giá (VND){" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="number"
+                                name="price"
+                                placeholder="Đơn giá"
+                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
+
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Hình ảnh{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="file"
+                                className="file-input file-input-bordered w-full "
+                                onChange={handleFileChange}
+                            />
+                        </label>
                     </div>
                     <div className="modal-action">
                         <form method="dialog">
@@ -295,39 +331,72 @@ export default function Products() {
             <dialog id="my_modal_2" className="modal">
                 <div className="modal-box flex flex-col gap-3">
                     <h3 className="font-bold text-lg">
-                        Thông tin chi tiết sản phẩm
+                        Thông tin chi tiết dịch vụ!
                     </h3>
                     <div className="flex flex-col gap-5">
-                        <input
-                            type="text"
-                            name="name"
-                            value={form.name}
-                            placeholder="Tên sản phẩm"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="number"
-                            name="amount"
-                            value={form.amount}
-                            placeholder="Số lượng"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0 "
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="number"
-                            name="price"
-                            placeholder="Đơn giá"
-                            value={form.price}
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Tên dịch vụ{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="text"
+                                name="name"
+                                value={form.name}
+                                placeholder="Tên sản phẩm"
+                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
 
-                        <input
-                            type="file"
-                            className="file-input file-input-bordered w-full "
-                            onChange={handleFileChange}
-                        />
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Số lượng{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="number"
+                                name="amount"
+                                value={form.amount}
+                                placeholder="Số lượng"
+                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0 "
+                                onChange={handleChange}
+                            />
+                        </label>
+
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Đơn giá (VND){" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="number"
+                                name="price"
+                                placeholder="Đơn giá"
+                                value={form.price}
+                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Hình ảnh{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="file"
+                                className="file-input file-input-bordered w-full "
+                                onChange={handleFileChange}
+                            />
+                        </label>
                     </div>
 
                     <div className="modal-action">

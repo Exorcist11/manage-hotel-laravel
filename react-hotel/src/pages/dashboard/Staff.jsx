@@ -172,7 +172,7 @@ export default function Staff() {
                 <button
                     className="btn btn-outline"
                     onClick={() =>
-                        document.getElementById("my_modal_1").showModal()
+                        document.getElementById("add_new_staff").showModal()
                     }
                 >
                     Thêm nhân viên
@@ -235,42 +235,75 @@ export default function Staff() {
                 </table>
             </div>
 
-            <dialog id="my_modal_1" className="modal">
-                <div className="modal-box flex flex-col gap-3">
+            <dialog id="add_new_staff" className="modal">
+                <div className="modal-box flex flex-col gap-3 max-w-xl">
                     <h3 className="font-bold text-lg">Thêm mới nhân viên</h3>
-                    <div className="flex flex-col gap-5">
-                        <input
-                            type="text"
-                            name="fullname"
-                            placeholder="Họ tên nhân viên"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
+                    <div className="flex flex-col gap-3">
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Họ tên nhân viên{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="text"
+                                name="fullname"
+                                placeholder="Họ tên nhân viên"
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
 
-                        <input
-                            type="number"
-                            name="phone_number"
-                            placeholder="Số điện thoại"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Số điện thoại{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="number"
+                                name="phone_number"
+                                placeholder="Số điện thoại"
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
 
-                        <input
-                            type="text"
-                            name="address"
-                            placeholder="Địa chỉ"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Địa chỉ{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="text"
+                                name="address"
+                                placeholder="Địa chỉ"
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
 
-                        <input
-                            type="date"
-                            id="birthday"
-                            name="birth"
-                            className="input-bordered input cursor-pointer"
-                            placeholder="Ngày sinh"
-                            onChange={handleChange}
-                        />
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Ngày sinh{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="date"
+                                id="birthday"
+                                name="birth"
+                                className="input-bordered input cursor-pointer"
+                                placeholder="Ngày sinh"
+                                onChange={handleChange}
+                            />
+                        </label>
+
                         <div className="flex gap-5 rounded-xl">
                             <div className="form-control">
                                 <label className="label cursor-pointer">
@@ -320,21 +353,37 @@ export default function Staff() {
                 <div className="modal-box flex flex-col gap-3">
                     <h3 className="font-bold text-lg">Thêm mới mail</h3>
                     <div className="flex flex-col gap-5">
-                        <input
-                            type="text"
-                            name="email"
-                            placeholder="Email"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Email nhân viên{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="text"
+                                name="email"
+                                placeholder="Email"
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
 
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Mật khẩu"
-                            className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                            onChange={handleChange}
-                        />
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Mật khẩu cung cấp{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Mật khẩu"
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
                     </div>
 
                     <div className="modal-action">
@@ -351,67 +400,121 @@ export default function Staff() {
             </dialog>
 
             <dialog id="modal_get_user" className="modal">
-                <div className="modal-box flex flex-col gap-3">
-                    <h3 className="font-bold text-lg">Nhân viên {form.id}</h3>
+                <div className="modal-box flex flex-col gap-3 max-w-xl">
+                    <h3 className="font-bold text-lg">
+                        Thông tin nhân viên {form.id}
+                    </h3>
                     {isApiSuccess ? (
-                        <div className="flex flex-col gap-5">
-                            <input
-                                type="text"
-                                name="fullname"
-                                placeholder="Họ tên nhân viên"
-                                value={form.fullname}
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                                onChange={handleChange}
-                            />
-
-                            <input
-                                type="number"
-                                name="phone_number"
-                                placeholder="Số điện thoại"
-                                value={form.phone_number}
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                                onChange={handleChange}
-                            />
-
-                            <input
-                                type="text"
-                                name="address"
-                                placeholder="Địa chỉ"
-                                value={form.address}
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
-                                onChange={handleChange}
-                            />
-                            {form.email && (
+                        <div className="flex flex-col gap-3">
+                            <label className="form-control w-full ">
+                                <div className="label">
+                                    <span className="label-text">
+                                        Họ tên nhân viên{" "}
+                                        <span className="text-red-500">*</span>
+                                    </span>
+                                </div>
                                 <input
-                                    disabled
                                     type="text"
-                                    name="email"
-                                    placeholder="Email"
-                                    value={form.email}
-                                    className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                    name="fullname"
+                                    placeholder="Họ tên nhân viên"
+                                    value={form.fullname}
+                                    className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                     onChange={handleChange}
                                 />
+                            </label>
+
+                            <label className="form-control w-full ">
+                                <div className="label">
+                                    <span className="label-text">
+                                        Số điện thoại{" "}
+                                        <span className="text-red-500">*</span>
+                                    </span>
+                                </div>
+                                <input
+                                    type="number"
+                                    name="phone_number"
+                                    placeholder="Số điện thoại"
+                                    value={form.phone_number}
+                                    className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                    onChange={handleChange}
+                                />
+                            </label>
+
+                            <label className="form-control w-full ">
+                                <div className="label">
+                                    <span className="label-text">
+                                        Địa chỉ{" "}
+                                        <span className="text-red-500">*</span>
+                                    </span>
+                                </div>
+                                <input
+                                    type="text"
+                                    name="address"
+                                    placeholder="Địa chỉ"
+                                    value={form.address}
+                                    className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                    onChange={handleChange}
+                                />
+                            </label>
+
+                            {form.email && (
+                                <label className="form-control w-full ">
+                                    <div className="label">
+                                        <span className="label-text">
+                                            Tài khản nhân viên{" "}
+                                        </span>
+                                    </div>
+                                    <input
+                                        disabled
+                                        type="text"
+                                        name="email"
+                                        placeholder="Email"
+                                        value={form.email}
+                                        className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                        onChange={handleChange}
+                                    />
+                                </label>
                             )}
 
-                            <input
-                                type="date"
-                                id="birthday"
-                                name="birth"
-                                className="input-bordered input cursor-pointer"
-                                placeholder="Ngày sinh"
-                                value={form.birth ? formatDate(form.birth) : ""}
-                                onChange={handleChange}
-                            />
-                            <select
-                                className="select select-bordered w-full"
-                                onChange={handleChange}
-                                name="role"
-                                value={form.role}
-                            >
-                                <option disabled>Chức vụ</option>
-                                <option value="Nhân viên">Nhân viên</option>
-                                <option value="Quản lý">Quản lý</option>
-                            </select>
+                            <label className="form-control w-full ">
+                                <div className="label">
+                                    <span className="label-text">
+                                        Sinh nhật{" "}
+                                        <span className="text-red-500">*</span>
+                                    </span>
+                                </div>
+                                <input
+                                    type="date"
+                                    id="birthday"
+                                    name="birth"
+                                    className="input-bordered input cursor-pointer"
+                                    placeholder="Ngày sinh"
+                                    value={
+                                        form.birth ? formatDate(form.birth) : ""
+                                    }
+                                    onChange={handleChange}
+                                />
+                            </label>
+
+                            <label className="form-control w-full ">
+                                <div className="label">
+                                    <span className="label-text">
+                                        Chức vụ{" "}
+                                        <span className="text-red-500">*</span>
+                                    </span>
+                                </div>
+                                <select
+                                    className="select select-bordered w-full"
+                                    onChange={handleChange}
+                                    name="role"
+                                    value={form.role}
+                                >
+                                    <option disabled>Chức vụ</option>
+                                    <option value="Nhân viên">Nhân viên</option>
+                                    <option value="Quản lý">Quản lý</option>
+                                </select>
+                            </label>
+
                             <div className="flex gap-5  rounded-xl">
                                 <div className="form-control">
                                     <label className="label cursor-pointer">

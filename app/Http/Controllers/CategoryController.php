@@ -93,12 +93,46 @@ class CategoryController extends Controller
             $category = Category::findOrFail($id);
 
             $updateData = array_filter($request->only([
-                'name', 'max_occupancy', 'size', 'description', 'image', 'price'
+                'name', 'max_occupancy', 'size', 'description', 'price'
             ]), function ($value) {
                 return $value !== null;
             });
+
+            $old_img = $category->image;
+
+            $imageUrl = null;
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imagePath = $image->store('public/images');
+                $imageUrl = Storage::url($imagePath);
+
+                if($old_img){
+                    $old_img = str_replace('/storage/', 'public/', $old_img);
+                    if (Storage::exists($old_img)) {
+                        Storage::delete($old_img);
+                    }
+                }
+
+                $category->image = $imageUrl;
+            }
+
+            if (isset($updateData['name'])) {
+                $category->name = $updateData['name'];
+            }
+            if (isset($updateData['max_occupancy'])) {
+                $category->max_occupancy = $updateData['max_occupancy'];
+            }
+            if (isset($updateData['size'])) {
+                $category->size = $updateData['size'];
+            }
+            if (isset($updateData['description'])) {
+                $category->description = $updateData['description'];
+            }
+            if (isset($updateData['price'])) {
+                $category->price = $updateData['price'];
+            }
     
-            $category->update($updateData);    
+            $category->save();    
 
             return response()->json([
                 'success' => true,

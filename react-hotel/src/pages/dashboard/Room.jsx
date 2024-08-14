@@ -63,7 +63,7 @@ export default function Room() {
     };
 
     const handleDelete = async (id) => {
-        const confirm = window.confirm("Are you sure you want to delete?");
+        const confirm = window.confirm("Bạn có chắc xóa phòng này chứ?");
         if (confirm) {
             await axios
                 .delete(`http://127.0.0.1:8000/api/rooms/${id}`)
@@ -79,12 +79,6 @@ export default function Room() {
                 .put(`http://127.0.0.1:8000/api/rooms/${id}`, form)
                 .then(() => {
                     toast.success("Cập nhật phòng thành công!");
-                    setForm({
-                        room_no: "",
-                        floor: "",
-                        price: "",
-                        id: "",
-                    });
                 })
                 .catch((e) => console.log(e));
             setIsApiSuccess(false);
@@ -123,17 +117,17 @@ export default function Room() {
             <button
                 className="btn btn-outline"
                 onClick={() =>
-                    document.getElementById("my_modal_1").showModal()
+                    document.getElementById("add_new_room").showModal()
                 }
             >
                 Thêm phòng mới
             </button>
 
             <div className="overflow-x-auto">
-                <table className="table table-zebra">
+                <table className="table table-zebra" width="100%">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th width="20%"></th>
                             <th>Mã Phòng</th>
                             <th>Loại Phòng</th>
                             <th>Tầng</th>
@@ -167,9 +161,9 @@ export default function Room() {
                 </table>
             </div>
 
-            <dialog id="my_modal_1" className="modal">
+            <dialog id="add_new_room" className="modal">
                 <div className="modal-box flex flex-col gap-3">
-                    <h3 className="font-bold text-lg">Thêm mới!</h3>
+                    <h3 className="font-bold text-lg">Thêm phòng mới!</h3>
                     <div className="flex flex-col gap-5">
                         <input
                             type="text"

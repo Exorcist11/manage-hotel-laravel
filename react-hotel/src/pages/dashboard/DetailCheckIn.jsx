@@ -38,7 +38,10 @@ export default function DetailCheckIn() {
             .post(`http://127.0.0.1:8000/api/rooms/${room_id}/check-out`, {
                 payment_method: selectedValue,
             })
-            .then((response) => toast.success(response.data.message))
+            .then((response) => {
+                toast.success(response.data.message);
+                setForm({ ...form, is_check_out: true });
+            })
             .catch((error) => {
                 console.error(error);
                 toast.error(error.response.data.message);
