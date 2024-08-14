@@ -74,7 +74,7 @@ export default function CheckOut() {
                             <th>Tên khách</th>
                             <th>Số điện thoại</th>
                             <th>Trạng thái</th>
-                            <th>Ngày đặt</th>
+                            <th>Ngày trả phòng</th>
                             <th width="10%"></th>
                         </tr>
                     </thead>
@@ -90,7 +90,7 @@ export default function CheckOut() {
                                     <td>{item?.booking?.order?.status}</td>
                                     <td>
                                         {formatDate(
-                                            item?.booking?.order?.start_date
+                                            item?.booking?.order?.end_date
                                         )}
                                     </td>
                                     <td width="10%">

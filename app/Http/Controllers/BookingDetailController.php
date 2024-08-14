@@ -7,12 +7,14 @@ use App\Models\BookingDetail;
 use App\Models\Booking;
 use App\Models\Order;
 use App\Models\Room;
+use Carbon\Carbon;
 
 class BookingDetailController extends Controller
 {
     public function show($id)
     {
         $bookingDetail = BookingDetail::with(['room', 'booking.order'])->find($id);
+        $room = Room::findOrFail($bookingDetail->room_id);
 
         if (!$bookingDetail) {
             return response()->json([
@@ -20,10 +22,11 @@ class BookingDetailController extends Controller
                 'message' => 'BookingDetail not found'
             ], 404);
         }
-
+        $total = $bookingDetail->check_in->diffInDay($bookingDetail->check_out) * $room->category->price;
         return response()->json([
             'success' => true,
-            'booking_detail' => $bookingDetail
+            'booking_detail' => $bookingDetail,
+            'total' => $total
         ]);
     }
     public function index()
@@ -38,6 +41,7 @@ class BookingDetailController extends Controller
                 'message' => 'BookingDetail not found'
             ], 404);
         }
+        
 
         return response()->json([
             'success' => true,

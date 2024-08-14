@@ -6,7 +6,13 @@ import { toast } from "sonner";
 
 export default function DetailCheckIn() {
     const [form, setForm] = useState({});
+    const [total, setTotal] = useState("");
     const { id } = useParams();
+    const [selectedValue, setSelectedValue] = useState("Tiền mặt");
+
+    const handleChangeSelect = (event) => {
+        setSelectedValue(event.target.value);
+    };
     const handleChange = (event) => {
         const { name, value } = event.target;
         setForm((preState) => ({
@@ -29,22 +35,28 @@ export default function DetailCheckIn() {
 
     const handleCheckout = async (room_id) => {
         await axios
-            .post(`http://127.0.0.1:8000/api/rooms/${room_id}/check-out`)
+            .post(`http://127.0.0.1:8000/api/rooms/${room_id}/check-out`, {
+                payment_method: selectedValue,
+            })
             .then((response) => toast.success(response.data.message))
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error(error);
+                toast.error(error.response.data.message);
+            });
     };
 
     useEffect(() => {
         const getDetail = async () => {
             await axios
                 .get(`http://127.0.0.1:8000/api/bookingDetails/${id}`)
-                .then((response) => setForm(response.data.booking_detail))
+                .then((response) => {
+                    setForm(response.data.booking_detail);
+                    setTotal(response.data.total);
+                })
                 .catch((error) => console.error(error));
         };
         getDetail();
     }, [id]);
-
-    console.log(form);
 
     return (
         <div>
@@ -206,6 +218,88 @@ export default function DetailCheckIn() {
                             />
                         </label>
                     </div>
+                    {form.is_check_out === false &&
+                        form.is_check_in === true && (
+                            <div>
+                                <div>
+                                    <label className="form-control w-full border-b pb-4 ">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Tổng tiền thanh toán{" "}
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </span>
+                                        </div>
+
+                                        <div className="text-right">
+                                            <p className="ml-1">
+                                                <b>Tạm tính:</b>{" "}
+                                                {parseInt(total).toLocaleString(
+                                                    "vi-VN"
+                                                )}{" "}
+                                                VND
+                                            </p>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div>
+                                    <label className="form-control w-full ">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Phương thức thanh toán{" "}
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <div className="form-control">
+                                                <label className="label cursor-pointer">
+                                                    <span className="label-text">
+                                                        Tiền mặt
+                                                    </span>
+                                                    <input
+                                                        type="radio"
+                                                        name="radio-10"
+                                                        value="Tiền mặt"
+                                                        className="radio checked:bg-red-500"
+                                                        checked={
+                                                            selectedValue ===
+                                                            "Tiền mặt"
+                                                        }
+                                                        onChange={
+                                                            handleChangeSelect
+                                                        }
+                                                    />
+                                                </label>
+                                            </div>
+                                            <div className="form-control">
+                                                <label className="label cursor-pointer">
+                                                    <span className="label-text">
+                                                        Chuyển khoản
+                                                    </span>
+                                                    <input
+                                                        type="radio"
+                                                        name="radio-10"
+                                                        value="Chuyển khoản"
+                                                        className="radio checked:bg-blue-500"
+                                                        checked={
+                                                            selectedValue ===
+                                                            "Chuyển khoản"
+                                                        }
+                                                        onChange={
+                                                            handleChangeSelect
+                                                        }
+                                                    />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        )}
 
                     <div className="text-center ">
                         {form?.is_check_in === false && (
@@ -216,14 +310,23 @@ export default function DetailCheckIn() {
                                 Check in
                             </button>
                         )}
-                        {form?.is_check_in === true && (
-                            <button
-                                className="btn btn-error"
-                                onClick={() => handleCheckout(form?.room?.id)}
-                            >
-                                Check out
-                            </button>
-                        )}
+                        {form?.is_check_in === true &&
+                            form?.is_check_out === false && (
+                                <button
+                                    className="btn btn-error"
+                                    onClick={() =>
+                                        handleCheckout(form?.room?.id)
+                                    }
+                                >
+                                    Check out
+                                </button>
+                            )}
+                        {form?.is_check_in === true &&
+                            form?.is_check_out === true && (
+                                <button className="btn btn-info disabled">
+                                    Thanh toán thành công
+                                </button>
+                            )}
                     </div>
                 </div>
             </div>
