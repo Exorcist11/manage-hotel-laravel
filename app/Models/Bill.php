@@ -40,14 +40,14 @@ class Bill extends Model
 	];
 
 	protected $fillable = [
-		'room_id',
+		'booking_detail_id',
 		'total',
 		'payment_method'
 	];
 
-	public function room()
+	public function booking_detail()
 	{
-		return $this->belongsTo(Room::class);
+		return $this->belongsTo(BookingDetail::class);
 	}
 
 	// Get accessor for payment_method attribute

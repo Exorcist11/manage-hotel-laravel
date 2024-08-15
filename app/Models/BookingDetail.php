@@ -56,4 +56,9 @@ class BookingDetail extends Model
 	{
 		return $this->belongsTo(Room::class);
 	}
+
+	public function bill()
+	{
+		return $this->hasOne(Bill::class);
+	}
 }

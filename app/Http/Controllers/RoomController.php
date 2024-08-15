@@ -185,7 +185,7 @@ class RoomController extends Controller
             $bill = Bill::create([
                 'payment_method' => $request->payment_method,
                 'total' => $total,
-                'room_id' => $id
+                'booking_detail_id' => $bookingDetail->id
             ]);
             \DB::commit();
             return response()->json([
