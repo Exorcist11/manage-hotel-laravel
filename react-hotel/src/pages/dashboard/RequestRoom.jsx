@@ -111,7 +111,7 @@ export default function RequestRoom() {
             ClearForm();
             toast.success("Đặt phòng thành công");
             getListRoom();
-            // document.getElementById("booking_at_counter").open = false;
+            document.getElementById("booking_at_counter").close();
         } catch (error) {
             console.error(error);
             toast.error("Failed to book the room");

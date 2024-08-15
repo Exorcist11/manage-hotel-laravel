@@ -107,27 +107,28 @@ export default function Products() {
     };
 
     const handleUpdate = async () => {
-        const data = {
-            name: form.name,
-            price: form.price,
-            amount: form.amount,
-        };
+        const formData = new FormData();
+        formData.append("name", form.name);
+        formData.append("price", form.price);
+        formData.append("amount", form.amount);
+
         if (selectedFile) {
-            data.image = selectedFile;
+            formData.append("image", selectedFile);
         }
 
         try {
-            await axios
-                .put(`http://127.0.0.1:8000/api/products/${form.id}`, data, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-                .then(() => {
-                    toast.success("Cập nhật sản phẩm thành công");
-                    getProducts();
-                    document.getElementById("my_modal_2").close();
-                });
+            await axios({
+                method: "post",
+                url: `http://127.0.0.1:8000/api/products/${form.id}?_method=PUT`,
+                data: formData,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }).then((res) => {
+                toast.success("Cập nhật sản phẩm thành công");
+                getProducts();
+                document.getElementById("my_modal_2").close();
+            });
         } catch (error) {
             console.error("There was an error updating the product!", error);
         }

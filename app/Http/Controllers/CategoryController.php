@@ -176,16 +176,22 @@ class CategoryController extends Controller
         if (!$category) {
             return response()->json(['message' => 'Category not found'], Response::HTTP_NOT_FOUND);
         }
+        
+        $old_img = $category->image;
 
+        if($old_img){
+            $old_img = str_replace('/storage/', 'public/', $old_img);
+            if (Storage::exists($old_img)) {
+                Storage::delete($old_img);
+            }
+        }
         $category->delete();
 
         return response()->json(['message' => 'Category deleted successfully']);
     }
 
     public function getListRoomByCategory($id){
-     
         $category = Category::with('rooms')->find($id);
-
      
         if (!$category) {
             return response()->json([
@@ -193,12 +199,9 @@ class CategoryController extends Controller
             ], 404);
         }
 
-    
         return response()->json([
             'category_name' => $category->name,
             'rooms' => $category->rooms
         ]);
-
-
     }
 }

@@ -60,12 +60,41 @@ class ProductController extends Controller
             $product = Product::findOrFail($id);
 
             $updateData = array_filter($request->only([
-                'name', 'price', 'amount', 'image'
+                'name', 'price', 'amount'
             ]), function ($value) {
                 return $value !== null;
             });
+
+            $old_img = $product->image;
+
+            $imageUrl = null;
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imagePath = $image->store('public/images');
+                $imageUrl = Storage::url($imagePath);
+
+                if($old_img){
+                    $old_img = str_replace('/storage/', 'public/', $old_img);
+                    if (Storage::exists($old_img)) {
+                        Storage::delete($old_img);
+                    }
+                }
+
+                $product->image = $imageUrl;
+            }
+
+            if (isset($updateData['name'])) {
+                $product->name = $updateData['name'];
+            }
+            if (isset($updateData['price'])) {
+                $product->price = $updateData['price'];
+            }
+            if (isset($updateData['amount'])) {
+                $product->amount = $updateData['amount'];
+            }
     
-            $product->update($updateData);    
+            $product->save(); 
 
             return response()->json([
                 'success' => true,
@@ -90,14 +119,21 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
          $product = Product::find($id);
+         $old_img = $product->image;
 
          if ($product) {
-             $product->delete();
+            if($old_img){
+                $old_img = str_replace('/storage/', 'public/', $old_img);
+                if (Storage::exists($old_img)) {
+                    Storage::delete($old_img);
+                }
+            }
+            $product->delete();
  
-             return response()->json([
-                 'success' => true,
-                 'message' => 'Product deleted successfully.'
-             ], 200);
+            return response()->json([
+                'success' => true,
+                'message' => 'Product deleted successfully.'
+            ], 200);
          }
          return response()->json([
              'success' => false,

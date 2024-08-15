@@ -12,7 +12,7 @@ class BillController extends Controller
      */
     public function index()
     {
-        $bills = Bill::with(['booking'])->get();
+        $bills = Bill::with(['room'])->get();
         return response()->json($bills);
     }
 

@@ -1,9 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { RiEyeLine } from "react-icons/ri";
 
 export default function ClientHistory() {
     const [history, setHistory] = useState([]);
-    const [searchTerm, setSearchTerm] = useState(""); // State để lưu trữ giá trị tìm kiếm
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const filteredHistory = history.filter((item) =>
+        item?.order?.fullname.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const getHistory = async () => {
         await axios
@@ -25,11 +30,6 @@ export default function ClientHistory() {
     useEffect(() => {
         getHistory();
     }, []);
-
-    // Lọc danh sách history dựa trên searchTerm
-    const filteredHistory = history.filter((item) =>
-        item?.order?.fullname.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     return (
         <div className="flex flex-col gap-5">
@@ -69,6 +69,7 @@ export default function ClientHistory() {
                             <th>Phòng</th>
                             <th>Tên khách hàng</th>
                             <th>Liên hệ</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,6 +92,18 @@ export default function ClientHistory() {
                                 <td>{item?.order?.fullname}</td>
 
                                 <td>{item?.order?.phone_number}</td>
+                                <td className="text-center">
+                                    <a
+                                        className="tooltip"
+                                        data-tip="Xem chi tiết"
+                                        href={`/detail-bill/${item.id}`}
+                                    >
+                                        <RiEyeLine
+                                            className="hover:text-green-500 cursor-pointer "
+                                            size={16}
+                                        />{" "}
+                                    </a>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

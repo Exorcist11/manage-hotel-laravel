@@ -7,10 +7,10 @@ import CheckIn from "@/pages/dashboard/CheckIn";
 import CheckOut from "@/pages/dashboard/CheckOut";
 import ClientHistory from "@/pages/dashboard/ClientHistory";
 import Dashboard from "@/pages/dashboard/Dashboard";
+import DetailBill from "@/pages/dashboard/DetailBill";
 import DetailCheckIn from "@/pages/dashboard/DetailCheckIn";
 import EmptyRoom from "@/pages/dashboard/EmptyRoom";
 import ListRoomByCategories from "@/pages/dashboard/ListRoomByCategories";
-import Pay from "@/pages/dashboard/Pay";
 import Products from "@/pages/dashboard/Products";
 import RequestRoom from "@/pages/dashboard/RequestRoom";
 import Room from "@/pages/dashboard/Room";
@@ -44,7 +44,7 @@ const dashboardRoute = [
     { path: "/check-in", page: CheckIn },
     { path: "/check-out", page: CheckOut },
     { path: "/check-in/:id", page: DetailCheckIn },
-    { path: "/payment", page: Pay },
+    { path: "/detail-bill/:id", page: DetailBill },
 ];
 
 export { publicRoute, dashboardRoute };

@@ -6,7 +6,6 @@ import {
     RiPhoneCameraLine,
     RiSoundModuleFill,
     RiUserFill,
-    RiUser5Line,
     RiUser2Fill,
     RiArchiveDrawerLine,
     RiArchive2Line,
@@ -45,11 +44,6 @@ export default function DashboardLayout({ children }) {
             name: "Check out ",
             icon: <RiCalendarCloseFill />,
             link: "/check-out",
-        },
-        {
-            name: "Thanh toán",
-            icon: <RiUser5Line />,
-            link: "/payment",
         },
         {
             name: "Quản lý nhân viên",
