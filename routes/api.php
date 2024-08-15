@@ -38,7 +38,7 @@ Route::controller(RoomController::class)->group(function () {
 Route::controller(StaffController::class)->group(function () {
   Route::get('/staff', 'index');
   Route::post('/staff', 'store');
-  Route::delete('/staff/{id}', 'destroy');
+  Route::patch('/staff/{id}', 'destroy');
   Route::get('/staff/{id}', 'show');
   Route::put('/staff/{id}', 'updateProfile');
   Route::put('/staff-email/{id}', 'accessEmail');

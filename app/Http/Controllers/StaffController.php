@@ -68,7 +68,8 @@ class StaffController extends Controller
             ], 404);
         }
 
-        $user->delete();
+        $user->deactive = true;
+        $user->save();
 
         return response()->json([
             'success' => true,
