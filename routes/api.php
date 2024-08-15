@@ -122,11 +122,10 @@ Route::prefix('bookingDetails')->group(function() {
   });
 });
 
-
-
 Route::get('/booking-check-out', [BookingDetailController::class, 'checkOut']);
 
 Route::controller(StatisticsController::class)->group(function () {
   Route::get('/monthly-order-stats', 'monthlyOrderStats');
   Route::get('/monthly-revenue-stats', 'monthlyRevenueStats');
+  Route::get('/dashboard', 'reportRecord');
 });

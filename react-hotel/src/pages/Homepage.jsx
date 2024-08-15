@@ -169,7 +169,9 @@ export default function Homepage() {
                                             </strong>
                                         </p>
                                     </div>
-                                    <p>{item?.description}</p>
+                                    <p className="line-clamp-4 text-justify">
+                                        {item?.description}
+                                    </p>
                                     <div className="card-actions justify-end">
                                         <a
                                             href={`/list-room/${item?.id}`}

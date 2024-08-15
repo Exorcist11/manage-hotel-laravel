@@ -277,7 +277,7 @@ export default function CategoryRoom() {
                                         </div>
                                     </div>
                                 </td>
-                                <td width="30%">{item?.description}</td>
+                                <td width="30%" className="">{item?.description}</td>
                                 <td width="10%">
                                     <div className="flex items-center justify-center gap-2">
                                         <div
@@ -581,7 +581,7 @@ export default function CategoryRoom() {
                                 name="description"
                                 placeholder="Mô tả"
                                 value={form?.description}
-                                className="textarea textarea-bordered w-full  focus:outline-none focus:ring-0"
+                                className="textarea textarea-bordered w-full min-h-[150px] focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
                         </label>

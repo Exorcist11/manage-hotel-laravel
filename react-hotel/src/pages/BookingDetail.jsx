@@ -24,6 +24,7 @@ export default function BookingDetail() {
         const day = String(now.getDate()).padStart(2, "0");
         return `${year}-${month}-${day}`;
     };
+ 
 
     const handleBooking = async () => {
         await axios
@@ -33,17 +34,18 @@ export default function BookingDetail() {
                 phone_number: form.phone_number,
                 citizen_number: form.citizen_number,
                 email: form.email,
-                category_id: detail.id,
+                category_id: detail.category.id,
                 number_of_rooms: form.number_of_rooms,
                 start_date: form.start_date,
                 end_date: form.end_date,
             })
-            .then(() => {
+            .then((res) => {
                 window.location.href = "/success";
                 toast.success("Đặt phòng thành công!");
             })
             .catch((err) => console.error(err));
     };
+
     useEffect(() => {
         const fetchRoom = async () => {
             try {
@@ -193,23 +195,24 @@ export default function BookingDetail() {
                     <div className="flex items-center pb-5 gap-5 ">
                         <div className="w-2/5 flex justify-center h-32">
                             <img
-                                src={`http://127.0.0.1:8000${detail?.image}`}
+                                src={`http://127.0.0.1:8000${detail?.category?.image}`}
                                 alt="img romom"
                                 className="object-cover object-center w-full h-full rounded-xl"
                             />
                         </div>
                         <div className="w-2/5 flex flex-col gap-2">
                             <h4 className="font-bold uppercase text-lg">
-                                {detail?.name}
+                                {detail?.category?.name}
                             </h4>
                             <p className="text-[13px]">
-                                Kích thước phòng: {detail?.size}{" "}
+                                Kích thước phòng: {detail?.category?.size}{" "}
                                 <span>
                                     m<sup>2</sup>
                                 </span>
                             </p>
                             <p className="text-[13px]">
-                                Số người: {detail?.max_occupancy} người/phòng
+                                Số người: {detail?.category?.max_occupancy}{" "}
+                                người/phòng
                             </p>
                             <p className="text-[13px]">Hướng nhìn thành phố</p>
                         </div>
