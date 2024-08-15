@@ -2,6 +2,7 @@ import { ClearForm } from "@/middleware/ClearForm";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { MdDelete, MdCreate } from "react-icons/md";
+import { SelectItem } from "react-multi-select-component";
 import { toast } from "sonner";
 
 export default function CategoryRoom() {
@@ -32,17 +33,6 @@ export default function CategoryRoom() {
         "Truyền hình cáp/Vệ tinh",
     ];
 
-    const handleChangeCheckbox = (item) => {
-        setCheckedItem((prev) => {
-            if (prev.includes(item)) {
-                return prev.filter((i) => i !== item);
-            } else {
-                return [...prev, item];
-            }
-        });
-    };
-    // console.log(checkedItem.join("#"));
-
     const [selectedFile, setSelectedFile] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 3;
@@ -53,22 +43,61 @@ export default function CategoryRoom() {
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
+    const handleChangeCheckbox = (item) => {
+        setCheckedItem((prev) => {
+            if (prev.includes(item)) {
+                return prev.filter((i) => i !== item);
+            } else {
+                return [...prev, item];
+            }
+        });
+    };
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]);
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setForm((preState) => ({
+            ...preState,
+            [name]: value,
+        }));
+    };
+
+    const handleSearchChange = (event) => {
+        const keyword = event.target.value;
+        setSearchKeyword(keyword);
+        if (keyword) {
+            const filtered = categories.filter((category) =>
+                category.name.toLowerCase().includes(keyword.toLowerCase())
+            );
+            setFilteredCategories(filtered);
+        } else {
+            setFilteredCategories(categories);
+        }
+    };
 
     const handleView = async (id) => {
         document.getElementById("detail_category").showModal();
         await axios
             .get(`http://127.0.0.1:8000/api/categories/${id}`)
-            .then((response) =>
+            .then((response) => {
                 setForm({
-                    name: response.data.name,
-                    description: response.data.description,
-                    image: response.data.image,
-                    size: response.data.size,
-                    max_occupancy: response.data.max_occupancy,
-                    id: response.data.id,
-                    price: response.data.price,
-                })
-            )
+                    name: response.data.category.name,
+                    description: response.data.category.description,
+                    image: response.data.category.image,
+                    size: response.data.category.size,
+                    max_occupancy: response.data.category.max_occupancy,
+                    id: response.data.category.id,
+                    price: response.data.category.price,
+                });
+                setCheckedItem(response.data.utilities);
+            })
             .catch((e) => console.error(e));
     };
 
@@ -80,6 +109,7 @@ export default function CategoryRoom() {
         formData.append("size", form.size);
         formData.append("max_occupancy", form.max_occupancy);
         formData.append("price", form.price);
+        formData.append("utilities", checkedItem.join("#"));
         if (selectedFile) {
             formData.append("image", selectedFile);
         }
@@ -90,7 +120,7 @@ export default function CategoryRoom() {
                 url: `http://127.0.0.1:8000/api/categories/${form.id}?_method=PATCH`,
                 data: formData,
                 headers: {
-                    "Content-Type": "multipart/form-data", // Important for file uploads
+                    "Content-Type": "multipart/form-data",
                 },
             }).then((res) => {
                 getCategories();
@@ -133,6 +163,7 @@ export default function CategoryRoom() {
         formData.append("max_occupancy", form.max_occupancy);
         formData.append("description", form.description);
         formData.append("price", form.price);
+        formData.append("utilities", checkedItem.join("#"));
 
         try {
             await axios.post("http://127.0.0.1:8000/api/categories", formData, {
@@ -141,58 +172,19 @@ export default function CategoryRoom() {
                 },
             });
             toast.success("Thêm mới thành công");
-
-            setForm({
-                name: "",
-                description: "",
-                image: "",
-                size: "",
-                max_occupancy: "",
-                id: "",
-                price: "",
-            });
             setSelectedFile(null);
 
             ClearForm();
 
             getCategories();
 
-            document.getElementById("my_modal_1").close();
+            document.getElementById("add_new_category").close();
         } catch (err) {
             toast.error(
                 err.response?.data?.message ||
                     "Có lỗi xảy ra. Vui lòng thử lại sau."
             );
         }
-    };
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setForm((preState) => ({
-            ...preState,
-            [name]: value,
-        }));
-    };
-
-    const handleSearchChange = (event) => {
-        const keyword = event.target.value;
-        setSearchKeyword(keyword);
-        if (keyword) {
-            const filtered = categories.filter((category) =>
-                category.name.toLowerCase().includes(keyword.toLowerCase())
-            );
-            setFilteredCategories(filtered);
-        } else {
-            setFilteredCategories(categories);
-        }
-    };
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-
-    const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]);
     };
 
     const getCategories = async () => {
@@ -218,7 +210,7 @@ export default function CategoryRoom() {
                 <button
                     className="btn btn-outline max-w-xs"
                     onClick={() =>
-                        document.getElementById("my_modal_1").showModal()
+                        document.getElementById("add_new_category").showModal()
                     }
                 >
                     Thêm thể loại phòng
@@ -328,7 +320,7 @@ export default function CategoryRoom() {
                 </div>
             </div>
 
-            <dialog id="my_modal_1" className="modal">
+            <dialog id="add_new_category" className="modal">
                 <div className="modal-box flex flex-col gap-3 max-w-5xl">
                     <h3 className="font-bold text-lg">Thêm thể loại phòng!</h3>
                     <div className="flex flex-col gap-2">
@@ -542,6 +534,40 @@ export default function CategoryRoom() {
                                 />
                             </label>
                         </div>
+
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Tiện ích kèm theo{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <div className="grid grid-cols-4 gap-3">
+                                {services.map((item, index) => (
+                                    <div
+                                        className="form-control col-span-1"
+                                        key={index}
+                                    >
+                                        <label className="flex items-center gap-2 cursor-pointer">
+                                            <input
+                                                value={item}
+                                                type="checkbox"
+                                                className="checkbox"
+                                                checked={checkedItem.includes(
+                                                    item
+                                                )}
+                                                onChange={() =>
+                                                    handleChangeCheckbox(item)
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                {item}
+                                            </span>
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                        </label>
 
                         <label className="form-control w-full ">
                             <div className="label">

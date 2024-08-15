@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { FaShower } from "react-icons/fa";
 
 export default function DetailRoom() {
     const [room, setRoom] = useState({});
@@ -31,37 +32,52 @@ export default function DetailRoom() {
                         <a href="/list-room">Danh sách phòng</a>
                     </li>
                     <li>
-                        <a>{room?.name}</a>
+                        <a>{room?.category?.name}</a>
                     </li>
                 </ul>
             </div>
 
             <div className="text-center text-[40px] font-semibold">
-                {room?.name}
+                {room?.category?.name}
             </div>
 
             <div className="grid grid-cols-2 gap-5 items-center">
                 <div className="object-center object-cover w-full ">
                     <img
                         className="rounded-xl w-full h-full"
-                        src={"http://127.0.0.1:8000" + room?.image}
-                        alt={room?.name}
+                        src={"http://127.0.0.1:8000" + room?.category?.image}
+                        alt={room?.category?.name}
                     />
                 </div>
                 <div className="flex flex-col gap-5">
                     <div className="border-b">
                         <b>Thông tin phòng</b>
                         <p>
-                            <b>Kích thước</b>: {room?.size} m2
+                            <b>Kích thước</b>: {room?.category?.size} m2
                         </p>
                         <p>
-                            <b>Sức chứa</b>: {room?.max_occupancy} người/phòng
+                            <b>Sức chứa</b>: {room?.category?.max_occupancy}{" "}
+                            người/phòng
                         </p>
                     </div>
 
                     <div className="">
                         <b>Chi tiết phòng</b>
-                        <p>{room?.description}</p>
+                        <p>{room?.category?.description}</p>
+                    </div>
+
+                    <div>
+                        <p>
+                            <b>Dịch vụ kèm theo</b>
+                        </p>
+                        <ul className="grid grid-cols-2 gap-3 px-5 mt-2">
+                            {room?.utilities?.map((item, index) => (
+                                <li key={index} className="flex items-center gap-1">
+                                    <FaShower />
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
 
                     <a
