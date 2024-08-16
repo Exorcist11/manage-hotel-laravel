@@ -40,11 +40,6 @@ class Room extends Model
 		'category_id'
 	];
 
-	public function bills()
-	{
-		return $this->hasMany(Bill::class);
-	}
-
 	public function booking_details()
 	{
 		return $this->hasMany(BookingDetail::class);
