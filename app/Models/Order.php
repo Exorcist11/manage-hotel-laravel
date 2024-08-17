@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string $fullname
  * @property Carbon $birth
  * @property string $gender
- * @property string $phone_number
+ * @property string $phone
  * @property string $address
  * @property string $citizen_number
  * @property Carbon|null $created_at
@@ -47,7 +47,7 @@ class Order extends Model
 
 	protected $fillable = [
 		'fullname',
-		'phone_number',
+		'phone',
 		'citizen_number',
 		'email',
 		'category_id',

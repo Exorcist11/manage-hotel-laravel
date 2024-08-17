@@ -28,6 +28,7 @@ class StaffController extends Controller
                 'gender' => $request->gender,
                 'phone_number' => $request->phone_number,
                 'address' => $request->address,
+                'salary' => $request->salary ?? 0,
             ]);
     
             return response()->json([
@@ -96,6 +97,7 @@ class StaffController extends Controller
         $profile->gender = $request->gender;
         $profile->phone_number = $request->phone_number;
         $profile->address = $request->address;
+        $profile->salary = $request->salary;
         $profile->save();
 
         return response()->json([

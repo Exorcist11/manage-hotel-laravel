@@ -19,7 +19,6 @@ export default function Products() {
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
-        console.log("File selected:", event.target.files[0]);
     };
 
     const handleSearchChange = (event) => {
@@ -35,7 +34,7 @@ export default function Products() {
     };
 
     const handleDelete = async (productID) => {
-        const confirm = window.confirm("Are you sure you want to delete?");
+        const confirm = window.confirm("Bạn chắc chắn muốn xoá dịch vụ này?");
         if (confirm) {
             await axios
                 .delete(`http://127.0.0.1:8000/api/products/${productID}`)
@@ -60,11 +59,13 @@ export default function Products() {
         formData.append("amount", form.amount);
 
         try {
-            await axios.post("http://127.0.0.1:8000/api/products", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            await axios
+                .post("http://127.0.0.1:8000/api/products", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((res) => console.log(res));
             ClearForm();
             toast.success("Thêm mới sản phẩm thành công!");
             getProducts();

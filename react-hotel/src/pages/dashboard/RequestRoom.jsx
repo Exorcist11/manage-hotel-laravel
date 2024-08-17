@@ -20,7 +20,7 @@ export default function RequestRoom() {
     const [form, setForm] = useState({
         fullname: "",
         gender: "male",
-        phone_number: "",
+        phone: "",
         citizen_number: "",
         email: "",
         category_id: "1",
@@ -95,7 +95,7 @@ export default function RequestRoom() {
     const handleBookingRoom = async () => {
         if (
             !form.fullname ||
-            !form.phone_number ||
+            !form.phone ||
             !form.start_date ||
             !form.end_date
         ) {
@@ -104,10 +104,9 @@ export default function RequestRoom() {
         }
 
         try {
-            const res = await axios.post(
-                "http://127.0.0.1:8000/api/booking-at-counter",
-                form
-            );
+            await axios
+                .post("http://127.0.0.1:8000/api/booking-at-counter", form)
+                .then((res) => console.log(res));
             ClearForm();
             toast.success("Đặt phòng thành công");
             getListRoom();
@@ -117,6 +116,7 @@ export default function RequestRoom() {
             toast.error("Failed to book the room");
         }
     };
+    console.log(form);
 
     const handleAccept = async () => {
         if (selected.length !== detail.number_of_rooms) {
@@ -267,7 +267,7 @@ export default function RequestRoom() {
                                 filterData()?.map((item, i) => (
                                     <tr key={i}>
                                         <td>{item?.fullname}</td>
-                                        <td>{item?.phone_number}</td>
+                                        <td>{item?.phone}</td>
                                         <td>{item?.number_of_rooms}</td>
                                         <td>{item?.status}</td>
                                         <td width="10%">
@@ -365,7 +365,7 @@ export default function RequestRoom() {
                                                                     placeholder="Type here"
                                                                     className="input input-bordered w-full"
                                                                     defaultValue={
-                                                                        detail?.phone_number ||
+                                                                        detail?.phone ||
                                                                         ""
                                                                     }
                                                                 />
@@ -554,9 +554,9 @@ export default function RequestRoom() {
                                     <input
                                         type="text"
                                         placeholder="Số điện thoại"
-                                        name="phone_number"
+                                        name="phone"
                                         onChange={handleChange}
-                                        value={form.phone_number}
+                                        value={form.phone}
                                         className="input input-bordered w-full"
                                     />
                                 </label>
