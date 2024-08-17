@@ -85,6 +85,14 @@ return new class extends Migration
             $table->unsignedInteger('booking_detail_id');
             $table->timestamps();
         });
+
+        Schema::create('products', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->text('detail')->nullable();
+            $table->integer('quantity');
+            $table->unsignedInteger('booking_detail_id');
+        });
     }
 
     /**
@@ -101,5 +109,6 @@ return new class extends Migration
         Schema::dropIfExists('bookings');
         Schema::dropIfExists('booking_details');
         Schema::dropIfExists('bills');
+        Schema::dropIfExists('products');
     }
 };

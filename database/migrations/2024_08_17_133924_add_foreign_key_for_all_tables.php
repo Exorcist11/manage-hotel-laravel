@@ -33,6 +33,9 @@ return new class extends Migration
             $t->foreign('category_id')->references('id')->on('rooms')->onDelete('cascade');
         });
 
+        Schema::table('products', function (Blueprint $t){
+            $t->foreign('booking_detail_id')->references('id')->on('booking_details')->onDelete('cascade');
+        });
     }
 
     /**
@@ -60,6 +63,10 @@ return new class extends Migration
 
         Schema::table('rooms', function (Blueprint $t) {
             $t->dropForeign(['category_id']);
+        });
+
+        Schema::table('products', function (Blueprint $t) {
+            $t->dropForeign(['booking_detail_id']);
         });
     }
 };
