@@ -18,6 +18,7 @@ export default function Staff() {
         id: "",
         email: "",
         password: "",
+        salary: "",
     });
 
     const handleSearch = (event) => {
@@ -45,34 +46,22 @@ export default function Staff() {
             !form.fullname ||
             !form.phone_number ||
             !form.address ||
-            !form.birth
+            !form.birth ||
+            !form.salary
         ) {
             toast.error("Vui lòng nhập đầy đủ thông tin nhân viên.");
             return;
         }
 
-        try {
-            await axios.post("http://127.0.0.1:8000/api/staff", form);
-            toast.success("Thêm mới nhân viên thành công!");
-            ClearForm();
-
-            setForm({
-                fullname: "",
-                phone_number: "",
-                address: "",
-                birth: "",
-                gender: "male",
-                role: "0",
-                id: "",
-                email: "",
-                password: "",
-            });
-
-            fetchRooms();
-        } catch (e) {
-            console.error(e);
-            toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
-        }
+        await axios
+            .post("http://127.0.0.1:8000/api/staff", form)
+            .then((res) => {
+                console.log(res);
+                toast.success("Thêm mới nhân viên thành công!");
+            })
+            .then((err) => console.error(err));
+        ClearForm();
+        fetchRooms();
     };
 
     const handleDelete = async (id) => {
@@ -288,6 +277,22 @@ export default function Staff() {
                                 type="text"
                                 name="address"
                                 placeholder="Địa chỉ"
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                onChange={handleChange}
+                            />
+                        </label>
+
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Lương{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <input
+                                type="number"
+                                name="salary"
+                                placeholder="Lương"
                                 className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />

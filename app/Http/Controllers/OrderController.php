@@ -22,7 +22,6 @@ class OrderController extends Controller
             'accept_orders' => Order::accept()->get(),
             'reject_orders' => Order::reject()->get(),
             'counter_orders' => Order::counter()->with('booking')->get(),
-            // 'pending_orders' => Order::whereIn('status', [3, 1])->get()
         ]);
     }
 
@@ -34,7 +33,7 @@ class OrderController extends Controller
         try{
             $order = Order::create([
                 'fullname' => $request->fullname,
-                'phone_number' => $request->phone_number,
+                'phone' => $request->phone,
                 'citizen_number' => $request->citizen_number,
                 'email' => $request->email,
                 'category_id' => $request->category_id,

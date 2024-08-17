@@ -27,4 +27,11 @@ export const ClearForm = () => {
             select.selectedIndex = 0;
         });
     }
+
+    const checkboxInputs = document.querySelectorAll('input[type="checkbox"]');
+    if (checkboxInputs.length > 0) {
+        checkboxInputs.forEach((checkbox) => {
+            checkbox.checked = false;
+        });
+    }
 };

@@ -152,7 +152,7 @@ class BookingController extends Controller
         try{
             $order = Order::create([
                 'fullname' => $request->fullname,
-                'phone_number' => $request->phone_number,
+                'phone' => $request->phone,
                 'citizen_number' => $request->citizen_number,
                 'email' => $request->email,
                 'status' => "Đặt tại quầy",

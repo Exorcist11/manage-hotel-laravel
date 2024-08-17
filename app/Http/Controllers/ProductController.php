@@ -26,7 +26,8 @@ class ProductController extends Controller
             $product = Product::create([
                 'name' => $request->name,
                 'price' => $request->price,
-                'amount' => $request->amount,
+                'quantity' => $request->quantity,
+                'detail' => $request->detail,
                 'image' => $imageUrl,
             ]);
             return response()->json([

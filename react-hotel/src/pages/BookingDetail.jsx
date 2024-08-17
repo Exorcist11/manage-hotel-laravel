@@ -31,7 +31,7 @@ export default function BookingDetail() {
             .post(`http://127.0.0.1:8000/api/orders`, {
                 fullname: form.fullname,
                 gender: "male",
-                phone_number: form.phone_number,
+                phone: form.phone,
                 citizen_number: form.citizen_number,
                 email: form.email,
                 category_id: detail.category.id,
@@ -124,7 +124,7 @@ export default function BookingDetail() {
                             </div>
                             <input
                                 type="tel"
-                                name="phone_number"
+                                name="phone"
                                 placeholder="Số điện thoại"
                                 onChange={handleChange}
                                 className="input input-bordered w-full "

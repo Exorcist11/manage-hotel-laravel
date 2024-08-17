@@ -2,7 +2,6 @@ import { ClearForm } from "@/middleware/ClearForm";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { MdDelete, MdCreate } from "react-icons/md";
-import { SelectItem } from "react-multi-select-component";
 import { toast } from "sonner";
 
 export default function CategoryRoom() {
@@ -122,7 +121,7 @@ export default function CategoryRoom() {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-            }).then((res) => {
+            }).then(() => {
                 getCategories();
                 document.getElementById("detail_category").close();
             });
@@ -166,13 +165,16 @@ export default function CategoryRoom() {
         formData.append("utilities", checkedItem.join("#"));
 
         try {
-            await axios.post("http://127.0.0.1:8000/api/categories", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-            toast.success("Thêm mới thành công");
-            setSelectedFile(null);
+            await axios
+                .post("http://127.0.0.1:8000/api/categories", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then(() => {
+                    toast.success("Thêm mới thành công");
+                    setSelectedFile(null);
+                });
 
             ClearForm();
 
@@ -277,7 +279,9 @@ export default function CategoryRoom() {
                                         </div>
                                     </div>
                                 </td>
-                                <td width="30%" className="">{item?.description}</td>
+                                <td width="30%" className="">
+                                    {item?.description}
+                                </td>
                                 <td width="10%">
                                     <div className="flex items-center justify-center gap-2">
                                         <div

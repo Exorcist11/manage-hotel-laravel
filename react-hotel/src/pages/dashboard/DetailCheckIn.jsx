@@ -123,12 +123,12 @@ export default function DetailCheckIn() {
                             </div>
                             <input
                                 type="tel"
-                                name="phone_number"
+                                name="phone"
                                 placeholder="Số điện thoại"
                                 onChange={handleChange}
                                 className="input input-bordered w-full "
                                 pattern="[0-9]{3} [0-9]{3} [0-9]{4}"
-                                value={form?.booking?.order?.phone_number}
+                                value={form?.booking?.order?.phone}
                             />
                         </label>
 
