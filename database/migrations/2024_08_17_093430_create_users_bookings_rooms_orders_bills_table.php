@@ -48,6 +48,7 @@ return new class extends Migration
             $table->integer('max_occupancy');
             $table->float('size');
             $table->text('description')->nullable();
+            $table->decimal('price', 12, 2);
             $table->string('image');
             $table->timestamps();
         });
