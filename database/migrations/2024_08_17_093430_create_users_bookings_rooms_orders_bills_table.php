@@ -26,8 +26,8 @@ return new class extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('email');
-            $table->string('password');
+            $table->string('email')->nullable();
+            $table->string('password')->nullable();
             $table->unsignedTinyInteger('role')->default(0);
             $table->boolean('deactive')->default(false);
 
