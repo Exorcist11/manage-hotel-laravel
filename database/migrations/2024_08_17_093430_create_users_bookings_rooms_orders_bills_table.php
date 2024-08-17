@@ -106,6 +106,7 @@ return new class extends Migration
             $table->text('detail')->nullable();
             $table->decimal('price', 12, 2);
             $table->integer('quantity');
+            $table->string('image');
 
             $table->timestamps();
         });
