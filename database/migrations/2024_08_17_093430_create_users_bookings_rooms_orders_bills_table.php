@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('fullname');
-            $table->date('birth');
+            $table->date('birth')->nullable();
             $table->enum('gender', ['male', 'female', 'other']);
             $table->string('phone_number');
             $table->string('address');
+            $table->decimal('salary', 13, 2);
             $table->unsignedInteger('user_id');
             $table->timestamps();
         });
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('password');
             $table->unsignedTinyInteger('role')->default(0);
+            $table->boolean('deactive')->default(false);
         });
 
         Schema::create('orders', function(Blueprint $table) {
@@ -35,7 +37,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('citizen_number');
             $table->integer('number_of_rooms');
-            $table->string('email')->nullable();
+            $table->string('email');
             $table->unsignedInteger('category_id');
             $table->date('start_date');
             $table->date('end_date');
@@ -49,6 +51,7 @@ return new class extends Migration
             $table->float('size');
             $table->text('description')->nullable();
             $table->string('image');
+            $table->string('utilities')->nullable();
             $table->timestamps();
         });
 
@@ -80,8 +83,8 @@ return new class extends Migration
 
         Schema::create('bills', function (Blueprint $table) {
             $table->increments('id');
-            $table->decimal('total', 13, 2)->nullable();
-            $table->unsignedTinyInteger('payment_method');
+            $table->decimal('total', 13, 2);
+            $table->unsignedTinyInteger('payment_method')->nullable();
             $table->unsignedInteger('booking_detail_id');
             $table->timestamps();
         });
@@ -90,8 +93,15 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('detail')->nullable();
+            $table->decimal('price', 12, 2);
             $table->integer('quantity');
+        });
+
+        Schema::create('product_services', function (Blueprint $table){
+            $table->increments('id');
+            $table->integer('amount');
             $table->unsignedInteger('booking_detail_id');
+            $table->unsignedInteger('product_id');
         });
     }
 
@@ -109,6 +119,8 @@ return new class extends Migration
         Schema::dropIfExists('bookings');
         Schema::dropIfExists('booking_details');
         Schema::dropIfExists('bills');
+
         Schema::dropIfExists('products');
+        Schema::dropIfExists('product_services');
     }
 };
