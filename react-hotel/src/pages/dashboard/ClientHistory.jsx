@@ -91,7 +91,7 @@ export default function ClientHistory() {
                                 </td>
                                 <td>{item?.order?.fullname}</td>
 
-                                <td>{item?.order?.phone_number}</td>
+                                <td>{item?.order?.phone}</td>
                                 <td className="text-center">
                                     <a
                                         className="tooltip"

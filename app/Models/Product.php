@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $room_id
  * @property string $name
  * @property float $price
- * @property int $amount
+ * @property int $quantity
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -28,13 +28,13 @@ class Product extends Model
 
 	protected $casts = [
 		'price' => 'float',
-		'amount' => 'int'
+		'quantity' => 'int'
 	];
 
 	protected $fillable = [
 		'name',
 		'price',
-		'amount',
+		'quantity',
 		'image'
 	];
 

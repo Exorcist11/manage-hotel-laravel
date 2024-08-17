@@ -61,7 +61,7 @@ class ProductController extends Controller
             $product = Product::findOrFail($id);
 
             $updateData = array_filter($request->only([
-                'name', 'price', 'amount'
+                'name', 'price', 'quantity'
             ]), function ($value) {
                 return $value !== null;
             });
@@ -91,8 +91,8 @@ class ProductController extends Controller
             if (isset($updateData['price'])) {
                 $product->price = $updateData['price'];
             }
-            if (isset($updateData['amount'])) {
-                $product->amount = $updateData['amount'];
+            if (isset($updateData['quantity'])) {
+                $product->quantity = $updateData['quantity'];
             }
     
             $product->save(); 

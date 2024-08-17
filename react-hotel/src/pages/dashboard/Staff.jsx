@@ -183,7 +183,7 @@ export default function Staff() {
                             <th>Số điện thoại</th>
                             <th>Lương</th>
                             <th>Chức vụ</th>
-                            <th width="35%"></th>
+                            <th width="30%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -192,7 +192,7 @@ export default function Staff() {
                                 <td>{staff?.profiles?.fullname}</td>
                                 <td>{staff?.profiles?.address}</td>
                                 <td>{staff?.profiles?.phone_number}</td>
-                                <td>-----</td>
+                                <td>{staff?.profiles?.salary} VND</td>
                                 <td>{staff?.role}</td>
                                 <th className="flex items-center gap-2 max-w-fit">
                                     <div

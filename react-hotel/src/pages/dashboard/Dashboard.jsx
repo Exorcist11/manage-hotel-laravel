@@ -1,14 +1,18 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 export default function Dashboard() {
+    const [data, setData] = useState([]);
     const reports = [
-        { title: "Tổng số phòng", res: 100 },
-        { title: "Thể loại phòng", res: 14 },
-        { title: "Phòng đang trống", res: 60 },
-        { title: "Phòng đặt", res: 40 },
-        { title: "Yêu cầu", res: 10 },
-        { title: "Phòng chưa check in", res: 14 },
+        { title: "Tổng số phòng", res: data?.room },
+        { title: "Thể loại phòng", res: data?.category },
+        { title: "Phòng đang trống", res: data?.available_rooms },
+        { title: "Phòng đặt", res: data?.total_check_out },
+        { title: "Yêu cầu", res: data?.order_pending },
+        { title: "Phòng chưa check in", res: data?.total_check_in },
         { title: "Tổng số khách hàng", res: 3000 },
-        { title: "Dịch vụ", res: 14 },
-        { title: "Doanh thu tháng", res: 1400000 },
+        { title: "Dịch vụ", res: data?.services },
+        { title: "Doanh thu tháng", res: `${data?.revenue} VND` },
     ];
 
     const colors = [
@@ -22,6 +26,16 @@ export default function Dashboard() {
         "bg-teal-500 text-white",
         "bg-orange-500 text-white",
     ];
+    const getData = async () => {
+        await axios
+            .get("http://127.0.0.1:8000/api/dashboard")
+            .then((res) => setData(res.data))
+            .catch((err) => console.log(err));
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     return (
         <div>

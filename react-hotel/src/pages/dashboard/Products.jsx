@@ -13,7 +13,7 @@ export default function Products() {
         id: "",
         name: "",
         price: "",
-        amount: "",
+        quantity: "",
         url: "",
     });
 
@@ -45,7 +45,7 @@ export default function Products() {
     };
 
     const handleSubmit = async () => {
-        if (!form.name || !form.price || !form.amount || !selectedFile) {
+        if (!form.name || !form.price || !form.quantity || !selectedFile) {
             toast.error(
                 "Vui lòng nhập đầy đủ thông tin sản phẩm và chọn hình ảnh"
             );
@@ -56,7 +56,7 @@ export default function Products() {
         formData.append("image", selectedFile);
         formData.append("name", form.name);
         formData.append("price", form.price);
-        formData.append("amount", form.amount);
+        formData.append("quantity", form.quantity);
 
         try {
             await axios
@@ -65,9 +65,8 @@ export default function Products() {
                         "Content-Type": "multipart/form-data",
                     },
                 })
-                .then((res) => console.log(res));
+                .then(() => toast.success("Thêm mới sản phẩm thành công!"));
             ClearForm();
-            toast.success("Thêm mới sản phẩm thành công!");
             getProducts();
         } catch (error) {
             console.error("There was an error uploading the file!", error);
@@ -92,7 +91,7 @@ export default function Products() {
                     id: response.data.product.id,
                     name: response.data.product.name,
                     price: response.data.product.price,
-                    amount: response.data.product.amount,
+                    quantity: response.data.product.quantity,
                     url: response.data.product.image,
                 })
             )
@@ -111,7 +110,7 @@ export default function Products() {
         const formData = new FormData();
         formData.append("name", form.name);
         formData.append("price", form.price);
-        formData.append("amount", form.amount);
+        formData.append("quantity", form.quantity);
 
         if (selectedFile) {
             formData.append("image", selectedFile);
@@ -125,7 +124,7 @@ export default function Products() {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-            }).then((res) => {
+            }).then(() => {
                 toast.success("Cập nhật sản phẩm thành công");
                 getProducts();
                 document.getElementById("my_modal_2").close();
@@ -221,7 +220,7 @@ export default function Products() {
                                         </div>
                                     </div>
                                 </td>
-                                <td>{item?.amount}</td>
+                                <td>{item?.quantity}</td>
                                 <td>{item?.price} VND</td>
                                 <td className="">
                                     <div className="flex items-center justify-center gap-2">
@@ -280,7 +279,7 @@ export default function Products() {
                             </div>
                             <input
                                 type="number"
-                                name="amount"
+                                name="quantity"
                                 placeholder="Số lượng"
                                 className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
                                 onChange={handleChange}
@@ -362,8 +361,8 @@ export default function Products() {
                             </div>
                             <input
                                 type="number"
-                                name="amount"
-                                value={form.amount}
+                                name="quantity"
+                                value={form.quantity}
                                 placeholder="Số lượng"
                                 className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0 "
                                 onChange={handleChange}

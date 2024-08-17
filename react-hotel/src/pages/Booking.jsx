@@ -5,8 +5,8 @@ export default function Booking() {
     const [categories, setCategories] = useState([]);
     const [filteredCategories, setFilteredCategories] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("");
-    const [loading, setLoading] = useState(true); // Thêm trạng thái loading
-    const [error, setError] = useState(null); // Thêm trạng thái lỗi
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const fetchCategories = async () => {
         try {
@@ -14,12 +14,12 @@ export default function Booking() {
                 "http://127.0.0.1:8000/api/categories"
             );
             setCategories(response.data);
-            setFilteredCategories(response.data); 
+            setFilteredCategories(response.data);
         } catch (err) {
             console.error(err);
-            setError("Lỗi khi tải dữ liệu danh mục."); 
+            setError("Lỗi khi tải dữ liệu danh mục.");
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
@@ -40,8 +40,8 @@ export default function Booking() {
         fetchCategories();
     }, []);
 
-    if (loading) return <p>Đang tải dữ liệu...</p>; 
-    if (error) return <p>{error}</p>; 
+    if (loading) return <p>Đang tải dữ liệu...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
         <div className="mx-20">
@@ -79,7 +79,7 @@ export default function Booking() {
             <div className="flex flex-col gap-4 my-5">
                 {filteredCategories.map((item, index) => (
                     <div
-                        className="flex items-center border-b pb-5 gap-5"
+                        className="flex items-center p-5 gap-5 shadow-lg border"
                         key={index}
                     >
                         <div className="w-2/5 flex justify-center h-64">
@@ -101,12 +101,22 @@ export default function Booking() {
                             </p>
                             <p>Số người: {item?.max_occupancy} người</p>
                             <p>Hướng nhìn thành phố</p>
-                            <div className="flex justify-end">
-                                <a className="btn" href={`/booking/${item.id}`}>
-                                    {parseInt(item?.price).toLocaleString(
-                                        "vi-VN"
-                                    )}{" "}
-                                    VND
+                            <div className="flex items-center justify-between">
+                                <p>
+                                    Chỉ từ{" "}
+                                    <span className="font-bold text-yellow-500 text-2xl">
+                                        {parseInt(item?.price).toLocaleString(
+                                            "vi-VN"
+                                        )}{" "}
+                                        VNĐ
+                                    </span>{" "}
+                                    / đêm
+                                </p>
+                                <a
+                                    className="btn bg-blue-600 text-white"
+                                    href={`/booking/${item.id}`}
+                                >
+                                    Đặt ngay
                                 </a>
                             </div>
                         </div>
