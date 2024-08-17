@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address');
             $table->decimal('salary', 13, 2);
             $table->unsignedInteger('user_id');
+
             $table->timestamps();
         });
 
@@ -29,6 +30,8 @@ return new class extends Migration
             $table->string('password');
             $table->unsignedTinyInteger('role')->default(0);
             $table->boolean('deactive')->default(false);
+
+            $table->timestamps();
         });
 
         Schema::create('orders', function(Blueprint $table) {
@@ -42,6 +45,8 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->unsignedTinyInteger('status')->default(0);
+
+            $table->timestamps();
         });
 
         Schema::create('categories', function (Blueprint $table) {
@@ -53,6 +58,7 @@ return new class extends Migration
             $table->decimal('price', 12, 2);
             $table->string('image');
             $table->string('utilities')->nullable();
+
             $table->timestamps();
         });
 
@@ -61,6 +67,7 @@ return new class extends Migration
             $table->string('room_no');
             $table->integer('floor');
             $table->unsignedInteger('category_id');
+
             $table->timestamps();
         });
 
@@ -68,6 +75,7 @@ return new class extends Migration
             $table->increments('id');
             $table->unsignedInteger('staff_id');
             $table->unsignedInteger('order_id');
+
             $table->timestamps();
         });
 
@@ -79,6 +87,7 @@ return new class extends Migration
             $table->dateTime('check_out');
             $table->boolean('is_check_in')->default(false);
             $table->boolean('is_check_out')->default(false);
+
             $table->timestamps();
         });
 
@@ -87,6 +96,7 @@ return new class extends Migration
             $table->decimal('total', 13, 2);
             $table->unsignedTinyInteger('payment_method')->nullable();
             $table->unsignedInteger('booking_detail_id');
+
             $table->timestamps();
         });
 
@@ -96,6 +106,8 @@ return new class extends Migration
             $table->text('detail')->nullable();
             $table->decimal('price', 12, 2);
             $table->integer('quantity');
+
+            $table->timestamps();
         });
 
         Schema::create('product_services', function (Blueprint $table){
@@ -103,6 +115,8 @@ return new class extends Migration
             $table->integer('amount');
             $table->unsignedInteger('booking_detail_id');
             $table->unsignedInteger('product_id');
+
+            $table->timestamps();
         });
     }
 
