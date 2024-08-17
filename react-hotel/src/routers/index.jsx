@@ -5,6 +5,7 @@ import Accounts from "@/pages/dashboard/Accounts";
 import CategoryRoom from "@/pages/dashboard/CategoryRoom";
 import CheckIn from "@/pages/dashboard/CheckIn";
 import CheckOut from "@/pages/dashboard/CheckOut";
+import Client from "@/pages/dashboard/Client";
 import ClientHistory from "@/pages/dashboard/ClientHistory";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import DetailBill from "@/pages/dashboard/DetailBill";
@@ -43,6 +44,7 @@ const dashboardRoute = [
     { path: "/room-empty", page: EmptyRoom },
     { path: "/check-in", page: CheckIn },
     { path: "/check-out", page: CheckOut },
+    { path: "/manage-client", page: Client },
     { path: "/check-in/:id", page: DetailCheckIn },
     { path: "/detail-bill/:id", page: DetailBill },
 ];

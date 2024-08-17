@@ -189,14 +189,22 @@ export default function Staff() {
                 <table className="table table-zebra" width="100%">
                     <thead>
                         <tr>
-                            <th width="35%"></th>
                             <th>Tên nhân viên</th>
+                            <th>Quê quán</th>
+                            <th>Số điện thoại</th>
+                            <th>Lương</th>
                             <th>Chức vụ</th>
+                            <th width="35%"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredStaffs.map((staff, i) => (
                             <tr key={i}>
+                                <td>{staff?.profiles?.fullname}</td>
+                                <td>{staff?.profiles?.address}</td>
+                                <td>{staff?.profiles?.phone_number}</td>
+                                <td>-----</td>
+                                <td>{staff?.role}</td>
                                 <th className="flex items-center gap-2 max-w-fit">
                                     <div
                                         className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
@@ -227,8 +235,6 @@ export default function Staff() {
                                         </div>
                                     )}
                                 </th>
-                                <td>{staff?.profiles?.fullname}</td>
-                                <td>{staff?.role}</td>
                             </tr>
                         ))}
                     </tbody>

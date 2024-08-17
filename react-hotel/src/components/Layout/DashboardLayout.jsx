@@ -56,6 +56,11 @@ export default function DashboardLayout({ children }) {
             link: "/accounts",
         },
         {
+            name: "Quản lý khách hàng",
+            icon: <RiUserFill />,
+            link: "/manage-client",
+        },
+        {
             name: "Quản lý dịch vụ",
             icon: <RiArchiveDrawerLine />,
             link: "/products",
