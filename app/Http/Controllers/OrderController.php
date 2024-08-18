@@ -159,4 +159,22 @@ class OrderController extends Controller
             'checked_out' => $checked_out_orders
         ], 200);
     }
+
+    public function groupedByCitizenNumber() {
+        try {
+            $orders = Order::with('booking.bookingDetails.room') // Nếu bạn muốn lấy thêm thông tin liên quan
+                ->get()
+                ->groupBy('citizen_number');
+
+            return response()->json([
+                'success' => true,
+                'data' => $orders
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
