@@ -186,4 +186,23 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    public function getOrdersByCitizenNumber(Request $request){
+        $citizenNumber = $request->query('citizen_number');
+
+        if (!$citizenNumber) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Citizen number is required'
+            ], 400);
+        }
+
+        $orders = Order::where('citizen_number', $citizenNumber)
+                ->with(['booking.booking_details.room', 'booking.booking_details.bill'])->get();
+
+        return response()->json([
+            'success' => true,
+            'orders' => $orders
+        ], 200);
+    }
 }
