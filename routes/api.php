@@ -52,6 +52,7 @@ Route::prefix('orders')->group(function () {
     // Route::patch('/{id}', 'updateStatus');
     Route::patch('/{id}/reject', 'reject');
     Route::get('/list-checked', 'listChecked');
+    Route::get('/group-by-citizen', 'groupedByCitizenNumber');
   });
 });
 

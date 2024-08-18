@@ -38,8 +38,8 @@ class Product extends Model
 		'image'
 	];
 
-	public function product_rooms()
+	public function product_services()
 	{
-		return $this->hasMany(ProductRoom::class);
+		return $this->hasMany(ProductService::class);
 	}
 }
