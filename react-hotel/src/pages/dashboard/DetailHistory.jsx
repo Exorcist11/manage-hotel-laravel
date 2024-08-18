@@ -57,7 +57,7 @@ export default function DetailHistory() {
                             <p>Tổng tiền</p>
                             <p>
                                 {item?.booking?.booking_details[0]?.bill
-                                    ?.total || "null"}
+                                    ?.total || "null"} VND
                             </p>
                         </div>
                     </div>

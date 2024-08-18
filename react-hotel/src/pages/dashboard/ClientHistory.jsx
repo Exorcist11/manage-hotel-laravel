@@ -96,7 +96,7 @@ export default function ClientHistory() {
                                     <a
                                         className="tooltip"
                                         data-tip="Xem chi tiết"
-                                        href={`/detail-bill/${item.id}`}
+                                        href={`/detail-bill/${item.booking_details[0]?.bill?.id}`}
                                     >
                                         <RiEyeLine
                                             className="hover:text-green-500 cursor-pointer "

@@ -14,14 +14,11 @@ export default function DetailBill() {
     };
 
     function formatISODate(isoString) {
-        // Chuyển đổi ISO string thành đối tượng Date
         const date = new Date(isoString);
 
-        // Lấy giờ và phút
         const hours = date.getUTCHours().toString().padStart(2, "0");
         const minutes = date.getUTCMinutes().toString().padStart(2, "0");
 
-        // Lấy ngày, tháng và năm
         const day = date.getUTCDate().toString().padStart(2, "0");
         const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
         const year = date.getUTCFullYear();
@@ -94,17 +91,20 @@ export default function DetailBill() {
 
                     <tr className="py-3">
                         <td width="30%" className="p-1">
-                            Giá tiền:
+                            Loại phòng:
                         </td>
-                        <td> {detail?.booking_detail?.room?.category?.name}</td>
+                        <td>
+                            {detail?.booking_detail?.room?.category?.name} VND
+                        </td>
                     </tr>
 
                     <tr className="py-3">
                         <td width="30%" className="p-1">
-                            Loại phòng:
+                            Giá tiền:
                         </td>
                         <td>
-                            {detail?.booking_detail?.room?.category?.price} VND
+                            {" "}
+                            {detail?.booking_detail?.room?.category?.price}
                         </td>
                     </tr>
 
