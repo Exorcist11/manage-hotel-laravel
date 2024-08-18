@@ -34,7 +34,7 @@ export default function CategoryRoom() {
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3;
+    const itemsPerPage = 2;
 
     const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
 
@@ -253,7 +253,7 @@ export default function CategoryRoom() {
                 <table className="table table-bordered">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>STT</th>
                             <th>Loại phòng</th>
                             <th>Hình ảnh</th>
                             <th>Mô tả</th>

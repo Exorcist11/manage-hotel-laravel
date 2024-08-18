@@ -201,7 +201,7 @@ export default function Products() {
                     {/* head */}
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>STT</th>
                             <th>Tên sản phẩm</th>
                             <th>Hình ảnh</th>
                             <th>Số lượng</th>

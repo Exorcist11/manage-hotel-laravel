@@ -73,9 +73,12 @@ export default function Staff() {
         const confirm = window.confirm("Bạn muốn xoá nhân viên này!");
         if (confirm) {
             await axios
-                .delete(`http://127.0.0.1:8000/api/staff/${id}`)
+                .patch(`http://127.0.0.1:8000/api/staff/${id}?_method=PATCH`)
                 .then(() => toast.success("Xóa nhân viên thành công!"))
-                .catch(() => toast.error("Lỗi khi xóa"));
+                .catch((e) => {
+                    console.error(e);
+                    toast.error(e);
+                });
             fetchRooms();
         }
     };
@@ -185,7 +188,7 @@ export default function Staff() {
                 <table className="table table-zebra" width="100%">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>STT</th>
                             <th>Tên nhân viên</th>
                             <th>Quê quán</th>
                             <th>Số điện thoại</th>

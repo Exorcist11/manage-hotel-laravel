@@ -38,7 +38,7 @@ export default function EmptyRoom() {
                     },
                 }
             );
-   
+
             setRooms(response.data.data);
         } catch (error) {
             console.error(error);
@@ -106,6 +106,7 @@ export default function EmptyRoom() {
             <table className="table table-zebra">
                 <thead>
                     <tr>
+                        <th>STT</th>
                         <th>Phòng</th>
                         <th>Tầng</th>
                         <th>Loại phòng</th>
@@ -114,6 +115,7 @@ export default function EmptyRoom() {
                 <tbody>
                     {rooms.map((item, index) => (
                         <tr key={index}>
+                            <th>{index + 1}</th>
                             <th>
                                 <b>{item?.room_no}</b>
                             </th>

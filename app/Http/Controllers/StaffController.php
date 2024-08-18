@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
-    public function index(){
-        $users = User::with('profiles')->get();
+    public function index() {
+        $users = User::with('profiles')
+                     ->where('deactive', false)
+                     ->get();
         return response()->json(['users' => $users]);
     }
+    
 
     public function store(Request $request)
     {

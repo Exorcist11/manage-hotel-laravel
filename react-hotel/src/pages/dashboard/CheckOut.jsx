@@ -70,6 +70,7 @@ export default function CheckOut() {
                 <table className="table table-zebra" width="100%">
                     <thead>
                         <tr>
+                            <th>STT</th>
                             <th>Phòng</th>
                             <th>Tên khách</th>
                             <th>Số điện thoại</th>
@@ -82,6 +83,7 @@ export default function CheckOut() {
                         {filteredRooms.length > 0 ? (
                             filteredRooms?.map((item, i) => (
                                 <tr key={i}>
+                                    <td>{i + 1}</td>
                                     <td>{item?.room?.room_no}</td>
                                     <td>{item?.booking?.order?.fullname}</td>
                                     <td>
