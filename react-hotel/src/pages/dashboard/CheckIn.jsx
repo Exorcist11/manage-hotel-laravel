@@ -85,7 +85,7 @@ export default function CheckIn() {
                                     <td>{item?.room?.room_no}</td>
                                     <td>{item?.booking?.order?.fullname}</td>
                                     <td>
-                                        {item?.booking?.order?.phone_number}
+                                        {item?.booking?.order?.phone}
                                     </td>
                                     <td>{item?.booking?.order?.status}</td>
                                     <td>

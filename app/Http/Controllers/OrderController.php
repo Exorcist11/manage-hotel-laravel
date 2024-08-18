@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Room;
 use App\Models\Booking;
 use App\Models\BookingDetail;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -162,9 +163,17 @@ class OrderController extends Controller
 
     public function groupedByCitizenNumber() {
         try {
-            $orders = Order::with('booking.bookingDetails.room') // Nếu bạn muốn lấy thêm thông tin liên quan
-                ->get()
-                ->groupBy('citizen_number');
+            $orders = Order::select('fullname', 'email', 'citizen_number', 'phone')
+            ->whereIn('id', function($query) {
+                 $query->select(DB::raw('MIN(id)'))
+                       ->from('orders')
+                       ->groupBy('citizen_number');
+             })
+            ->get();
+
+            // $orders = Order::with('booking.booking_details.room') 
+            //     ->get()
+            //     ->groupBy('citizen_number', 'fullname');
 
             return response()->json([
                 'success' => true,

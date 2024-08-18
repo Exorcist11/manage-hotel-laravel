@@ -10,6 +10,7 @@ import ClientHistory from "@/pages/dashboard/ClientHistory";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import DetailBill from "@/pages/dashboard/DetailBill";
 import DetailCheckIn from "@/pages/dashboard/DetailCheckIn";
+import DetailHistory from "@/pages/dashboard/DetailHistory";
 import EmptyRoom from "@/pages/dashboard/EmptyRoom";
 import ListRoomByCategories from "@/pages/dashboard/ListRoomByCategories";
 import Products from "@/pages/dashboard/Products";
@@ -47,6 +48,7 @@ const dashboardRoute = [
     { path: "/manage-client", page: Client },
     { path: "/check-in/:id", page: DetailCheckIn },
     { path: "/detail-bill/:id", page: DetailBill },
+    { path: "/detail-history/:id", page: DetailHistory },
 ];
 
 export { publicRoute, dashboardRoute };

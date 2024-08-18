@@ -1,7 +1,58 @@
-
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { RiEyeLine } from "react-icons/ri";
 
 export default function Client() {
-  return (
-    <div>Client</div>
-  )
+    const [list, setList] = useState([]);
+    const getList = async () => {
+        await axios
+            .get("http://127.0.0.1:8000/api/orders/group-by-citizen")
+            .then((res) => setList(res.data.data))
+            .catch((err) => console.error(err));
+    };
+    useEffect(() => {
+        getList();
+    }, []);
+    return (
+        <div>
+            <h1 className="text-center text-2xl font-bold uppercase mb-5">
+                Danh sách khách hàng
+            </h1>
+            <div className="overflow-x-auto">
+                <table className="table table-sm">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Tên khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {list?.map((item, index) => (
+                            <tr key={index}>
+                                <th>{index + 1}</th>
+                                <td>{item?.fullname}</td>
+                                <td>{item?.phone}</td>
+                                <td>{item?.email}</td>
+                                <td className="text-center">
+                                    <a
+                                        className="tooltip"
+                                        data-tip="Xem chi tiết"
+                                        href={`/detail-history/${item.citizen_number}`}
+                                    >
+                                        <RiEyeLine
+                                            className="hover:text-green-500 cursor-pointer "
+                                            size={16}
+                                        />{" "}
+                                    </a>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
 }
