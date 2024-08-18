@@ -51,7 +51,7 @@ return new class extends Migration
 
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->integer('max_occupancy');
             $table->float('size');
             $table->text('description')->nullable();
@@ -64,7 +64,7 @@ return new class extends Migration
 
         Schema::create('rooms', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('room_no');
+            $table->string('room_no')->unique();
             $table->integer('floor');
             $table->unsignedInteger('category_id');
 
@@ -102,7 +102,7 @@ return new class extends Migration
 
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->text('detail')->nullable();
             $table->decimal('price', 12, 2);
             $table->integer('quantity');

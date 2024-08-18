@@ -30,7 +30,7 @@ return new class extends Migration
         });
 
         Schema::table('rooms', function (Blueprint $t) {
-            $t->foreign('category_id')->references('id')->on('rooms')->onDelete('cascade');
+            $t->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
 
         Schema::table('product_services', function (Blueprint $t){
