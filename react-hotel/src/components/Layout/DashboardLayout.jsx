@@ -83,6 +83,7 @@ export default function DashboardLayout({ children }) {
         "Quản lý nhân viên",
         "Quản lý tài khoản",
         "Quản lý dịch vụ",
+        "Quản lý khách hàng",
     ];
     const location = useLocation();
 
@@ -130,21 +131,25 @@ export default function DashboardLayout({ children }) {
                             </li>
                         );
                     })}
-                    <li
-                        className="li_content flex items-center gap-2"
+                </ul>
+            </nav>
+            <section className="basis-4/5 py-5 px-10 h-full overflow-auto">
+                <div className="flex justify-end mb-3">
+                    <div
+                        className="cursor-pointer uppercase font-bold flex items-center gap-2 group"
                         onClick={() => {
                             localStorage.removeItem("user");
                             window.location.href = "/";
                         }}
                     >
-                        <div className="text-blue-600">
+                        <a className="text-red-600 group-hover:text-blue-600">
+                            Đăng xuất
+                        </a>
+                        <p className="text-red-600 group-hover:text-blue-600 ">
                             <RiLogoutBoxLine />
-                        </div>
-                        <a className="text-blue-600">Đăng xuất</a>
-                    </li>
-                </ul>
-            </nav>
-            <section className="basis-4/5 py-5 px-10 h-full overflow-auto">
+                        </p>
+                    </div>
+                </div>
                 {children}
             </section>
             <Toaster />

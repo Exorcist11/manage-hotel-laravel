@@ -123,6 +123,7 @@ export default function CategoryRoom() {
                 },
             }).then(() => {
                 getCategories();
+                toast.success("Cập nhật thành công!");
                 document.getElementById("detail_category").close();
             });
         } catch (error) {
@@ -143,15 +144,22 @@ export default function CategoryRoom() {
         }
     };
 
-    const handleSave = async () => {
-        if (
-            !form.name ||
-            !form.size ||
-            !form.max_occupancy ||
-            !form.price ||
-            !selectedFile
-        ) {
-            toast.error("Vui lòng nhập đầy đủ thông tin và chọn hình ảnh");
+    const [errors, setErrors] = useState({});
+    const validate = () => {
+        const newErrors = {};
+        if (!form.name) newErrors.name = "Tên thể loại phòng là bắt buộc";
+        if (!form.size) newErrors.size = "Kích cỡ phòng là bắt buộc";
+        if (!form.max_occupancy)
+            newErrors.max_occupancy = "Cần nhập số lượng người";
+        if (!form.price) newErrors.price = "Giá loại phòng không được để trống";
+        if (!selectedFile) newErrors.image = "Nhập ảnh phòng";
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleSave = async (event) => {
+        event.preventDefault();
+        if (!validate()) {
             return;
         }
 
@@ -173,6 +181,7 @@ export default function CategoryRoom() {
                 })
                 .then(() => {
                     toast.success("Thêm mới thành công");
+                    ClearForm();
                     setSelectedFile(null);
                 });
 
@@ -342,6 +351,15 @@ export default function CategoryRoom() {
                                 className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.name && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.name}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <label className="form-control w-full ">
@@ -358,6 +376,15 @@ export default function CategoryRoom() {
                                 className="input input-bordered w-full focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.price && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.price}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <div className="flex gap-5">
@@ -375,6 +402,15 @@ export default function CategoryRoom() {
                                     className="input input-bordered w-full focus:outline-none focus:ring-0"
                                     onChange={handleChange}
                                 />
+                                <div className="label">
+                                    <span className="label-text-alt">
+                                        {errors.max_occupancy && (
+                                            <p className="text-red-500 text-sm">
+                                                {errors.max_occupancy}
+                                            </p>
+                                        )}
+                                    </span>
+                                </div>
                             </label>
 
                             <label className="form-control w-full ">
@@ -391,6 +427,15 @@ export default function CategoryRoom() {
                                     className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                     onChange={handleChange}
                                 />
+                                <div className="label">
+                                    <span className="label-text-alt">
+                                        {errors.size && (
+                                            <p className="text-red-500 text-sm">
+                                                {errors.size}
+                                            </p>
+                                        )}
+                                    </span>
+                                </div>
                             </label>
                         </div>
 
@@ -449,6 +494,15 @@ export default function CategoryRoom() {
                             className="file-input file-input-bordered w-full "
                             onChange={handleFileChange}
                         />
+                        <div className="label">
+                            <span className="label-text-alt">
+                                {errors.image && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.image}
+                                    </p>
+                                )}
+                            </span>
+                        </div>
                     </div>
                     <div className="modal-action">
                         <form method="dialog">

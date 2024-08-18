@@ -32,6 +32,7 @@ export default function Products() {
             setFilterProducts(products);
         }
     };
+    const [errors, setErrors] = useState({});
 
     const handleDelete = async (productID) => {
         const confirm = window.confirm("Bạn chắc chắn muốn xoá dịch vụ này?");
@@ -44,11 +45,19 @@ export default function Products() {
         }
     };
 
-    const handleSubmit = async () => {
-        if (!form.name || !form.price || !form.quantity || !selectedFile) {
-            toast.error(
-                "Vui lòng nhập đầy đủ thông tin sản phẩm và chọn hình ảnh"
-            );
+    const validate = () => {
+        const newErrors = {};
+        if (!form.name) newErrors.name = "Tên dịch vụ không được để trống";
+        if (!form.price) newErrors.price = "Giá dịch vụ không được để trống";
+        if (!form.quantity) newErrors.quantity = "Số lượng là bắt buộc";
+        if (!selectedFile) newErrors.image = "Ảnh không được để trống";
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!validate()) {
             return;
         }
 
@@ -192,8 +201,9 @@ export default function Products() {
                     {/* head */}
                     <thead>
                         <tr>
-                            <th>Tên sản phẩm</th>
                             <th></th>
+                            <th>Tên sản phẩm</th>
+                            <th>Hình ảnh</th>
                             <th>Số lượng</th>
                             <th>Giá</th>
                             <th width="10%"></th>
@@ -202,6 +212,7 @@ export default function Products() {
                     <tbody>
                         {filterProducts.map((item, index) => (
                             <tr key={index}>
+                                <td>{index + 1}</td>
                                 <th>
                                     <b>{item?.name}</b>
                                 </th>
@@ -268,6 +279,15 @@ export default function Products() {
                                 className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.name && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.name}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <label className="form-control w-full ">
@@ -284,6 +304,15 @@ export default function Products() {
                                 className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.quantity && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.quantity}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <label className="form-control w-full ">
@@ -300,6 +329,15 @@ export default function Products() {
                                 className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.price && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.price}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <label className="form-control w-full ">
@@ -314,6 +352,15 @@ export default function Products() {
                                 className="file-input file-input-bordered w-full "
                                 onChange={handleFileChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.image && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.image}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
                     </div>
                     <div className="modal-action">

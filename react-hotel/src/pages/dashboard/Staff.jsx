@@ -20,6 +20,7 @@ export default function Staff() {
         password: "",
         salary: "",
     });
+    const [errors, setErrors] = useState({});
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
@@ -40,16 +41,20 @@ export default function Staff() {
             [name]: value,
         }));
     };
+    const validate = () => {
+        const newErrors = {};
+        if (!form.fullname) newErrors.fullname = "Nhập tên nhân viên";
+        if (!form.phone_number) newErrors.phone_number = "Nhập số điện thoại";
+        if (!form.address) newErrors.address = "Nhập địa chỉ";
+        if (!form.birth) newErrors.birth = "Nhập ngày tháng năm sinh";
+        if (!form.salary) newErrors.salary = "Nhập lương";
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
-    const handleSave = async () => {
-        if (
-            !form.fullname ||
-            !form.phone_number ||
-            !form.address ||
-            !form.birth ||
-            !form.salary
-        ) {
-            toast.error("Vui lòng nhập đầy đủ thông tin nhân viên.");
+    const handleSave = async (event) => {
+        event.preventDefault();
+        if (!validate()) {
             return;
         }
 
@@ -65,7 +70,7 @@ export default function Staff() {
     };
 
     const handleDelete = async (id) => {
-        const confirm = window.confirm("Are you sure you want to delete?");
+        const confirm = window.confirm("Bạn muốn xoá nhân viên này!");
         if (confirm) {
             await axios
                 .delete(`http://127.0.0.1:8000/api/staff/${id}`)
@@ -109,6 +114,7 @@ export default function Staff() {
                 })
                 .catch((e) => console.log(e));
         }
+        ClearForm();
     };
 
     const handleOpenMail = (id, name) => {
@@ -134,6 +140,7 @@ export default function Staff() {
                     console.error(error);
                 });
         }
+        ClearForm();
     };
 
     const fetchRooms = async () => {
@@ -178,6 +185,7 @@ export default function Staff() {
                 <table className="table table-zebra" width="100%">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>Tên nhân viên</th>
                             <th>Quê quán</th>
                             <th>Số điện thoại</th>
@@ -189,6 +197,7 @@ export default function Staff() {
                     <tbody>
                         {filteredStaffs.map((staff, i) => (
                             <tr key={i}>
+                                <td>{i + 1}</td>
                                 <td>{staff?.profiles?.fullname}</td>
                                 <td>{staff?.profiles?.address}</td>
                                 <td>{staff?.profiles?.phone_number}</td>
@@ -248,6 +257,15 @@ export default function Staff() {
                                 className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.fullname && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.fullname}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <label className="form-control w-full ">
@@ -264,6 +282,15 @@ export default function Staff() {
                                 className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.phone_number && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.phone_number}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <label className="form-control w-full ">
@@ -280,6 +307,15 @@ export default function Staff() {
                                 className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.address && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.address}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <label className="form-control w-full ">
@@ -296,6 +332,15 @@ export default function Staff() {
                                 className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.salary && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.salary}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <label className="form-control w-full ">
@@ -313,6 +358,15 @@ export default function Staff() {
                                 placeholder="Ngày sinh"
                                 onChange={handleChange}
                             />
+                            <div className="label">
+                                <span className="label-text-alt">
+                                    {errors.birth && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.birth}
+                                        </p>
+                                    )}
+                                </span>
+                            </div>
                         </label>
 
                         <div className="flex gap-5 rounded-xl">
