@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Room;
 use App\Models\BookingDetail;
 use App\Models\Bill;
+use App\Models\ProductServices;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 
@@ -182,9 +183,9 @@ class RoomController extends Controller
 
             $total = $bookingDetail->check_in->diffInDay($bookingDetail->check_out) * $room->category->price;
 
-            foreach($bookingDetail->product_services as $service){
-                $total += $service->amount * $service->product->price;
-            }
+            // foreach($bookingDetail->product_services as $service){
+            //     $total += $service->amount * $service->product->price;
+            // }
 
             $bill = Bill::create([
                 'payment_method' => $request->payment_method,
