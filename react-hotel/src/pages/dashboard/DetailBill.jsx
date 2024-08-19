@@ -104,7 +104,9 @@ export default function DetailBill() {
                         </td>
                         <td>
                             {" "}
-                            {detail?.booking_detail?.room?.category?.price}
+                            {parseInt(
+                                detail?.booking_detail?.room?.category?.price
+                            ).toLocaleString("vi-VN")}
                         </td>
                     </tr>
 
@@ -128,7 +130,9 @@ export default function DetailBill() {
 
                 <div className="flex font-bold p-1 text-lg justify-between items-center">
                     <h3>Tổng tiền thanh toán</h3>
-                    <p className="text-red-500">{detail?.total} VND</p>
+                    <p className="text-red-500">
+                        {parseInt(detail?.total).toLocaleString("vi-VN")} VND
+                    </p>
                 </div>
                 <div className="flex p-1 text-lg justify-between items-center">
                     <h3>Phương thức thanh toán</h3>

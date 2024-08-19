@@ -7,7 +7,6 @@ import { toast } from "sonner";
 export default function Room() {
     const [rooms, setRooms] = useState([]);
     const [category, setCategory] = useState([]);
-    // const [isApiSuccess, setIsApiSuccess] = useState(false);
     const [form, setForm] = useState({
         room_no: "",
         floor: "",
@@ -71,7 +70,6 @@ export default function Room() {
             .get(`http://127.0.0.1:8000/api/rooms/${id}`)
             .then((response) => setForm(response.data))
             .catch((e) => console.log(e));
-        // setIsApiSuccess(true);
     };
 
     const handleDelete = async (id) => {
@@ -216,7 +214,7 @@ export default function Room() {
                     <div className="form-control">
                         <label className="label font-bold">Mã phòng</label>
                         <input
-                            type="text"
+                            type="number"
                             name="room_no"
                             placeholder="Nhập mã phòng..."
                             className="input input-bordered"

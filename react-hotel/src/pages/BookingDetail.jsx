@@ -7,14 +7,35 @@ export default function BookingDetail() {
     const [detail, setDetail] = useState({});
     const [form, setForm] = useState({});
     const [minDate, setMinDate] = useState("");
+    const [errors, setErrors] = useState({});
 
     const { id } = useParams();
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setForm((preState) => ({
             ...preState,
             [name]: value,
         }));
+        if (name === "phone") {
+            validatePhone(value);
+        }
+    };
+
+    const validate = () => {
+        const newErrors = {};
+        if (!form.fullname) newErrors.fullname = "Vui lòng nhập tên";
+        if (!form.phone) {
+            newErrors.phone = "Vui lòng nhập số điện thoại";
+        } else if (form.phone.length < 10) {
+            newErrors.phone = "Số điện thoại không hợp lệ!";
+        }
+        if (!form.citizen_number) newErrors.citizen_number = "CCCD là bắt buộc";
+        if (!form.email) newErrors.email = "Vui lòng nhập email";
+        if (!form.start_date) newErrors.start_date = "Vui lòng chọn ngày đến";
+        if (!form.end_date) newErrors.end_date = "Vui lòng chọn ngày đi";
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const getCurrentDate = () => {
@@ -24,9 +45,13 @@ export default function BookingDetail() {
         const day = String(now.getDate()).padStart(2, "0");
         return `${year}-${month}-${day}`;
     };
- 
 
-    const handleBooking = async () => {
+    const handleBooking = async (event) => {
+        event.preventDefault();
+        if (!validate()) {
+            return;
+        }
+
         await axios
             .post(`http://127.0.0.1:8000/api/orders`, {
                 fullname: form.fullname,
@@ -96,6 +121,9 @@ export default function BookingDetail() {
                             className="input input-bordered w-full "
                             required
                         />
+                        {errors.fullname && (
+                            <p className="text-red-500">{errors.fullname}</p>
+                        )}
                     </label>
 
                     <label className="form-control w-full ">
@@ -112,10 +140,15 @@ export default function BookingDetail() {
                             placeholder="Căn cước công dân/ Chứng minh nhân dân"
                             className="input input-bordered w-full "
                         />
+                        {errors.citizen_number && (
+                            <p className="text-red-500">
+                                {errors.citizen_number}
+                            </p>
+                        )}
                     </label>
 
                     <div className="flex gap-4">
-                        <label className="form-control w-full ">
+                        <label className="form-control w-full">
                             <div className="label">
                                 <span className="label-text">
                                     Số điện thoại{" "}
@@ -127,9 +160,13 @@ export default function BookingDetail() {
                                 name="phone"
                                 placeholder="Số điện thoại"
                                 onChange={handleChange}
-                                className="input input-bordered w-full "
+                                className="input input-bordered w-full"
                                 pattern="[0-9]{3} [0-9]{3} [0-9]{4}"
+                                required
                             />
+                            {errors.phone && (
+                                <p className="text-red-500">{errors.phone}</p>
+                            )}
                         </label>
 
                         <label className="form-control w-full ">
@@ -146,6 +183,9 @@ export default function BookingDetail() {
                                 placeholder="Email"
                                 className="input input-bordered w-full "
                             />
+                            {errors.email && (
+                                <p className="text-red-500">{errors.email}</p>
+                            )}
                         </label>
                     </div>
 
@@ -166,6 +206,11 @@ export default function BookingDetail() {
                                 max={form.end_date}
                                 className="input input-bordered w-full "
                             />
+                            {errors.start_date && (
+                                <p className="text-red-500">
+                                    {errors.start_date}
+                                </p>
+                            )}
                         </label>
 
                         <label className="form-control w-full ">
@@ -183,6 +228,11 @@ export default function BookingDetail() {
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
                             />
+                            {errors.end_date && (
+                                <p className="text-red-500">
+                                    {errors.end_date}
+                                </p>
+                            )}
                         </label>
                     </div>
                 </div>

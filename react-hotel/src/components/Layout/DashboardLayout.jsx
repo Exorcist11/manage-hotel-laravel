@@ -14,7 +14,7 @@ import {
     RiCalendarCloseFill,
 } from "react-icons/ri";
 import { useLocation } from "react-router-dom";
-import { Toaster } from "sonner";
+import { toast, Toaster } from "sonner";
 
 export default function DashboardLayout({ children }) {
     const info = JSON.parse(localStorage.getItem("user"));
@@ -93,6 +93,17 @@ export default function DashboardLayout({ children }) {
         }
         return true;
     });
+
+    const handleLogout = () => {
+        const confirmed = window.confirm("Bạn có chắc chắn muốn đăng xuất?");
+        if (confirmed) {
+            localStorage.removeItem("user");
+            toast.success("Đăng xuất thành công!", {
+                duration: 5000,
+            });
+            window.location.href = "/";
+        }
+    };
     return (
         <div className="flex h-screen">
             <nav className="basis-1/5 flex flex-col gap-5 border-r py-5 bg-[#e2dfd4] h-full">
@@ -137,10 +148,7 @@ export default function DashboardLayout({ children }) {
                 <div className="flex justify-end mb-3">
                     <div
                         className="cursor-pointer uppercase font-bold flex items-center gap-2 group"
-                        onClick={() => {
-                            localStorage.removeItem("user");
-                            window.location.href = "/";
-                        }}
+                        onClick={handleLogout}
                     >
                         <a className="text-red-600 group-hover:text-blue-600">
                             Đăng xuất
