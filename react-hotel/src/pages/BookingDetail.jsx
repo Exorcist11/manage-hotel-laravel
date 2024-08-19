@@ -17,9 +17,6 @@ export default function BookingDetail() {
             ...preState,
             [name]: value,
         }));
-        if (name === "phone") {
-            validatePhone(value);
-        }
     };
 
     const validate = () => {
@@ -27,7 +24,7 @@ export default function BookingDetail() {
         if (!form.fullname) newErrors.fullname = "Vui lòng nhập tên";
         if (!form.phone) {
             newErrors.phone = "Vui lòng nhập số điện thoại";
-        } else if (form.phone.length < 10) {
+        } else if (form.phone.length < 10 && form.phone.length > 11) {
             newErrors.phone = "Số điện thoại không hợp lệ!";
         }
         if (!form.citizen_number) newErrors.citizen_number = "CCCD là bắt buộc";

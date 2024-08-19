@@ -45,7 +45,7 @@ export default function Staff() {
         const newErrors = {};
         if (!form.fullname) newErrors.fullname = "Nhập tên nhân viên";
         if (!form.phone_number) newErrors.phone_number = "Nhập số điện thoại";
-        if (form.phone_number.length < 10) newErrors.phone_number = "Số điện thoại không hợp lệ";
+        if (form.phone_number.length < 10 && form.phone_number.length > 11) newErrors.phone_number = "Số điện thoại không hợp lệ";
         if (!form.address) newErrors.address = "Nhập địa chỉ";
         if (!form.birth) newErrors.birth = "Nhập ngày tháng năm sinh";
         if (!form.salary) newErrors.salary = "Nhập lương";
