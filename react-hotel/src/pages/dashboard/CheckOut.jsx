@@ -33,6 +33,7 @@ export default function CheckOut() {
 
         return `${day}/${month}/${year}`;
     }
+   
 
     function handleDateChange(e) {
         const selectedDate = e.target.value;
@@ -87,7 +88,7 @@ export default function CheckOut() {
                                     <td>{item?.room?.room_no}</td>
                                     <td>{item?.booking?.order?.fullname}</td>
                                     <td>
-                                        {item?.booking?.order?.phone_number}
+                                        {item?.booking?.order?.phone}
                                     </td>
                                     <td>{item?.booking?.order?.status}</td>
                                     <td>
