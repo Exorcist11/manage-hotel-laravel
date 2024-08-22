@@ -1,12 +1,28 @@
-import { ClearForm } from "@/middleware/ClearForm";
+import useSWR from "swr";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { MdDelete, MdCreate } from "react-icons/md";
+import { useState } from "react";
 import { toast } from "sonner";
+import { ClearForm } from "@/middleware/ClearForm";
+import { MdCreate, MdDelete } from "react-icons/md";
+
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function Room() {
-    const [rooms, setRooms] = useState([]);
-    const [category, setCategory] = useState([]);
+    const {
+        data: rooms,
+        error: roomsError,
+        mutate: mutateRooms,
+    } = useSWR("http://127.0.0.1:8000/api/rooms", fetcher);
+
+    const { data: categories, error: categoriesError } = useSWR(
+        "http://127.0.0.1:8000/api/categories",
+        fetcher
+    );
+    const { data: category, error } = useSWR(
+        "http://127.0.0.1:8000/api/categories",
+        fetcher
+    );
+
     const [form, setForm] = useState({
         room_no: "",
         floor: "",
@@ -14,7 +30,6 @@ export default function Room() {
         category_id: "",
     });
     const [errors, setErrors] = useState({});
-
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
 
@@ -29,8 +44,8 @@ export default function Room() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setForm((preState) => ({
-            ...preState,
+        setForm((prevState) => ({
+            ...prevState,
             [name]: value,
         }));
     };
@@ -50,74 +65,61 @@ export default function Room() {
         if (!validate()) {
             return;
         }
-        await axios
-            .post("http://127.0.0.1:8000/api/rooms", form)
-            .then(() => {
-                toast.success("Thêm mới phòng thành công!");
-                fetchRooms();
-                document.getElementById("add_new_room").close();
-                ClearForm();
-            })
-            .catch((e) => {
-                toast.error(e.response.data.message);
-                ClearForm();
-            });
+
+        try {
+            await axios.post("http://127.0.0.1:8000/api/rooms", form);
+            toast.success("Thêm mới phòng thành công!");
+            mutateRooms();
+            document.getElementById("add_new_room").close();
+        } catch (e) {
+            toast.error(e.response.data.message);
+        } finally {
+            ClearForm();
+        }
     };
 
     const handleGetRoom = async (id) => {
         document.getElementById("my_modal_2").showModal();
-        await axios
-            .get(`http://127.0.0.1:8000/api/rooms/${id}`)
-            .then((response) => setForm(response.data))
-            .catch((e) => console.log(e));
+        try {
+            const response = await axios.get(
+                `http://127.0.0.1:8000/api/rooms/${id}`
+            );
+            setForm(response.data);
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     const handleDelete = async (id) => {
         const confirm = window.confirm("Bạn có chắc xóa phòng này chứ?");
         if (confirm) {
-            await axios
-                .delete(`http://127.0.0.1:8000/api/rooms/${id}`)
-                .then(() => toast.success("Xóa phòng thành công!"))
-                .catch(() => toast.error("Lỗi khi xóa"));
-            fetchRooms();
-            ClearForm();
+            try {
+                await axios.delete(`http://127.0.0.1:8000/api/rooms/${id}`);
+                toast.success("Xóa phòng thành công!");
+                mutateRooms();
+                ClearForm();
+            } catch (e) {
+                toast.error("Lỗi khi xóa");
+            }
         }
     };
 
     const handleUpdate = async (id) => {
         if (id) {
-            await axios
-                .put(`http://127.0.0.1:8000/api/rooms/${id}`, form)
-                .then(() => {
-                    toast.success("Cập nhật phòng thành công!");
-                })
-                .catch((e) => console.log(e));
-            // setIsApiSuccess(false);
+            try {
+                await axios.put(`http://127.0.0.1:8000/api/rooms/${id}`, form);
+                toast.success("Cập nhật phòng thành công!");
+                mutateRooms();
+            } catch (e) {
+                console.log(e);
+            }
         }
-        fetchRooms();
         ClearForm();
     };
 
-    const fetchCategory = async () => {
-        await axios
-            .get("http://127.0.0.1:8000/api/categories")
-            .then((response) => setCategory(response.data));
-    };
-
-    const fetchRooms = async () => {
-        await axios
-            .get("http://127.0.0.1:8000/api/rooms")
-            .then((response) => setRooms(response.data));
-    };
-
-    useEffect(() => {
-        fetchRooms().catch((err) => console.error(err));
-        fetchCategory().catch((err) => console.error(err));
-    }, []);
-
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentRooms = rooms.slice(indexOfFirstItem, indexOfLastItem);
+    const currentRooms = rooms?.slice(indexOfFirstItem, indexOfLastItem) || [];
 
     const handleNextPage = () => {
         if (currentPage < Math.ceil(rooms.length / itemsPerPage)) {
@@ -131,19 +133,53 @@ export default function Room() {
         }
     };
 
+    if (roomsError || categoriesError) {
+        return <div>Error loading data</div>;
+    }
+
+    if (!rooms || !categories) {
+        return (
+            <div>
+                <span className="loading loading-bars loading-lg"></span>
+            </div>
+        );
+    }
+
     return (
         <div>
             <h2 className="uppercase text-2xl text-center font-bold">
                 Quản lý phòng
             </h2>
-            <button
-                className="btn btn-outline mb-5"
-                onClick={() =>
-                    document.getElementById("add_new_room").showModal()
-                }
-            >
-                Thêm phòng mới
-            </button>
+            <div className="flex items-center justify-between">
+                <button
+                    className="btn btn-outline mb-5"
+                    onClick={() =>
+                        document.getElementById("add_new_room").showModal()
+                    }
+                >
+                    Thêm phòng mới
+                </button>
+
+                <label className="input input-bordered flex items-center gap-2">
+                    <input
+                        type="text"
+                        className="grow"
+                        placeholder="Tìm kiếm tên phòng"
+                    />
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        fill="currentColor"
+                        className="h-4 w-4 opacity-70"
+                    >
+                        <path
+                            fillRule="evenodd"
+                            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                            clipRule="evenodd"
+                        />
+                    </svg>
+                </label>
+            </div>
 
             <div className="overflow-x-auto">
                 <table className="table table-zebra" width="100%">
