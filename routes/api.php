@@ -14,6 +14,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\BookingDetailController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\ProductServiceController;
 
 Route::get('/hello', function(){
   return response()->json(['message' => 'Devil may cry']);
@@ -120,6 +121,13 @@ Route::prefix('bookingDetails')->group(function() {
   Route::controller(BookingDetailController::class)->group(function() {
     Route::get('/{id}', 'show');
     Route::get('/', 'index');
+    // Route::get('check-out', 'checkOut');
+  });
+});
+
+Route::prefix('productServices')->group(function() {
+  Route::controller(ProductServiceController::class)->group(function() {
+    Route::post('', 'store');
     // Route::get('check-out', 'checkOut');
   });
 });

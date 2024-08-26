@@ -19,9 +19,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class ProductRoom extends Model
+class ProductService extends Model
 {
-    protected $table = 'product_rooms';
+    protected $table = 'product_services';
 
     protected $fillable = [
         'product_id',
