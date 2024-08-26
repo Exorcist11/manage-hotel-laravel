@@ -23,6 +23,8 @@ export default function Room() {
         fetcher
     );
 
+    const [searchTerm, setSearchTerm] = useState("");
+
     const [form, setForm] = useState({
         room_no: "",
         floor: "",
@@ -119,7 +121,12 @@ export default function Room() {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentRooms = rooms?.slice(indexOfFirstItem, indexOfLastItem) || [];
+    const currentRooms =
+        rooms
+            ?.filter((room) =>
+                room.room_no.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .slice(indexOfFirstItem, indexOfLastItem) || [];
 
     const handleNextPage = () => {
         if (currentPage < Math.ceil(rooms.length / itemsPerPage)) {
@@ -165,6 +172,8 @@ export default function Room() {
                         type="text"
                         className="grow"
                         placeholder="Tìm kiếm tên phòng"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

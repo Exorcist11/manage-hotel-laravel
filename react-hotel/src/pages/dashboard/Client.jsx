@@ -4,6 +4,7 @@ import { RiEyeLine } from "react-icons/ri";
 
 export default function Client() {
     const [list, setList] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
     const getList = async () => {
         await axios
             .get("http://127.0.0.1:8000/api/orders/group-by-citizen")
@@ -24,6 +25,8 @@ export default function Client() {
                     type="text"
                     className="grow"
                     placeholder="Tìm kiếm thông tin khách hàng"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -50,26 +53,32 @@ export default function Client() {
                         </tr>
                     </thead>
                     <tbody>
-                        {list?.map((item, index) => (
-                            <tr key={index}>
-                                <th>{index + 1}</th>
-                                <td>{item?.fullname}</td>
-                                <td>{item?.phone}</td>
-                                <td>{item?.email}</td>
-                                <td className="text-center">
-                                    <a
-                                        className="tooltip"
-                                        data-tip="Xem chi tiết"
-                                        href={`/detail-history/${item.citizen_number}`}
-                                    >
-                                        <RiEyeLine
-                                            className="hover:text-green-500 cursor-pointer "
-                                            size={16}
-                                        />{" "}
-                                    </a>
-                                </td>
-                            </tr>
-                        ))}
+                        {list
+                            ?.filter((cs) =>
+                                cs.fullname
+                                    .toLowerCase()
+                                    .includes(searchTerm.toLowerCase())
+                            )
+                            ?.map((item, index) => (
+                                <tr key={index}>
+                                    <th>{index + 1}</th>
+                                    <td>{item?.fullname}</td>
+                                    <td>{item?.phone}</td>
+                                    <td>{item?.email}</td>
+                                    <td className="text-center">
+                                        <a
+                                            className="tooltip"
+                                            data-tip="Xem chi tiết"
+                                            href={`/detail-history/${item.citizen_number}`}
+                                        >
+                                            <RiEyeLine
+                                                className="hover:text-green-500 cursor-pointer "
+                                                size={16}
+                                            />{" "}
+                                        </a>
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>

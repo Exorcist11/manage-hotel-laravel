@@ -4,6 +4,10 @@ export default function clientLayout({ children }) {
         const element = document.getElementById("about_me");
         element.scrollIntoView({ behavior: "smooth" });
     };
+    const handleScrollPoint = () => {
+        const element = document.getElementById("point");
+        element.scrollIntoView({ behavior: "smooth" });
+    };
     return (
         <div className="flex flex-col h-full">
             <div className="flex items-center flex-row justify-between px-20  border-b mb-5 ">
@@ -38,14 +42,14 @@ export default function clientLayout({ children }) {
                         <li className="li_content" onClick={handleScroll}>
                             Về chúng tôi
                         </li>
+                        <li className="li_content" onClick={handleScrollPoint}>
+                            Vị trí
+                        </li>
                         <li className="li_content">
                             <a href="/list-room">Danh sách phòng</a>
                         </li>
                         <li className="li_content">
                             <a href="/booking">Đặt phòng</a>
-                        </li>
-                        <li className="li_content">
-                            <a href="/login">Đăng nhập</a>
                         </li>
                     </ul>
                 </div>

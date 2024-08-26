@@ -194,7 +194,7 @@ export default function Homepage() {
                 </div>
             </div>
 
-            <div className="h-[500px] mx-20 my-20">
+            <div className="h-[500px] mx-20 my-20" id="point">
                 <p className="uppercase text-2xl font-bold mb-5">
                     Vị trí tuyệt vời của Mường Thanh Grand Hoàng Mai
                 </p>

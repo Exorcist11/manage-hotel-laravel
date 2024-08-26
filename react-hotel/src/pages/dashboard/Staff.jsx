@@ -14,12 +14,13 @@ export default function Staff() {
         address: "",
         birth: "",
         gender: "male",
-        role: "0",
+        role: "",
         id: "",
         email: "",
         password: "",
         salary: "",
     });
+
     const [errors, setErrors] = useState({});
 
     const handleSearch = (event) => {
@@ -41,11 +42,13 @@ export default function Staff() {
             [name]: value,
         }));
     };
+
     const validate = () => {
         const newErrors = {};
         if (!form.fullname) newErrors.fullname = "Nhập tên nhân viên";
         if (!form.phone_number) newErrors.phone_number = "Nhập số điện thoại";
-        if (form.phone_number.length < 10 && form.phone_number.length > 11) newErrors.phone_number = "Số điện thoại không hợp lệ";
+        if (form.phone_number.length < 10 && form.phone_number.length > 11)
+            newErrors.phone_number = "Số điện thoại không hợp lệ";
         if (!form.address) newErrors.address = "Nhập địa chỉ";
         if (!form.birth) newErrors.birth = "Nhập ngày tháng năm sinh";
         if (!form.salary) newErrors.salary = "Nhập lương";
@@ -321,7 +324,22 @@ export default function Staff() {
                                 </span>
                             </div>
                         </label>
-
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">
+                                    Chức vụ{" "}
+                                    <span className="text-red-500">*</span>
+                                </span>
+                            </div>
+                            <select
+                                className="select select-bordered w-full "
+                                name="role"
+                                onChange={handleChange}
+                            >
+                                <option value={"Nhân viên"}>Nhân viên</option>
+                                <option value={"Quản lý"}>Quản lý</option>
+                            </select>
+                        </label>
                         <label className="form-control w-full ">
                             <div className="label">
                                 <span className="label-text">

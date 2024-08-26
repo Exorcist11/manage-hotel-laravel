@@ -9,6 +9,7 @@ export default function Accounts() {
         password: "",
         res_pass: "",
     });
+    const [searchTerm, setSearchTerm] = useState("");
     const fetchAccount = async () => [
         await axios
             .get("http://127.0.0.1:8000/api/getAccount")
@@ -62,6 +63,8 @@ export default function Accounts() {
                     type="text"
                     className="grow"
                     placeholder="Tìm kiếm tài khoản nhân viên"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -90,6 +93,11 @@ export default function Accounts() {
                     <tbody>
                         {accounts
                             .filter((item) => item?.email)
+                            ?.filter((acc) =>
+                                acc.email
+                                    .toLowerCase()
+                                    .includes(searchTerm.toLowerCase())
+                            )
                             .map((item, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
