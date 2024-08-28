@@ -113,7 +113,8 @@ Route::prefix('services')->group(function () {
 Route::prefix('bills')->group(function () {
   Route::controller(BillController::class)->group(function () {
     Route::get('', 'index');
-    Route::get('/{id}', 'show');
+    Route::get('/{id}', 'show')->where('id', '[0-9]+');
+    Route::get('reportMonth/{year}', 'reportMonth');
   });
 });
 
