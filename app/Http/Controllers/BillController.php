@@ -72,4 +72,53 @@ class BillController extends Controller
             ], 500);
         }
     }
+
+
+    public function reportRange(Request $request)
+    {
+        try {
+            $from = Carbon::parse($request->query('from'))->startOfDay();
+            $to = Carbon::parse($request->query('to'))->endOfDay();
+
+            $reports = [];
+
+            $currentDate = $from->copy();
+            while ($currentDate->lessThanOrEqualTo($to)) {
+                $start_date = $currentDate->copy()->startOfMonth();
+                $end_date = $currentDate->copy()->endOfMonth()->endOfDay();
+
+                if ($start_date->lessThan($from)) {
+                    $start_date = $from;
+                }
+
+                if ($end_date->greaterThan($to)) {
+                    $end_date = $to;
+                }
+
+                $completed_orders = Bill::whereBetween('updated_at', [$start_date, $end_date])
+                    ->get();
+
+                $total_revenue = $completed_orders->sum('total');
+
+                $report = [
+                    'year' => $currentDate->year,
+                    'month' => 'Tháng ' . $currentDate->month,
+                    'total_revenue' => $total_revenue,
+                    'orders' => $completed_orders
+                ];
+
+                $reports[] = $report;
+
+                $currentDate->addMonth();
+            }
+
+            return response()->json($reports);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
