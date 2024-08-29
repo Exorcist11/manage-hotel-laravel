@@ -44,8 +44,8 @@ class BookingController extends Controller
                     BookingDetail::create([
                         'booking_id' => $booking->id,
                         'room_id' => $roomData['id'],
-                        'check_in' => $order->start_date,
-                        'check_out' => $order->end_date,
+                        'check_in' => $order->start_date->setTime(12, 0, 0),
+                        'check_out' => $order->end_date->setTime(12, 0, 0),
                     ]);
                 }
 

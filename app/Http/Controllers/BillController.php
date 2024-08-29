@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Bill;
+use Carbon\Carbon;
 
 class BillController extends Controller
 {
@@ -36,5 +37,39 @@ class BillController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function reportMonth($year)
+    {
+        try {
+            $reports = [];
+
+            for ($month = 1; $month <= 12; $month++) {
+                $start_date = Carbon::create($year, $month, 1)->startOfDay();
+                $end_date = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay();
+
+                $completed_orders = Bill::whereBetween('updated_at', [$start_date, $end_date])
+                    ->get();
+
+                $total_revenue = $completed_orders->sum('total');
+
+                $report = [
+                    'year' => $year,
+                    'month' => 'Tháng ' . $month,
+                    'total_revenue' => $total_revenue,
+                    'orders' => []
+                ];
+
+                $reports[] = $report;
+            }
+
+            return response()->json($reports);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

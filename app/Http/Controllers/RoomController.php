@@ -181,11 +181,11 @@ class RoomController extends Controller
             $bookingDetail->is_check_out = true;
             $bookingDetail->save();
 
-            $total = $bookingDetail->check_in->diffInDay($bookingDetail->check_out) * $room->category->price;
+            $total = ceil($bookingDetail->check_in->diffInDay($bookingDetail->check_out)) * $room->category->price;
 
-            // foreach($bookingDetail->product_services as $service){
-            //     $total += $service->amount * $service->product->price;
-            // }
+            foreach($bookingDetail->product_services as $service){
+                $total += $service->amount * $service->product->price;
+            }
 
             $bill = Bill::create([
                 'payment_method' => $request->payment_method,
