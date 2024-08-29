@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Room;
 use App\Models\BookingDetail;
 use App\Models\Bill;
-use App\Models\ProductServices;
+use App\Models\ProductService;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 

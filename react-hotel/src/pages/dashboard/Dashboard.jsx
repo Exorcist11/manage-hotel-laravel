@@ -1,3 +1,4 @@
+import MonthChart from "@/components/Report/ReportMonth";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -58,6 +59,8 @@ export default function Dashboard() {
                     ))}
                 </div>
             </div>
+
+            <MonthChart/>
         </div>
     );
 }
