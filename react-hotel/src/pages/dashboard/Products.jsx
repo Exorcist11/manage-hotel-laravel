@@ -8,7 +8,7 @@ export default function Products() {
     const [products, setProducts] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
-    const [filterProducts, setFilterProducts] = useState([]);
+    // const [filterProducts, setFilterProducts] = useState([]);
     const [form, setForm] = useState({
         id: "",
         name: "",
@@ -17,21 +17,18 @@ export default function Products() {
         url: "",
     });
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const lastIndex = itemsPerPage * currentPage;
+    const firstIndex = lastIndex - itemsPerPage;
+    const records = products.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(products.length / itemsPerPage);
+    const numbers = [...Array(npage + 1).keys()].slice(1);
+
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
 
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
-        if (event.target.value) {
-            const filter = products.filter((product) =>
-                product.name.toLowerCase().includes(event.target.value)
-            );
-            setFilterProducts(filter);
-        } else {
-            setFilterProducts(products);
-        }
-    };
     const [errors, setErrors] = useState({});
 
     const handleDelete = async (productID) => {
@@ -148,7 +145,6 @@ export default function Products() {
             .get("http://127.0.0.1:8000/api/products")
             .then((response) => {
                 setProducts(response.data.products);
-                setFilterProducts(response.data.products);
             })
             .catch((error) => console.error(error));
     };
@@ -177,7 +173,7 @@ export default function Products() {
                         <input
                             type="text"
                             placeholder="Tìm kiếm dịch vụ"
-                            onChange={handleSearchChange}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                             value={searchTerm}
                             className="w-96"
                         />
@@ -210,55 +206,86 @@ export default function Products() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filterProducts.map((item, index) => (
-                            <tr key={index}>
-                                <td>{index + 1}</td>
-                                <th>
-                                    <b>{item?.name}</b>
-                                </th>
-                                <td>
-                                    <div className="flex items-center gap-3">
-                                        <div className="avatar">
-                                            <div className="object-cover object-center h-16 w-16">
-                                                <img
-                                                    src={
-                                                        "http://127.0.0.1:8000" +
-                                                        item?.image
-                                                    }
-                                                    alt={item?.name}
-                                                />
+                        {records
+                            ?.filter((cs) =>
+                                cs.name
+                                    .toLowerCase()
+                                    .includes(searchTerm.toLowerCase())
+                            )
+                            .map((item, index) => (
+                                <tr key={index}>
+                                    <td>
+                                        {index +
+                                            1 +
+                                            itemsPerPage * (currentPage - 1)}
+                                    </td>
+                                    <th>
+                                        <b>{item?.name}</b>
+                                    </th>
+                                    <td>
+                                        <div className="flex items-center gap-3">
+                                            <div className="avatar">
+                                                <div className="object-cover object-center h-16 w-16">
+                                                    <img
+                                                        src={
+                                                            "http://127.0.0.1:8000" +
+                                                            item?.image
+                                                        }
+                                                        alt={item?.name}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>{item?.quantity}</td>
-                                <td>{item?.price} VND</td>
-                                <td className="">
-                                    <div className="flex items-center justify-center gap-2">
-                                        <div
-                                            onClick={() =>
-                                                handleViewProduct(item?.id)
-                                            }
-                                            className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90"
-                                        >
-                                            <MdCreate size={20} />
-                                            <p>Sửa</p>
+                                    </td>
+                                    <td>{item?.quantity}</td>
+                                    <td>{item?.price} VND</td>
+                                    <td className="">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <div
+                                                onClick={() =>
+                                                    handleViewProduct(item?.id)
+                                                }
+                                                className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90"
+                                            >
+                                                <MdCreate size={20} />
+                                                <p>Sửa</p>
+                                            </div>
+                                            <div
+                                                onClick={() =>
+                                                    handleDelete(item?.id)
+                                                }
+                                                className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90"
+                                            >
+                                                <MdDelete size={20} />
+                                                <p>Xóa</p>
+                                            </div>
                                         </div>
-                                        <div
-                                            onClick={() =>
-                                                handleDelete(item?.id)
-                                            }
-                                            className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer opacity-90"
-                                        >
-                                            <MdDelete size={20} />
-                                            <p>Xóa</p>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
+
+                <div className="flex items-center justify-end mt-5 gap-5">
+                    <p className="font-semibold text-xs">
+                        Showing {firstIndex + 1}-{lastIndex} of{" "}
+                        {products.length}
+                    </p>
+
+                    <div className="join">
+                        {numbers.map((n, i) => (
+                            <button
+                                className={`join-item btn  btn-sm ${
+                                    currentPage === n ? "btn-active" : ""
+                                }`}
+                                onClick={() => setCurrentPage(n)}
+                                key={i}
+                            >
+                                {n}
+                            </button>
+                        ))}
+                    </div>
+                </div>
             </div>
 
             <dialog id="add_new_product" className="modal">

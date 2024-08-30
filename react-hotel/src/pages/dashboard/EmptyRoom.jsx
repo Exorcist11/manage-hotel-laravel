@@ -9,6 +9,14 @@ export default function EmptyRoom() {
         end_date: now.toISOString().split("T")[0],
     });
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const lastIndex = itemsPerPage * currentPage;
+    const firstIndex = lastIndex - itemsPerPage;
+    const records = rooms.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(rooms.length / itemsPerPage);
+    const numbers = [...Array(npage + 1).keys()].slice(1);
+
     const [minDate, setMinDate] = useState("");
 
     const getCurrentDate = () => {
@@ -95,7 +103,7 @@ export default function EmptyRoom() {
 
                 <label className="form-control w-full ">
                     <div className="label">
-                        <span className="label-text"> </span>
+                        <span className="label-text"></span>
                     </div>
                     <button className="btn" onClick={handleSearchRoom}>
                         Tìm kiếm
@@ -113,9 +121,11 @@ export default function EmptyRoom() {
                     </tr>
                 </thead>
                 <tbody>
-                    {rooms.map((item, index) => (
+                    {records.map((item, index) => (
                         <tr key={index}>
-                            <th>{index + 1}</th>
+                            <th>
+                                {index + 1 + itemsPerPage * (currentPage - 1)}
+                            </th>
                             <th>
                                 <b>{item?.room_no}</b>
                             </th>
@@ -125,6 +135,26 @@ export default function EmptyRoom() {
                     ))}
                 </tbody>
             </table>
+
+            <div className="flex items-center justify-end mt-5 gap-5">
+                <p className="font-semibold text-xs">
+                    Showing {firstIndex + 1}-{lastIndex} of {rooms.length}
+                </p>
+
+                <div className="join">
+                    {numbers.map((n, i) => (
+                        <button
+                            className={`join-item btn  btn-sm ${
+                                currentPage === n ? "btn-active" : ""
+                            }`}
+                            onClick={() => setCurrentPage(n)}
+                            key={i}
+                        >
+                            {n}
+                        </button>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }

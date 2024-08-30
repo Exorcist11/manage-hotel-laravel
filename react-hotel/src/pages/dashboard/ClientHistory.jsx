@@ -10,6 +10,14 @@ export default function ClientHistory() {
         item?.order?.fullname.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const lastIndex = itemsPerPage * currentPage;
+    const firstIndex = lastIndex - itemsPerPage;
+    const records = filteredHistory.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(filteredHistory.length / itemsPerPage);
+    const numbers = [...Array(npage + 1).keys()].slice(1);
+
     const getHistory = async () => {
         await axios
             .get("http://127.0.0.1:8000/api/bookings/history")
@@ -43,7 +51,7 @@ export default function ClientHistory() {
                         className="grow"
                         placeholder="Tìm kiếm tên khách hàng"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật searchTerm khi người dùng nhập
+                        onChange={(e) => setSearchTerm(e.target.value)} 
                     />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -73,9 +81,13 @@ export default function ClientHistory() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredHistory.map((item, index) => (
+                        {records.map((item, index) => (
                             <tr key={index}>
-                                <th>{index + 1}</th>
+                                <th>
+                                    {index +
+                                        1 +
+                                        itemsPerPage * (currentPage - 1)}
+                                </th>
                                 <td>
                                     {convertToDateString(
                                         item?.booking_details[0]?.check_in
@@ -108,6 +120,27 @@ export default function ClientHistory() {
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="flex items-center justify-end mt-5 gap-5">
+                <p className="font-semibold text-xs">
+                    Showing {firstIndex + 1}-{lastIndex} of{" "}
+                    {filteredHistory.length}
+                </p>
+
+                <div className="join">
+                    {numbers.map((n, i) => (
+                        <button
+                            className={`join-item btn  btn-sm ${
+                                currentPage === n ? "btn-active" : ""
+                            }`}
+                            onClick={() => setCurrentPage(n)}
+                            key={i}
+                        >
+                            {n}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );

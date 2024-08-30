@@ -5,15 +5,24 @@ import { RiEyeLine } from "react-icons/ri";
 export default function Client() {
     const [list, setList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const lastIndex = itemsPerPage * currentPage;
+    const firstIndex = lastIndex - itemsPerPage;
+    const records = list.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(list.length / itemsPerPage);
+    const numbers = [...Array(npage + 1).keys()].slice(1);
     const getList = async () => {
         await axios
             .get("http://127.0.0.1:8000/api/orders/group-by-citizen")
             .then((res) => setList(res.data.data))
             .catch((err) => console.error(err));
     };
+
     useEffect(() => {
         getList();
     }, []);
+
     return (
         <div>
             <h1 className="text-center text-2xl font-bold uppercase mb-5">
@@ -53,7 +62,7 @@ export default function Client() {
                         </tr>
                     </thead>
                     <tbody>
-                        {list
+                        {records
                             ?.filter((cs) =>
                                 cs.fullname
                                     .toLowerCase()
@@ -61,7 +70,11 @@ export default function Client() {
                             )
                             ?.map((item, index) => (
                                 <tr key={index}>
-                                    <th>{index + 1}</th>
+                                    <th>
+                                        {index +
+                                            1 +
+                                            itemsPerPage * (currentPage - 1)}
+                                    </th>
                                     <td>{item?.fullname}</td>
                                     <td>{item?.phone}</td>
                                     <td>{item?.email}</td>
@@ -81,6 +94,25 @@ export default function Client() {
                             ))}
                     </tbody>
                 </table>
+                <div className="flex items-center justify-end mt-5 gap-5">
+                    <p className="font-semibold text-xs">
+                        Showing {firstIndex + 1}-{lastIndex} of {list.length}
+                    </p>
+
+                    <div className="join">
+                        {numbers.map((n, i) => (
+                            <button
+                                className={`join-item btn  btn-sm ${
+                                    currentPage === n ? "btn-active" : ""
+                                }`}
+                                onClick={() => setCurrentPage(n)}
+                                key={i}
+                            >
+                                {n}
+                            </button>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );

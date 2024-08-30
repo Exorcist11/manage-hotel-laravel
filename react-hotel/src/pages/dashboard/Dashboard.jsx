@@ -13,7 +13,7 @@ export default function Dashboard() {
         { title: "Phòng chưa check in", res: data?.total_check_in },
         { title: "Tổng số khách hàng", res: 3000 },
         { title: "Dịch vụ", res: data?.services },
-        { title: "Doanh thu tháng", res: `${data?.revenue} VND` },
+        { title: "Doanh thu tháng", res: `${parseInt(data?.revenue).toLocaleString('vi-VN')} VND` },
     ];
 
     const colors = [
