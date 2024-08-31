@@ -106,7 +106,7 @@ export default function DashboardLayout({ children }) {
     };
     return (
         <div className="flex h-screen">
-            <nav className="basis-1/5 flex flex-col gap-5 border-r py-5 bg-[#e2dfd4] h-full">
+            <nav className="basis-1/5 flex flex-col gap-5 border-r py-5 bg-[#e2dfd4] min-h-screen h-fit">
                 <div className="flex flex-col gap-2 items-center justify-center">
                     <img
                         src="/images/muong-thanh-logo.png"
@@ -144,7 +144,7 @@ export default function DashboardLayout({ children }) {
                     })}
                 </ul>
             </nav>
-            <section className="basis-4/5 py-5 px-10 h-full overflow-auto">
+            <section className="basis-4/5 py-5 px-10 h-full ">
                 <div className="flex justify-end mb-3">
                     <div
                         className="cursor-pointer uppercase font-bold flex items-center gap-2 group"

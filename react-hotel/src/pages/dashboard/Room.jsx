@@ -4,26 +4,30 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ClearForm } from "@/middleware/ClearForm";
 import { MdCreate, MdDelete } from "react-icons/md";
+import { fetcher } from "@/lib/fetcher";
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+
 
 export default function Room() {
     const {
         data: rooms,
-        error: roomsError,
         mutate: mutateRooms,
+        isLoading,
     } = useSWR("http://127.0.0.1:8000/api/rooms", fetcher);
 
-    const { data: categories, error: categoriesError } = useSWR(
-        "http://127.0.0.1:8000/api/categories",
-        fetcher
-    );
-    const { data: category, error } = useSWR(
+    const { data: category } = useSWR(
         "http://127.0.0.1:8000/api/categories",
         fetcher
     );
 
     const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const lastIndex = itemsPerPage * currentPage;
+    const firstIndex = lastIndex - itemsPerPage;
+    const records = rooms ? rooms.slice(firstIndex, lastIndex) : [];
+    const npage = rooms ? Math.ceil(rooms.length / itemsPerPage) : 0;
+    const numbers = npage > 0 ? [...Array(npage + 1).keys()].slice(1) : [];
 
     const [form, setForm] = useState({
         room_no: "",
@@ -32,8 +36,6 @@ export default function Room() {
         category_id: "",
     });
     const [errors, setErrors] = useState({});
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10);
 
     const floors = [
         { flor: 1, name: "Tầng 1" },
@@ -119,35 +121,10 @@ export default function Room() {
         ClearForm();
     };
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentRooms =
-        rooms
-            ?.filter((room) =>
-                room.room_no.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            .slice(indexOfFirstItem, indexOfLastItem) || [];
-
-    const handleNextPage = () => {
-        if (currentPage < Math.ceil(rooms.length / itemsPerPage)) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
-    if (roomsError || categoriesError) {
-        return <div>Error loading data</div>;
-    }
-
-    if (!rooms || !categories) {
+    if (isLoading) {
         return (
-            <div>
-                <span className="loading loading-bars loading-lg"></span>
+            <div className="flex justify-center items-center h-screen">
+                <span className="loading loading-infinity loading-lg"></span>
             </div>
         );
     }
@@ -202,55 +179,66 @@ export default function Room() {
                         </tr>
                     </thead>
                     <tbody>
-                        {currentRooms.map((room, i) => (
-                            <tr key={i}>
-                                <td>{indexOfFirstItem + i + 1}</td>
-                                <td>{room?.room_no}</td>
-                                <td>{room?.category.name}</td>
-                                <td>{room?.floor}</td>
-                                <th className="flex items-center gap-2">
-                                    <div
-                                        onClick={() => handleGetRoom(room?.id)}
-                                        className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
-                                    >
-                                        <MdCreate size={20} />
-                                        <p>Sửa</p>
-                                    </div>
-                                    <div
-                                        onClick={() => handleDelete(room?.id)}
-                                        className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
-                                    >
-                                        <MdDelete size={20} />
-                                        <p>Xóa</p>
-                                    </div>
-                                </th>
-                            </tr>
-                        ))}
+                        {records
+                            ?.filter((cs) =>
+                                cs.room_no
+                                    .toLowerCase()
+                                    .includes(searchTerm.toLowerCase())
+                            )
+                            ?.map((room, i) => (
+                                <tr key={i}>
+                                    <td>
+                                        {i +
+                                            1 +
+                                            itemsPerPage * (currentPage - 1)}
+                                    </td>
+                                    <td>{room?.room_no}</td>
+                                    <td>{room?.category.name}</td>
+                                    <td>{room?.floor}</td>
+                                    <th className="flex items-center gap-2">
+                                        <div
+                                            onClick={() =>
+                                                handleGetRoom(room?.id)
+                                            }
+                                            className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                        >
+                                            <MdCreate size={20} />
+                                            <p>Sửa</p>
+                                        </div>
+                                        <div
+                                            onClick={() =>
+                                                handleDelete(room?.id)
+                                            }
+                                            className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                        >
+                                            <MdDelete size={20} />
+                                            <p>Xóa</p>
+                                        </div>
+                                    </th>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>
 
-            <div className="flex justify-center items-center mt-4">
-                <button
-                    onClick={handlePrevPage}
-                    className={`btn ${currentPage === 1 ? "btn-disabled" : ""}`}
-                >
-                    &lt;
-                </button>
-                <span className="mx-4 ">
-                    Trang {currentPage} /{" "}
-                    {Math.ceil(rooms.length / itemsPerPage)}
-                </span>
-                <button
-                    onClick={handleNextPage}
-                    className={`btn ${
-                        currentPage === Math.ceil(rooms.length / itemsPerPage)
-                            ? "btn-disabled"
-                            : ""
-                    }`}
-                >
-                    &gt;
-                </button>
+            <div className="flex items-center justify-end mt-5 gap-5">
+                <p className="font-semibold text-xs">
+                    Showing {firstIndex + 1}-{lastIndex} of {rooms.length}
+                </p>
+
+                <div className="join">
+                    {numbers?.map((n, i) => (
+                        <button
+                            className={`join-item btn  btn-sm ${
+                                currentPage === n ? "btn-active" : ""
+                            }`}
+                            onClick={() => setCurrentPage(n)}
+                            key={i}
+                        >
+                            {n}
+                        </button>
+                    ))}
+                </div>
             </div>
 
             <dialog id="add_new_room" className="modal">
@@ -280,7 +268,7 @@ export default function Room() {
                             value={form.floor}
                         >
                             <option value="">Chọn tầng</option>
-                            {floors.map((item) => (
+                            {floors?.map((item) => (
                                 <option key={item.flor} value={item.flor}>
                                     {item.name}
                                 </option>
@@ -300,7 +288,7 @@ export default function Room() {
                             value={form.category_id}
                         >
                             <option value="">Chọn loại phòng</option>
-                            {category.map((item) => (
+                            {category?.map((item) => (
                                 <option key={item.id} value={item.id}>
                                     {item.name}
                                 </option>
@@ -346,7 +334,7 @@ export default function Room() {
                             value={form.floor}
                         >
                             <option value="">Chọn tầng</option>
-                            {floors.map((item) => (
+                            {floors?.map((item) => (
                                 <option key={item.flor} value={item.flor}>
                                     {item.name}
                                 </option>
@@ -363,7 +351,7 @@ export default function Room() {
                             value={form.category_id}
                         >
                             <option value="">Chọn loại phòng</option>
-                            {category.map((item) => (
+                            {category?.map((item) => (
                                 <option key={item.id} value={item.id}>
                                     {item.name}
                                 </option>

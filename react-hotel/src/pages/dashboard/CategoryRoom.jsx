@@ -6,8 +6,16 @@ import { toast } from "sonner";
 
 export default function CategoryRoom() {
     const [categories, setCategories] = useState([]);
-    const [filteredCategories, setFilteredCategories] = useState([]);
-    const [searchKeyword, setSearchKeyword] = useState("");
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 2;
+    const lastIndex = itemsPerPage * currentPage;
+    const firstIndex = lastIndex - itemsPerPage;
+    const records = categories.slice(firstIndex, lastIndex);
+    const npage = Math.ceil(categories.length / itemsPerPage);
+    const numbers = [...Array(npage + 1).keys()].slice(1);
+
     const [checkedItem, setCheckedItem] = useState([]);
     const [form, setForm] = useState({
         name: "",
@@ -33,15 +41,7 @@ export default function CategoryRoom() {
     ];
 
     const [selectedFile, setSelectedFile] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 2;
 
-    const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
-
-    const currentItems = filteredCategories.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
     const handleChangeCheckbox = (item) => {
         setCheckedItem((prev) => {
             if (prev.includes(item)) {
@@ -50,10 +50,6 @@ export default function CategoryRoom() {
                 return [...prev, item];
             }
         });
-    };
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
     };
 
     const handleFileChange = (event) => {
@@ -66,19 +62,6 @@ export default function CategoryRoom() {
             ...preState,
             [name]: value,
         }));
-    };
-
-    const handleSearchChange = (event) => {
-        const keyword = event.target.value;
-        setSearchKeyword(keyword);
-        if (keyword) {
-            const filtered = categories.filter((category) =>
-                category.name.toLowerCase().includes(keyword.toLowerCase())
-            );
-            setFilteredCategories(filtered);
-        } else {
-            setFilteredCategories(categories);
-        }
     };
 
     const handleView = async (id) => {
@@ -203,7 +186,6 @@ export default function CategoryRoom() {
             .get("http://127.0.0.1:8000/api/categories")
             .then((response) => {
                 setCategories(response.data);
-                setFilteredCategories(response.data);
             })
             .catch((error) => console.error(error));
     };
@@ -213,7 +195,7 @@ export default function CategoryRoom() {
     }, []);
 
     return (
-        <div className="flex flex-col gap-5 max-h-full">
+        <div className="flex flex-col gap-5">
             <h1 className="font-bold text-2xl text-center uppercase">
                 Thể loại phòng
             </h1>
@@ -231,8 +213,8 @@ export default function CategoryRoom() {
                         type="text"
                         className="grow w-[250px]"
                         placeholder="Tìm kiếm thể loại phòng"
-                        value={searchKeyword}
-                        onChange={handleSearchChange}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -261,73 +243,89 @@ export default function CategoryRoom() {
                         </tr>
                     </thead>
                     <tbody>
-                        {currentItems.map((item, index) => (
-                            <tr key={index}>
-                                <td width="10%">{index + 1}</td>
-                                <td width="20%">
-                                    <a
-                                        href={`/category-room/${item.id}/rooms`}
-                                        className="hover:underline cursor-pointer hover:text-blue-600"
-                                    >
-                                        {item?.name}
-                                    </a>
-                                </td>
-                                <td width="30%">
-                                    <div className="flex items-center gap-3">
-                                        <div className="avatar w-full">
-                                            <div className="w-full h-48">
-                                                <img
-                                                    src={
-                                                        "http://127.0.0.1:8000" +
-                                                        item?.image
-                                                    }
-                                                    alt={item?.name}
-                                                    className="w-full object-contain"
-                                                />
+                        {records
+                            ?.filter((cs) =>
+                                cs.name
+                                    .toLowerCase()
+                                    .includes(searchTerm.toLowerCase())
+                            )
+                            ?.map((item, index) => (
+                                <tr key={index}>
+                                    <td width="10%">
+                                        {index +
+                                            1 +
+                                            itemsPerPage * (currentPage - 1)}
+                                    </td>
+                                    <td width="20%">
+                                        <a
+                                            href={`/category-room/${item.id}/rooms`}
+                                            className="hover:underline cursor-pointer hover:text-blue-600"
+                                        >
+                                            {item?.name}
+                                        </a>
+                                    </td>
+                                    <td width="30%">
+                                        <div className="flex items-center gap-3">
+                                            <div className="avatar w-full">
+                                                <div className="w-full h-48">
+                                                    <img
+                                                        src={
+                                                            "http://127.0.0.1:8000" +
+                                                            item?.image
+                                                        }
+                                                        alt={item?.name}
+                                                        className="w-full object-contain"
+                                                        loading="lazy"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td width="30%" className="">
-                                    {item?.description}
-                                </td>
-                                <td width="10%">
-                                    <div className="flex items-center justify-center gap-2">
-                                        <div
-                                            onClick={() => handleView(item?.id)}
-                                            className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
-                                        >
-                                            <MdCreate size={20} />
-                                            <p>Sửa</p>
+                                    </td>
+                                    <td width="30%" className="">
+                                        {item?.description}
+                                    </td>
+                                    <td width="10%">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <div
+                                                onClick={() =>
+                                                    handleView(item?.id)
+                                                }
+                                                className="bg-green-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                            >
+                                                <MdCreate size={20} />
+                                                <p>Sửa</p>
+                                            </div>
+                                            <div
+                                                onClick={() =>
+                                                    handleDelete(item?.id)
+                                                }
+                                                className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
+                                            >
+                                                <MdDelete size={20} />
+                                                <p>Xóa</p>
+                                            </div>
                                         </div>
-                                        <div
-                                            onClick={() =>
-                                                handleDelete(item?.id)
-                                            }
-                                            className="bg-red-700 flex p-2 rounded-xl gap-1 text-white cursor-pointer hover:opacity-90"
-                                        >
-                                            <MdDelete size={20} />
-                                            <p>Xóa</p>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
+            </div>
+            <div className="flex items-center justify-end mt-5 gap-5">
+                <p className="font-semibold text-xs">
+                    Showing {firstIndex + 1}-{lastIndex} of {categories.length}
+                </p>
 
-                <div className="flex justify-center mt-4">
-                    {Array.from({ length: totalPages }, (_, index) => (
+                <div className="join">
+                    {numbers.map((n, i) => (
                         <button
-                            key={index}
-                            className={`btn ${
-                                currentPage === index + 1
-                                    ? "btn-primary"
-                                    : "btn-outline"
-                            } mx-1`}
-                            onClick={() => handlePageChange(index + 1)}
+                            className={`join-item btn  btn-sm ${
+                                currentPage === n ? "btn-active" : ""
+                            }`}
+                            onClick={() => setCurrentPage(n)}
+                            key={i}
                         >
-                            {index + 1}
+                            {n}
                         </button>
                     ))}
                 </div>

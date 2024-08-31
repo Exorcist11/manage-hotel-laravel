@@ -12,6 +12,7 @@ export default function Client() {
     const records = list.slice(firstIndex, lastIndex);
     const npage = Math.ceil(list.length / itemsPerPage);
     const numbers = [...Array(npage + 1).keys()].slice(1);
+    
     const getList = async () => {
         await axios
             .get("http://127.0.0.1:8000/api/orders/group-by-citizen")
