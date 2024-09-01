@@ -22,7 +22,7 @@ import axios from "axios";
 
 export default function MonthChart() {
     const [report, setReport] = useState([]);
-    console.log(report);
+
     useEffect(() => {
         const getReport = async () => {
             await axios

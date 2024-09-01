@@ -121,4 +121,45 @@ class BillController extends Controller
             ], 500);
         }
     }
+
+    public function reportDaysInMonth($year, $month)
+    {
+        try {
+            $start_date = Carbon::create($year, $month, 1)->startOfDay();
+            $end_date = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay();
+
+            $daily_sales = [];
+
+            $current_date = $start_date;
+            while ($current_date->lte($end_date)) {
+                $next_date = $current_date->copy()->addDay()->startOfDay();
+
+                $completed_orders = Bill::whereBetween('updated_at', [$current_date, $next_date])
+                    ->get();
+
+                $total_sales = $completed_orders->sum('total');
+
+                $daily_sales[] = [
+                    'date' => $current_date->format('d-m-Y'),
+                    'total_sales' => $total_sales
+                ];
+
+                $current_date = $next_date;
+            }
+
+            return response()->json([
+                'year' => $year,
+                'month' => $month,
+                'daily_sales' => $daily_sales
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 }

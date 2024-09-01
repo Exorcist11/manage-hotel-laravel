@@ -23,6 +23,7 @@ class ProductController extends Controller
                 $imagePath = $image->store('public/images');
                 $imageUrl = Storage::url($imagePath);
             }
+            
             $product = Product::create([
                 'name' => $request->name,
                 'price' => $request->price,
@@ -61,7 +62,7 @@ class ProductController extends Controller
             $product = Product::findOrFail($id);
 
             $updateData = array_filter($request->only([
-                'name', 'price', 'quantity'
+                'name', 'price', 'quantity', 'detail'
             ]), function ($value) {
                 return $value !== null;
             });
@@ -93,6 +94,9 @@ class ProductController extends Controller
             }
             if (isset($updateData['quantity'])) {
                 $product->quantity = $updateData['quantity'];
+            }
+            if (isset($updateData['detail'])) {
+                $product->detail = $updateData['detail'];
             }
     
             $product->save(); 

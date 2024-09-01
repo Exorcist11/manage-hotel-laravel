@@ -1,4 +1,5 @@
 import MonthChart from "@/components/Report/ReportMonth";
+import WeekChart from "@/components/Report/WeekChart";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -11,9 +12,12 @@ export default function Dashboard() {
         { title: "Phòng đặt", res: data?.total_check_out },
         { title: "Yêu cầu", res: data?.order_pending },
         { title: "Phòng chưa check in", res: data?.total_check_in },
-        { title: "Tổng số khách hàng", res: 3000 },
+        { title: "Tổng số khách hàng", res: 3000 + data?.total_user },
         { title: "Dịch vụ", res: data?.services },
-        { title: "Doanh thu tháng", res: `${parseInt(data?.revenue).toLocaleString('vi-VN')} VND` },
+        {
+            title: "Doanh thu tháng",
+            res: `${parseInt(data?.revenue).toLocaleString("vi-VN")} VND`,
+        },
     ];
 
     const colors = [
@@ -39,28 +43,96 @@ export default function Dashboard() {
     }, []);
 
     return (
-        <div>
-            <h2 className="uppercase text-2xl text-center font-bold">
-                Thống kê
-            </h2>
+        <div role="tablist" className="tabs tabs-lifted">
+            <input
+                type="radio"
+                name="my_tabs_2"
+                role="tab"
+                className="tab "
+                aria-label="Overview"
+                defaultChecked
+            />
+            <div
+                role="tabpanel"
+                className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+            >
+                <div>
+                    <h2 className="uppercase text-2xl text-center font-bold">
+                        Thống kê
+                    </h2>
 
-            <div className="mt-5">
-                <div className="grid grid-cols-3 gap-5">
-                    {reports.map((item, index) => (
-                        <div
-                            className={`text-center py-7 rounded-xl shadow-lg border ${colors[index]}`}
-                            key={index}
-                        >
-                            <p className="font-semibold uppercase mb-5 text-xl">
-                                {item?.title}
-                            </p>
-                            <p className="text-3xl font-bold">{item?.res}</p>
+                    <div className="mt-5">
+                        <div className="grid grid-cols-3 gap-5">
+                            {reports.map((item, index) => (
+                                <div
+                                    className={`text-center py-7 rounded-xl shadow-lg border ${colors[index]}`}
+                                    key={index}
+                                >
+                                    <p className="font-semibold uppercase mb-5 text-xl">
+                                        {item?.title}
+                                    </p>
+                                    <p className="text-3xl font-bold">
+                                        {item?.res}
+                                    </p>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    </div>
+
+                    <div role="tablist" className="tabs tabs-bordered">
+                        <input
+                            type="radio"
+                            name="my_tabs_1"
+                            role="tab"
+                            className="tab"
+                            aria-label="Dữ liệu năm"
+                            defaultChecked
+                        />
+                        <div role="tabpanel" className="tab-content p-10">
+                            <MonthChart />
+                        </div>
+
+                        <input
+                            type="radio"
+                            name="my_tabs_1"
+                            role="tab"
+                            className="tab"
+                            aria-label="Dữ liệu tháng"
+                        />
+                        <div role="tabpanel" className="tab-content p-10">
+                            <WeekChart />
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <MonthChart/>
+            <input
+                type="radio"
+                name="my_tabs_2"
+                role="tab"
+                className="tab"
+                aria-label="Detail"
+            />
+            <div
+                role="tabpanel"
+                className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+            >
+                Tab content 2
+            </div>
+
+            {/* <input
+                type="radio"
+                name="my_tabs_2"
+                role="tab"
+                className="tab"
+                aria-label="Tab 3"
+            />
+            <div
+                role="tabpanel"
+                className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+            >
+                Tab content 3
+            </div> */}
         </div>
     );
 }

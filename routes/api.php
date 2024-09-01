@@ -115,6 +115,7 @@ Route::prefix('bills')->group(function () {
     Route::get('', 'index');
     Route::get('/{id}', 'show')->where('id', '[0-9]+');
     Route::get('/reportMonth/{year}', 'reportMonth');
+    Route::get('/report-days-in-month/{year}/{month}', 'reportDaysInMonth');
     Route::get('/reportRange', 'reportRange');
   });
 });

@@ -14,6 +14,7 @@ export default function Products() {
         name: "",
         price: "",
         quantity: "",
+        detail: "",
         url: "",
     });
 
@@ -63,6 +64,7 @@ export default function Products() {
         formData.append("name", form.name);
         formData.append("price", form.price);
         formData.append("quantity", form.quantity);
+        formData.append("detail", form.detail);
 
         try {
             await axios
@@ -71,7 +73,10 @@ export default function Products() {
                         "Content-Type": "multipart/form-data",
                     },
                 })
-                .then(() => toast.success("Thêm mới sản phẩm thành công!"));
+                .then(() => {
+                    toast.success("Thêm mới sản phẩm thành công!");
+                    document.getElementById("add_new_product").close();
+                });
             ClearForm();
             getProducts();
         } catch (error) {
@@ -99,6 +104,7 @@ export default function Products() {
                     price: response.data.product.price,
                     quantity: response.data.product.quantity,
                     url: response.data.product.image,
+                    detail: response.data.product.detail,
                 })
             )
             .catch((e) => console.log(e));
@@ -112,11 +118,15 @@ export default function Products() {
         }));
     };
 
+    console.log(form.detail)
+
+
     const handleUpdate = async () => {
         const formData = new FormData();
         formData.append("name", form.name);
         formData.append("price", form.price);
         formData.append("quantity", form.quantity);
+        formData.append("detail", form.detail);
 
         if (selectedFile) {
             formData.append("image", selectedFile);
@@ -289,7 +299,7 @@ export default function Products() {
             </div>
 
             <dialog id="add_new_product" className="modal">
-                <div className="modal-box flex flex-col gap-3">
+                <div className="modal-box flex flex-col gap-2 max-w-2xl">
                     <h3 className="font-bold text-lg">Thêm mới dịch vụ!</h3>
                     <div className="flex flex-col gap-5">
                         <label className="form-control w-full ">
@@ -303,7 +313,7 @@ export default function Products() {
                                 type="text"
                                 name="name"
                                 placeholder="Tên dịch vụ"
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                className="input input-bordered w-full focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
                             <div className="label">
@@ -328,7 +338,7 @@ export default function Products() {
                                 type="number"
                                 name="quantity"
                                 placeholder="Số lượng"
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                className="input input-bordered w-full focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
                             <div className="label">
@@ -353,7 +363,7 @@ export default function Products() {
                                 type="number"
                                 name="price"
                                 placeholder="Đơn giá"
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
                             <div className="label">
@@ -369,6 +379,18 @@ export default function Products() {
 
                         <label className="form-control w-full ">
                             <div className="label">
+                                <span className="label-text">Mô tả</span>
+                            </div>
+                            <textarea
+                                name="detail"
+                                onChange={handleChange}
+                                placeholder="Nhập mô tả"
+                                className="textarea textarea-bordered textarea-md w-full"
+                            ></textarea>
+                        </label>
+
+                        <label className="form-control w-full ">
+                            <div className="label">
                                 <span className="label-text">
                                     Hình ảnh{" "}
                                     <span className="text-red-500">*</span>
@@ -376,6 +398,7 @@ export default function Products() {
                             </div>
                             <input
                                 type="file"
+                                
                                 className="file-input file-input-bordered w-full "
                                 onChange={handleFileChange}
                             />
@@ -404,7 +427,7 @@ export default function Products() {
             </dialog>
 
             <dialog id="my_modal_2" className="modal">
-                <div className="modal-box flex flex-col gap-3">
+                <div className="modal-box flex flex-col gap-3 max-w-2xl">
                     <h3 className="font-bold text-lg">
                         Thông tin chi tiết dịch vụ!
                     </h3>
@@ -421,7 +444,7 @@ export default function Products() {
                                 name="name"
                                 value={form.name}
                                 placeholder="Tên sản phẩm"
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
                         </label>
@@ -438,7 +461,7 @@ export default function Products() {
                                 name="quantity"
                                 value={form.quantity}
                                 placeholder="Số lượng"
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0 "
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0 "
                                 onChange={handleChange}
                             />
                         </label>
@@ -455,10 +478,24 @@ export default function Products() {
                                 name="price"
                                 placeholder="Đơn giá"
                                 value={form.price}
-                                className="input input-bordered w-full max-w-lg focus:outline-none focus:ring-0"
+                                className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                 onChange={handleChange}
                             />
                         </label>
+
+                        <label className="form-control w-full ">
+                            <div className="label">
+                                <span className="label-text">Mô tả</span>
+                            </div>
+                            <textarea
+                                name="detail"
+                                onChange={handleChange}
+                                placeholder="Nhập mô tả"
+                                value={form.detail}
+                                className="textarea textarea-bordered textarea-md w-full"
+                            ></textarea>
+                        </label>
+
                         <label className="form-control w-full ">
                             <div className="label">
                                 <span className="label-text">

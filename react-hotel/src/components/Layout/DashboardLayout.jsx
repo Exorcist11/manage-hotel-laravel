@@ -36,12 +36,12 @@ export default function DashboardLayout({ children }) {
             link: "/category-room",
         },
         {
-            name: "Check IN ",
+            name: "Phòng chưa nhận",
             icon: <RiCalendarCheckFill />,
             link: "/check-in",
         },
         {
-            name: "Check out ",
+            name: "Phòng đang sử dụng",
             icon: <RiCalendarCloseFill />,
             link: "/check-out",
         },
@@ -105,7 +105,7 @@ export default function DashboardLayout({ children }) {
         }
     };
     return (
-        <div className="flex h-screen">
+        <div className="flex">
             <nav className="basis-1/5 flex flex-col gap-5 border-r py-5 bg-[#e2dfd4] min-h-screen h-fit">
                 <div className="flex flex-col gap-2 items-center justify-center">
                     <img
@@ -160,7 +160,13 @@ export default function DashboardLayout({ children }) {
                 </div>
                 {children}
             </section>
-            <Toaster />
+            <Toaster
+                toastOptions={{
+                    classNames: {
+                        toast: "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg group-[.toaster]:pointer-events-auto",
+                    },
+                }}
+            />
         </div>
     );
 }

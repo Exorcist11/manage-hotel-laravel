@@ -42,6 +42,7 @@ class StatisticsController extends Controller
         $total_category = Category::count();
         $total_services = Product::count();
         $total_bills = Bill::sum('total');
+        $total_user = Order::count();
         $order_pending = Order::pending()->count();
         $total_check_in = BookingDetail::with(['room', 'booking.order'])
             ->where('is_check_in', false)
@@ -79,6 +80,7 @@ class StatisticsController extends Controller
             'total_check_out' => $total_check_out,
             'order_pending' => $order_pending,
             'available_rooms' => $availableRooms,
+            'total_user' => $total_user,
         ]);
     }
 

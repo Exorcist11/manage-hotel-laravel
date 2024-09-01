@@ -126,8 +126,8 @@ class RoomController extends Controller
             $room = Room::findOrFail($id);
 
             $bookingDetail = BookingDetail::where('room_id', $id)
-                                          ->where('check_in', '=', Carbon::today())
-                                          ->first();
+                                        ->whereDate('check_in', '=', Carbon::today()->toDateString())
+                                        ->first();
 
             if (!$bookingDetail) {
                 return response()->json([

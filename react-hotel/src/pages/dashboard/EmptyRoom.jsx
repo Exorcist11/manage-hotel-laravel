@@ -69,7 +69,7 @@ export default function EmptyRoom() {
                 Danh sách phòng trống
             </h1>
 
-            <div className="flex gap-5">
+            <div className="flex gap-5 items-end">
                 <label className="form-control w-full ">
                     <div className="label">
                         <span className="label-text">

@@ -35,7 +35,8 @@ class Product extends Model
 		'name',
 		'price',
 		'quantity',
-		'image'
+		'image',
+		'detail'
 	];
 
 	public function product_services()
