@@ -124,6 +124,9 @@ Route::prefix('bookingDetails')->group(function() {
   Route::controller(BookingDetailController::class)->group(function() {
     Route::get('/{id}', 'show');
     Route::get('/', 'index');
+    Route::post('/{id}/services', 'addServices');
+    Route::post('/{id}/service', 'addService');
+    Route::delete('/{id}/service', 'deleteService');
     // Route::get('check-out', 'checkOut');
   });
 });

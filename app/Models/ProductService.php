@@ -19,9 +19,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class ProductService extends Model
+class ProductRoom extends Model
 {
-    protected $table = 'product_services';
+    protected $table = 'product_rooms';
 
     protected $fillable = [
         'product_id',
@@ -34,8 +34,8 @@ class ProductService extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function booking_detail()
+    public function room()
     {
-        return $this->belongsTo(BookingDetail::class);
+        return $this->belongsTo(Room::class);
     }
 }

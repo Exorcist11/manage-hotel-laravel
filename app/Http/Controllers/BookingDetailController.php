@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\BookingDetail;
 use App\Models\Booking;
 use App\Models\Order;
 use App\Models\Room;
+use App\Models\BookingService;
+use App\Models\Service;
 use Carbon\Carbon;
 
 class BookingDetailController extends Controller
@@ -29,6 +32,7 @@ class BookingDetailController extends Controller
             'total' => $total
         ]);
     }
+    
     public function index()
     {
         $bookingDetail = BookingDetail::with(['room', 'booking.order'])
@@ -68,5 +72,85 @@ class BookingDetailController extends Controller
             'booking_detail' => $bookingDetail
         ]);
     }
-    
+
+    public function addServices(Request $request, $id){
+        $bookingDetail = BookingDetail::find($id);
+
+        if (!$bookingDetail) {
+            return response()->json([
+                'message' => 'Booking detail not found.',
+            ], 404);
+        }
+        $serviceIds = $request->input('service_ids');
+
+        DB::transaction(function () use ($serviceIds, $bookingDetail) {
+            foreach ($serviceIds as $serviceId) {
+                BookingService::create([
+                    'booking_detail_id' => $bookingDetail->id,
+                    'service_id' => $serviceId,
+                ]);
+            }
+        });
+
+        return response()->json([
+            'message' => 'Services added successfully to the booking.',
+            'booking' => $bookingDetail->booking_services
+        ], 200);
+    }
+
+    public function addService(Request $request, $id){
+        $bookingDetail = BookingDetail::find($id);
+        if (!$bookingDetail) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking detail not found.',
+            ], 404);
+        }
+
+        $service = Service::find($request->id);
+        if (!$service) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Service not found'
+            ], 404);
+        }
+
+        $bookingService = BookingService::where('booking_detail_id', $id)->where('service_id', $request->id)->exists();
+        if ($bookingService) {
+            return response()->json([
+                'success' => false,
+                'message' => "Service of BookingDetail is exists"
+            ], 200);
+        }
+
+        BookingService::create([
+            'booking_detail_id' => $id,
+            'service_id' => $request->id
+        ]);
+        
+        return response()->json([
+            'success' => true,
+            'booking' => $bookingDetail->booking_services
+        ], 201);
+    }
+
+    public function deleteService(Request $request, $id){
+        $bookingDetail = BookingDetail::find($id);
+        if (!$bookingDetail) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking detail not found.',
+            ], 404);
+        }
+
+        BookingService::where('booking_detail_id', $id)
+            ->where('service_id', $request->id)
+            ->delete();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Service delete success',
+            'booking_detail' => $bookingDetail->booking_services
+        ], 200);
+    }
 }
