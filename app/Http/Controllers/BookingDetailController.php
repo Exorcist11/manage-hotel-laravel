@@ -10,6 +10,8 @@ use App\Models\Order;
 use App\Models\Room;
 use App\Models\BookingService;
 use App\Models\Service;
+use App\Models\Product;
+use App\Models\ProductService;
 use Carbon\Carbon;
 
 class BookingDetailController extends Controller
@@ -107,30 +109,30 @@ class BookingDetailController extends Controller
             ], 404);
         }
 
-        $service = Service::find($request->id);
-        if (!$service) {
+        $product = Product::find($request->id);
+        if (!$product) {
             return response()->json([
                 'success' => false,
                 'message' => 'Service not found'
             ], 404);
         }
 
-        $bookingService = BookingService::where('booking_detail_id', $id)->where('service_id', $request->id)->exists();
-        if ($bookingService) {
+        $productService = ProductService::where('booking_detail_id', $id)->where('product_id', $request->id)->exists();
+        if ($productService) {
             return response()->json([
                 'success' => false,
                 'message' => "Service of BookingDetail is exists"
             ], 200);
         }
 
-        BookingService::create([
+        ProductService::create([
             'booking_detail_id' => $id,
-            'service_id' => $request->id
+            'product_id' => $request->id
         ]);
         
         return response()->json([
             'success' => true,
-            'booking' => $bookingDetail->booking_services
+            'booking' => $bookingDetail->product_services
         ], 201);
     }
 
@@ -143,14 +145,14 @@ class BookingDetailController extends Controller
             ], 404);
         }
 
-        BookingService::where('booking_detail_id', $id)
-            ->where('service_id', $request->id)
+        ProductService::where('booking_detail_id', $id)
+            ->where('product_id', $request->id)
             ->delete();
         
         return response()->json([
             'success' => true,
             'message' => 'Service delete success',
-            'booking_detail' => $bookingDetail->booking_services
+            'booking_detail' => $bookingDetail->product_services
         ], 200);
     }
 }

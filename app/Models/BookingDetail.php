@@ -62,8 +62,8 @@ class BookingDetail extends Model
 		return $this->hasOne(Bill::class);
 	}
 
-	public function booking_services()
+	public function product_services()
 	{
-		return $this->hasMany(BookingService::class);
+		return $this->hasMany(ProductService::class);
 	}
 }
