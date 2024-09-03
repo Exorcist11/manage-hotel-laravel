@@ -24,9 +24,7 @@ class ServiceController extends Controller
         try{
             $service = Service::create([
                 'title' => $request->title,
-                'description' => $request->description,
-                'price' => $request->price,
-                'booking_id' => $request->booking_id,
+                'price' => $request->price
             ]);
             return response()->json([
                 'success' => true,
@@ -60,7 +58,7 @@ class ServiceController extends Controller
         $service = Service::find($id);
         if ($service) {
             $updateData = array_filter($request->only([
-                'title', 'description', 'price', 'booking_id'
+                'title', 'price'
             ]), function ($value) {
                 return $value !== null;
             });

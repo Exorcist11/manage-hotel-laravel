@@ -27,7 +27,6 @@ class ProductController extends Controller
             $product = Product::create([
                 'name' => $request->name,
                 'price' => $request->price,
-                'quantity' => $request->quantity,
                 'detail' => $request->detail,
                 'image' => $imageUrl,
             ]);
@@ -62,7 +61,7 @@ class ProductController extends Controller
             $product = Product::findOrFail($id);
 
             $updateData = array_filter($request->only([
-                'name', 'price', 'quantity', 'detail'
+                'name', 'price', 'detail'
             ]), function ($value) {
                 return $value !== null;
             });
@@ -91,9 +90,6 @@ class ProductController extends Controller
             }
             if (isset($updateData['price'])) {
                 $product->price = $updateData['price'];
-            }
-            if (isset($updateData['quantity'])) {
-                $product->quantity = $updateData['quantity'];
             }
             if (isset($updateData['detail'])) {
                 $product->detail = $updateData['detail'];

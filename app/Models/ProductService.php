@@ -25,8 +25,7 @@ class ProductService extends Model
 
     protected $fillable = [
         'product_id',
-        'room_id',
-        'amount'
+        'booking_detail_id'
     ];
 
     public function product()

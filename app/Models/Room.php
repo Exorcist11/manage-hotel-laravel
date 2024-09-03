@@ -54,4 +54,9 @@ class Room extends Model
 	{
 		return $this->belongsTo(Category::class);
 	}
+
+	public function unavailable()
+	{
+		return $this->booking_details()->where('is_check_in', true)->where('is_check_out', false)->exists();
+	}
 }

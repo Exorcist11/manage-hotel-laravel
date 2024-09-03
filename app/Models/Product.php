@@ -27,14 +27,12 @@ class Product extends Model
 	protected $table = 'products';
 
 	protected $casts = [
-		'price' => 'float',
-		'quantity' => 'int'
+		'price' => 'float'
 	];
 
 	protected $fillable = [
 		'name',
 		'price',
-		'quantity',
 		'image',
 		'detail'
 	];
