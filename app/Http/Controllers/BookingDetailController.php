@@ -155,4 +155,24 @@ class BookingDetailController extends Controller
             'booking_detail' => $bookingDetail->product_services
         ], 200);
     }
+
+    public function getServices($id) {
+        $products = Product::all();
+
+        $bookingDetail = BookingDetail::with('product_services')->findOrFail($id);
+        if (!$bookingDetail) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking detail not found.',
+            ], 404);
+        }
+        
+        $services = $bookingDetail->product_services->pluck('product_id')->toArray();
+        
+        return response()->json([
+            'success' => true,
+            'all products' => $products,
+            'service of booking detail' => $services
+        ]);
+    }
 }
