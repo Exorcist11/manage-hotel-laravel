@@ -1,35 +1,56 @@
 import { fetcher } from "@/lib/fetcher";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { FaTrash } from "react-icons/fa";
 import { RiEyeLine, RiAddLargeLine } from "react-icons/ri";
+import { toast } from "sonner";
 import useSWR from "swr";
 
 export default function CheckOut() {
     const [rooms, setRooms] = useState([]);
     const [filteredRooms, setFilteredRooms] = useState([]);
+    const [selectOption, setSelectOption] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
-    const { data } = useSWR("http://127.0.0.1:8000/api/products", fetcher);
-    const [selectedProductIds, setSelectedProductIds] = useState([]);
-    const [selectBooking, setSelectBooking] = useState("");
+    const { data, mutate: loadOpt } = useSWR(
+        `http://127.0.0.1:8000/api/bookingDetails/${selectOption}/services`,
+        fetcher
+    );
 
-    const handleCheckboxChange = (e, id) => {
-        if (e.target.checked) {
-            setSelectedProductIds([...selectedProductIds, id]);
-        } else {
-            setSelectedProductIds(
-                selectedProductIds.filter((item) => item !== id)
+    const handleAddService = async (service) => {
+        try {
+            const action = await axios.post(
+                `http://127.0.0.1:8000/api/bookingDetails/${selectOption}/service`,
+                {
+                    id: service,
+                }
             );
+            if (action.data.success === true) {
+                loadOpt();
+                toast.success("Service added successfully");
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
-    const handleSubmit = () => {
-        const data = {
-            booking_detail_id: selectBooking,
-            product_ids: selectedProductIds,
-        };
-        console.log(data);
-        
+    const handleDeleteService = async (service) => {
+        try {
+            const action = await axios.delete(
+                `http://127.0.0.1:8000/api/bookingDetails/${selectOption}/service`,
+                {
+                    data: { id: service },
+                }
+            );
+
+            if (action.data.success === true) {
+                loadOpt();
+                toast.success("Service delete successfully");
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
+
     const getRoom = async () => {
         await axios
             .get("http://127.0.0.1:8000/api/booking-check-out")
@@ -123,20 +144,18 @@ export default function CheckOut() {
                                         <div
                                             className="tooltip"
                                             data-tip="Dịch vụ sử dụng"
-                                            onClick={() =>
+                                            onClick={() => {
+                                                setSelectOption(item.id);
                                                 document
                                                     .getElementById(
                                                         "my_modal_2"
                                                     )
-                                                    .showModal()
-                                            }
+                                                    .showModal();
+                                            }}
                                         >
                                             <RiAddLargeLine
                                                 className="hover:text-blue-500 cursor-pointer "
                                                 size={16}
-                                                onClick={() =>
-                                                    setSelectBooking(item.id)
-                                                }
                                             />
                                         </div>
 
@@ -169,40 +188,57 @@ export default function CheckOut() {
                     </h3>
 
                     <div className="flex items-center">
-                        <p className="w-2/4 font-bold">Tên dịch vụ</p>
-                        <p className="w-1/4 font-bold">Đơn giá</p>
-
-                        <div className="w-1/4 text-right"></div>
+                        <div className="w-1/5 text-left"></div>
+                        <p className="w-2/5 font-bold">Tên dịch vụ</p>
+                        <p className="w-1/5 font-bold">Đơn giá</p>
+                        <p className="w-1/5 font-bold"></p>
                     </div>
 
                     <div className="py-4 flex flex-col gap-3">
-                        {data?.products?.map((item, index) => (
+                        {data?.all_products?.map((item, index) => (
                             <div className="flex items-center" key={index}>
-                                <p className="w-2/4">{item?.name}</p>
-                                <p className="w-1/4">{item?.price} VNĐ</p>
-
-                                <div className="w-1/4 text-right">
+                                <div className="w-1/5 text-left">
                                     <input
                                         type="checkbox"
                                         className="checkbox checkbox-sm"
-                                        onChange={(e) =>
-                                            handleCheckboxChange(e, item?.id)
-                                        }
+                                        checked={data[
+                                            "service_of_booking_detail"
+                                        ]?.includes(item?.id)}
                                     />
                                 </div>
+                                <p className="w-2/5">{item?.name}</p>
+                                <p className="w-1/5">{item?.price} VNĐ</p>
+                                <p className="w-1/5 flex items-center gap-3 justify-center">
+                                    <div
+                                        className="tooltip"
+                                        data-tip="Thêm dịch vụ"
+                                    >
+                                        <RiAddLargeLine
+                                            className="hover:text-red-500 cursor-pointer"
+                                            onClick={() =>
+                                                handleAddService(item.id)
+                                            }
+                                        />
+                                    </div>{" "}
+                                    <div
+                                        className="tooltip"
+                                        data-tip="Thêm dịch vụ"
+                                    >
+                                        <FaTrash
+                                            className="hover:text-red-500 cursor-pointer"
+                                            onClick={() =>
+                                                handleDeleteService(item.id)
+                                            }
+                                        />
+                                    </div>
+                                </p>
                             </div>
                         ))}
                     </div>
 
                     <div className="flex justify-end">
                         <button
-                            className="btn btn-primary"
-                            onClick={handleSubmit}
-                        >
-                            Xác nhận
-                        </button>
-                        <button
-                            className="btn btn-secondary ml-3"
+                            className="btn btn-secondary ml-3 w-[125px]"
                             onClick={() =>
                                 document.getElementById("my_modal_2").close()
                             }

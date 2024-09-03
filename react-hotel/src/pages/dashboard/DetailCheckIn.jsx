@@ -9,7 +9,7 @@ export default function DetailCheckIn() {
     const [total, setTotal] = useState("");
     const { id } = useParams();
     const [selectedValue, setSelectedValue] = useState("Tiền mặt");
-
+    console.log(form);
     const handleChangeSelect = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -194,7 +194,7 @@ export default function DetailCheckIn() {
                         <label className="form-control w-full ">
                             <div className="label">
                                 <span className="label-text">
-                                    Trạng thái yêu cầu{" "}
+                                    Loại phòng{" "}
                                     <span className="text-red-500">*</span>
                                 </span>
                             </div>
@@ -202,7 +202,7 @@ export default function DetailCheckIn() {
                                 type="text"
                                 placeholder="Type here"
                                 className="input input-bordered w-full "
-                                value={form?.booking?.order?.status}
+                                value={form?.room?.category?.name}
                             />
                         </label>
 

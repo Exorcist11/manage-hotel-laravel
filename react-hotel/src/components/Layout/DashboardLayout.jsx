@@ -162,8 +162,8 @@ export default function DashboardLayout({ children }) {
             </section>
             <Toaster
                 toastOptions={{
-                    classNames: {
-                        toast: "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg group-[.toaster]:pointer-events-auto",
+                    style: {
+                        zIndex: 9999, 
                     },
                 }}
             />

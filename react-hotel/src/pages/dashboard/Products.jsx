@@ -118,8 +118,7 @@ export default function Products() {
         }));
     };
 
-    console.log(form.detail)
-
+    console.log(form.detail);
 
     const handleUpdate = async () => {
         const formData = new FormData();
@@ -330,31 +329,6 @@ export default function Products() {
                         <label className="form-control w-full ">
                             <div className="label">
                                 <span className="label-text">
-                                    Số lượng{" "}
-                                    <span className="text-red-500">*</span>
-                                </span>
-                            </div>
-                            <input
-                                type="number"
-                                name="quantity"
-                                placeholder="Số lượng"
-                                className="input input-bordered w-full focus:outline-none focus:ring-0"
-                                onChange={handleChange}
-                            />
-                            <div className="label">
-                                <span className="label-text-alt">
-                                    {errors.quantity && (
-                                        <p className="text-red-500 text-sm">
-                                            {errors.quantity}
-                                        </p>
-                                    )}
-                                </span>
-                            </div>
-                        </label>
-
-                        <label className="form-control w-full ">
-                            <div className="label">
-                                <span className="label-text">
                                     Đơn giá (VND){" "}
                                     <span className="text-red-500">*</span>
                                 </span>
@@ -398,7 +372,6 @@ export default function Products() {
                             </div>
                             <input
                                 type="file"
-                                
                                 className="file-input file-input-bordered w-full "
                                 onChange={handleFileChange}
                             />
@@ -445,23 +418,6 @@ export default function Products() {
                                 value={form.name}
                                 placeholder="Tên sản phẩm"
                                 className="input input-bordered w-full  focus:outline-none focus:ring-0"
-                                onChange={handleChange}
-                            />
-                        </label>
-
-                        <label className="form-control w-full ">
-                            <div className="label">
-                                <span className="label-text">
-                                    Số lượng{" "}
-                                    <span className="text-red-500">*</span>
-                                </span>
-                            </div>
-                            <input
-                                type="number"
-                                name="quantity"
-                                value={form.quantity}
-                                placeholder="Số lượng"
-                                className="input input-bordered w-full  focus:outline-none focus:ring-0 "
                                 onChange={handleChange}
                             />
                         </label>

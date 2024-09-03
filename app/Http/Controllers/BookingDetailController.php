@@ -14,11 +14,14 @@ use App\Models\Product;
 use App\Models\ProductService;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\QueryException;
+
 class BookingDetailController extends Controller
 {
     public function show($id)
     {
-        $bookingDetail = BookingDetail::with(['room', 'booking.order'])->find($id);
+        $bookingDetail = BookingDetail::with(['room.category', 'booking.order'])->find($id);
         $room = Room::findOrFail($bookingDetail->room_id);
 
         if (!$bookingDetail) {
@@ -27,11 +30,19 @@ class BookingDetailController extends Controller
                 'message' => 'BookingDetail not found'
             ], 404);
         }
-        $total = $bookingDetail->check_in->diffInDay($bookingDetail->check_out) * $room->category->price;
+        
+        $total = ceil($bookingDetail->check_in->diffInDay($bookingDetail->check_out)) * $room->category->price;
+
+
+        foreach($bookingDetail->product_services as $service){
+            $total += $service->product->price;
+        }
+
         return response()->json([
             'success' => true,
             'booking_detail' => $bookingDetail,
-            'total' => $total
+            'total' => $total,
+     
         ]);
     }
     
@@ -113,7 +124,7 @@ class BookingDetailController extends Controller
         if (!$product) {
             return response()->json([
                 'success' => false,
-                'message' => 'Service not found'
+                'message' => 'Service not found',
             ], 404);
         }
 
@@ -171,8 +182,8 @@ class BookingDetailController extends Controller
         
         return response()->json([
             'success' => true,
-            'all products' => $products,
-            'service of booking detail' => $services
+            'all_products' => $products,
+            'service_of_booking_detail' => $services
         ]);
     }
 }
