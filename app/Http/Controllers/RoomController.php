@@ -343,4 +343,15 @@ class RoomController extends Controller
             'rooms' => $rooms
         ]);
     }
+
+    public function getAllAvailableRooms(){
+        $rooms = Room::all()->filter(function ($room) {
+            return !$room->unavailable();
+        });
+
+        return response()->json([
+            'success' => true,
+            'rooms' => $rooms
+        ]);
+    }
 }
