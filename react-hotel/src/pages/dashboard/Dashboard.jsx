@@ -85,7 +85,7 @@ export default function Dashboard() {
                             name="my_tabs_1"
                             role="tab"
                             className="tab"
-                            aria-label="Dữ liệu năm"
+                            aria-label="Year"
                             defaultChecked
                         />
                         <div role="tabpanel" className="tab-content p-10">
@@ -97,7 +97,7 @@ export default function Dashboard() {
                             name="my_tabs_1"
                             role="tab"
                             className="tab"
-                            aria-label="Dữ liệu tháng"
+                            aria-label="Month"
                         />
                         <div role="tabpanel" className="tab-content p-10">
                             <WeekChart />
