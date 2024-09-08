@@ -1,3 +1,4 @@
+import DetailReport from "@/components/Report/DetailReport";
 import MonthChart from "@/components/Report/ReportMonth";
 import WeekChart from "@/components/Report/WeekChart";
 import axios from "axios";
@@ -15,7 +16,7 @@ export default function Dashboard() {
         { title: "Tổng số khách hàng", res: 3000 + data?.total_user },
         { title: "Dịch vụ", res: data?.services },
         {
-            title: "Doanh thu tháng",
+            title: "Doanh thu",
             res: `${parseInt(data?.revenue).toLocaleString("vi-VN")} VND`,
         },
     ];
@@ -85,7 +86,7 @@ export default function Dashboard() {
                             name="my_tabs_1"
                             role="tab"
                             className="tab"
-                            aria-label="Dữ liệu năm"
+                            aria-label="Year"
                             defaultChecked
                         />
                         <div role="tabpanel" className="tab-content p-10">
@@ -97,7 +98,7 @@ export default function Dashboard() {
                             name="my_tabs_1"
                             role="tab"
                             className="tab"
-                            aria-label="Dữ liệu tháng"
+                            aria-label="Month"
                         />
                         <div role="tabpanel" className="tab-content p-10">
                             <WeekChart />
@@ -117,7 +118,7 @@ export default function Dashboard() {
                 role="tabpanel"
                 className="tab-content bg-base-100 border-base-300 rounded-box p-6"
             >
-                Tab content 2
+                <DetailReport />
             </div>
 
             {/* <input

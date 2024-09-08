@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Room;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductService;
 use App\Models\Bill;
-use Carbon\Carbon;
 use App\Models\Order;
+use App\Models\Booking;
 use App\Models\BookingDetail;
+use Carbon\Carbon;
 
 class StatisticsController extends Controller
 {
@@ -105,5 +107,68 @@ class StatisticsController extends Controller
             'year' => $year,
             'total_revenue' => $stats->total_revenue ?? 0,
         ]);
+    }
+
+    public function reportByRangeTime(Request $request){
+        if (!$request->has(['from', 'to'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'From and To params are required.'
+            ], 400);
+        }
+
+        try{
+            $startDate = Carbon::parse($request->input('from'));
+            $endDate = Carbon::parse($request->input('to'));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid date format.'
+            ], 400);
+        }
+
+        if ($endDate->lt($startDate)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'End date must be after or equal to Start date.'
+            ], 400);
+        }
+
+        $orderCount = Order::whereBetween('created_at', [$startDate, $endDate])->count();
+        $billSum = Bill::whereBetween('created_at', [$startDate, $endDate])->sum('total');
+        $bookingCount = Booking::whereBetween('created_at', [$startDate, $endDate])->count();
+        $bookingDetailCount = BookingDetail::whereBetween('created_at', [$startDate, $endDate])->count();
+        $customerCount = Order::whereBetween('created_at', [$startDate, $endDate])->distinct('citizen_number')->count();
+        $serviceCount = ProductService::whereBetween('created_at', [$startDate, $endDate])->count();
+        $serviceSum = ProductService::whereBetween('created_at', [$startDate, $endDate])->with('product')->get()
+                                    ->sum(function($service) {
+                                        return $service->product->price;
+                                    });
+
+        $availableRooms = Room::with('category') 
+                ->whereDoesntHave('booking_details', function ($query) use ($startDate, $endDate) {
+                    $query->where(function ($q) use ($startDate, $endDate) {
+                        $q->where(function ($q) use ($startDate) {
+                            $q->where('check_in', '<=', $startDate)
+                            ->where('check_out', '>', $startDate);
+                        })
+                        ->orWhere(function ($q) use ($endDate) {
+                            $q->where('check_in', '<', $endDate)
+                            ->where('check_out', '>=', $endDate);
+                        });
+                    });
+                })
+                ->count();
+        return response()->json([
+            'success' => true,
+            'order_count' => $orderCount,
+            'bill_sum' => $billSum,
+            'booking_count' => $bookingCount,
+            'booking_detail_count' => $bookingDetailCount,
+            'customer_count' => $customerCount,
+            'service_count' => $serviceCount,
+            'service_sum' => $serviceSum,
+            'available_rooms' => $availableRooms,
+        ], 200);
     }
 }

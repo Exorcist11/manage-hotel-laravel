@@ -24,20 +24,20 @@ ChartJS.register(
 
 export default function WeekChart() {
     const [report, setReport] = useState([]);
+    const [defaultT, setDefaultT] = useState(new Date().getMonth() + 1);
+    const [defaultY, setDefaultY] = useState(new Date().getFullYear());
     useEffect(() => {
         const getReport = async () => {
             await axios
                 .get(
-                    `http://127.0.0.1:8000/api/bills/report-days-in-month/${new Date().getFullYear()}/${
-                        new Date().getMonth()
-                    }`
+                    `http://127.0.0.1:8000/api/bills/report-days-in-month/${defaultY}/${defaultT}`
                 )
                 .then((res) => setReport(res.data.daily_sales))
 
                 .catch((err) => console.log(err));
         };
         getReport();
-    }, [new Date().getFullYear(), new Date().getMonth()]);
+    }, [defaultY, defaultT]);
 
     const data = {
         labels: report.map((x) => x.date),
@@ -62,9 +62,36 @@ export default function WeekChart() {
             },
         },
     };
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
 
     return (
         <div>
+            <select
+                className="select select-bordered w-full max-w-xs"
+                onChange={(e) => setDefaultT(e.target.value)}
+            >
+                <option disabled selected>
+                    Chọn tháng
+                </option>
+                {months.map((item, index) => (
+                    <option key={index} value={index + 1}>
+                        {item}
+                    </option>
+                ))}
+            </select>
             <Line options={options} data={data} />
         </div>
     );
