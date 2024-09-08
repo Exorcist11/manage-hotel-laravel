@@ -145,6 +145,20 @@ class StatisticsController extends Controller
                                         return $service->product->price;
                                     });
 
+        $availableRooms = Room::with('category') 
+                ->whereDoesntHave('booking_details', function ($query) use ($startDate, $endDate) {
+                    $query->where(function ($q) use ($startDate, $endDate) {
+                        $q->where(function ($q) use ($startDate) {
+                            $q->where('check_in', '<=', $startDate)
+                            ->where('check_out', '>', $startDate);
+                        })
+                        ->orWhere(function ($q) use ($endDate) {
+                            $q->where('check_in', '<', $endDate)
+                            ->where('check_out', '>=', $endDate);
+                        });
+                    });
+                })
+                ->count();
         return response()->json([
             'success' => true,
             'order_count' => $orderCount,
@@ -153,7 +167,8 @@ class StatisticsController extends Controller
             'booking_detail_count' => $bookingDetailCount,
             'customer_count' => $customerCount,
             'service_count' => $serviceCount,
-            'service_sum' => $serviceSum
+            'service_sum' => $serviceSum,
+            'available_rooms' => $availableRooms,
         ], 200);
     }
 }
