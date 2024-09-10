@@ -246,7 +246,9 @@ class RoomController extends Controller
                     $query->where(function ($q) use ($from, $to) {
                         $q->where(function ($q) use ($from) {
                             $q->where('check_in', '<=', $from)
-                            ->where('check_out', '>', $from);
+                            ->where(function ($q) use ($from) {
+                                $q->whereRaw('DATE_FORMAT(check_out, "%d-%m-%Y") >= ?', [$from]);
+                            });
                         })
                         ->orWhere(function ($q) use ($to) {
                             $q->where('check_in', '<', $to)
@@ -301,7 +303,9 @@ class RoomController extends Controller
                 $query->where(function ($q) use ($from, $to) {
                     $q->where(function ($q) use ($from, $to) {
                         $q->where('check_in', '<=', $from)
-                          ->where('check_out', '>', $from);
+                        ->where(function ($q) use ($from) {
+                            $q->whereRaw('DATE_FORMAT(check_out, "%d-%m-%Y") >= ?', [$from]);
+                        });
                     })
                     ->orWhere(function ($q) use ($from, $to) {
                         $q->where('check_in', '<', $to)
