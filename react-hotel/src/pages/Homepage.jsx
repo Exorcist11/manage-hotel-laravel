@@ -1,3 +1,4 @@
+import ListView from "@/components/List/ListView";
 import Slider from "@/components/Slider/Slider";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -193,6 +194,8 @@ export default function Homepage() {
                     </div>
                 </div>
             </div>
+
+            <ListView />
 
             <div className="h-[500px] mx-20 my-20" id="point">
                 <p className="uppercase text-2xl font-bold mb-5">

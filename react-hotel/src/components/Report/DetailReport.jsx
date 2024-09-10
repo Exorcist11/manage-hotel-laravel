@@ -37,7 +37,7 @@ export default function DetailReport() {
     };
 
     const dataRP = {
-        labels: ["Doanh thu phòng", "Doanh thu hoá đơn"],
+        labels: ["Doanh thu phòng", "Doanh thu dịch vụ"],
         datasets: [
             {
                 label: "VND",

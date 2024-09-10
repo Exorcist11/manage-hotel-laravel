@@ -229,9 +229,7 @@ export default function DetailCheckIn() {
                                         <div className="label">
                                             <span className="label-text">
                                                 Tổng tiền thanh toán{" "}
-                                                <span className="text-red-500">
-                                                    *
-                                                </span>
+                                                
                                             </span>
                                         </div>
 
