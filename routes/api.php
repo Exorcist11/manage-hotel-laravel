@@ -34,6 +34,7 @@ Route::controller(RoomController::class)->group(function () {
   Route::get('/empty-rooms', 'getAvailableRooms');
   Route::get('/empty-rooms-category', 'getAvailableRoomsByCategory');
   Route::get('/rooms/not-checked', 'getRoomsNotCheckedIn');
+  Route::get('/rooms/available', 'getAllAvailableRooms');
 });
 
 Route::controller(StaffController::class)->group(function () {
