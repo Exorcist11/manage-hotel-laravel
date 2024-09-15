@@ -63,7 +63,7 @@ export default function DetailReport() {
         "bg-purple-500 text-white",
         "bg-indigo-500 text-white",
     ];
-
+  
     return (
         <div className="flex flex-col gap-5">
             <h1 className="text-center text-2xl font-bold uppercase">
@@ -112,7 +112,13 @@ export default function DetailReport() {
             {data && (
                 <div className="flex items-center justify-between w-full">
                     <div className="w-[400px]">
-                        <Pie data={dataRP} />
+                        {data.service_sum !== 0 ? (
+                            <Pie data={dataRP} />
+                        ) : (
+                            <p className="font-bold italic">
+                                Không dữ liệu doanh thu
+                            </p>
+                        )}
                     </div>
                     <div className="w-1/2">
                         <div className="flex flex-col gap-2">

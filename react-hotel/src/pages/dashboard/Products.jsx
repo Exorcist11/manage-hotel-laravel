@@ -209,7 +209,7 @@ export default function Products() {
                             <th>STT</th>
                             <th>Tên sản phẩm</th>
                             <th>Hình ảnh</th>
-                            <th>Số lượng</th>
+
                             <th>Giá</th>
                             <th width="10%"></th>
                         </tr>
@@ -246,7 +246,7 @@ export default function Products() {
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{item?.quantity}</td>
+
                                     <td>{item?.price} VND</td>
                                     <td className="">
                                         <div className="flex items-center justify-center gap-2">

@@ -116,7 +116,6 @@ export default function RequestRoom() {
             toast.error("Failed to book the room");
         }
     };
-    console.log(form);
 
     const handleAccept = async () => {
         if (selected.length !== detail.number_of_rooms) {

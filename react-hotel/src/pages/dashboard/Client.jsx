@@ -12,7 +12,7 @@ export default function Client() {
     const records = list.slice(firstIndex, lastIndex);
     const npage = Math.ceil(list.length / itemsPerPage);
     const numbers = [...Array(npage + 1).keys()].slice(1);
-    
+
     const getList = async () => {
         await axios
             .get("http://127.0.0.1:8000/api/orders/group-by-citizen")
@@ -23,6 +23,7 @@ export default function Client() {
     useEffect(() => {
         getList();
     }, []);
+    console.log(records);
 
     return (
         <div>
@@ -58,6 +59,7 @@ export default function Client() {
                             <th></th>
                             <th>Tên khách hàng</th>
                             <th>Số điện thoại</th>
+                            <th>CCCD</th>
                             <th>Email</th>
                             <th></th>
                         </tr>
@@ -78,6 +80,7 @@ export default function Client() {
                                     </th>
                                     <td>{item?.fullname}</td>
                                     <td>{item?.phone}</td>
+                                    <td>{item?.citizen_number}</td>
                                     <td>{item?.email}</td>
                                     <td className="text-center">
                                         <a
