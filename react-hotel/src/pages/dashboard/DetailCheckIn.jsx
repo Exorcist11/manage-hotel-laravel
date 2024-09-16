@@ -6,10 +6,11 @@ import { toast } from "sonner";
 
 export default function DetailCheckIn() {
     const [form, setForm] = useState({});
+
     const [total, setTotal] = useState("");
     const { id } = useParams();
     const [selectedValue, setSelectedValue] = useState("Tiền mặt");
-    console.log(form);
+
     const handleChangeSelect = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -221,6 +222,18 @@ export default function DetailCheckIn() {
                             />
                         </label>
                     </div>
+                    {/* <div>
+                        <h1>Dịch vụ sử dụng</h1>
+                        <div>
+                            {form?.product_services?.map((item, index) => (
+                                <span key={index}>
+                                    {`${item.product.name} (${item.product.price} VND)`}
+                                    {index < form.product_services.length - 1 &&
+                                        " - "}
+                                </span>
+                            ))}
+                        </div>
+                    </div> */}
                     {form.is_check_out === false &&
                         form.is_check_in === true && (
                             <div>
@@ -229,7 +242,6 @@ export default function DetailCheckIn() {
                                         <div className="label">
                                             <span className="label-text">
                                                 Tổng tiền thanh toán{" "}
-                                                
                                             </span>
                                         </div>
 

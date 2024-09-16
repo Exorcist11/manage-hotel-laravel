@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -19,6 +21,53 @@ export default function DetailReport() {
             [name]: value,
         }));
     };
+
+    const exportToExcel = () => {
+        const formattedData = [
+            { key: "Số lượng yêu cầu", value: data.order_count },
+
+            {
+                key: "Số lượng phòng được đặt",
+                value: data.booking_detail_count,
+            },
+            { key: "Số lượng khách hàng", value: data.customer_count },
+            { key: "Số lượng dịch vụ sử dụng", value: data.service_count },
+            { key: "Tổng tiền thu được", value: `${data.service_sum} VND` },
+            { key: "Tiền dịch vụ", value: `${data.bill_sum} VND` },
+            { key: "Số lượng đặt phòng", value: data.booking_count },
+            { key: "Số phòng còn trống", value: data.available_rooms },
+        ];
+
+        const worksheet = XLSX.utils.json_to_sheet(formattedData, {
+            header: ["key", "value"],
+            skipHeader: true,
+        });
+
+        XLSX.utils.sheet_add_aoa(
+            worksheet,
+            [[`Báo cáo từ ngày ${time.start_date} đến ${time.end_date}`]],
+            {
+                origin: "A1",
+            }
+        );
+
+        worksheet["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 1, c: 1 } }];
+
+        worksheet["!cols"] = [{ wch: 30 }, { wch: 30 }];
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Data");
+
+        const excelBuffer = XLSX.write(workbook, {
+            bookType: "xlsx",
+            type: "array",
+        });
+        const blob = new Blob([excelBuffer], {
+            type: "application/octet-stream",
+        });
+        saveAs(blob, "hotel_summary.xlsx");
+    };
+
     const handleReport = async () => {
         try {
             const response = await axios.get(
@@ -63,7 +112,7 @@ export default function DetailReport() {
         "bg-purple-500 text-white",
         "bg-indigo-500 text-white",
     ];
-  
+
     return (
         <div className="flex flex-col gap-5">
             <h1 className="text-center text-2xl font-bold uppercase">
@@ -101,12 +150,24 @@ export default function DetailReport() {
                     />
                 </label>
 
-                <label className="form-control w-full " onClick={handleReport}>
-                    <div className="label">
-                        <span className="label-text"></span>
-                    </div>
-                    <button className="btn">Tìm kiếm</button>
+                <label
+                    className="w-full flex items-center gap-2"
+                    onClick={handleReport}
+                >
+                    <button className="btn w-full" onClick={handleReport}>
+                        Tìm kiếm
+                    </button>
                 </label>
+                {data && (
+                    <label
+                        className="w-full flex items-center gap-2"
+                        onClick={handleReport}
+                    >
+                        <button className="btn w-full" onClick={exportToExcel}>
+                            Excel
+                        </button>
+                    </label>
+                )}
             </div>
 
             {data && (
