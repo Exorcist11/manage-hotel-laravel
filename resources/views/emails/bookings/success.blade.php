@@ -31,7 +31,7 @@
     <p>Kính gửi {{ $booking->order->fullname }},</p>
 
     <div class="content">
-        <p>Nhân viên {{ $booking->user->profile->fullname }} đã đặt phòng cho bạn với với thông tin như sau:</p>
+        <p>Nhân viên {{ $booking->user->profiles->fullname }} đã đặt phòng cho bạn với với thông tin như sau:</p>
 
         <ul>
             <li><strong>Check In:</strong> {{ $booking->order->start_date->format('Y-m-d') }} 15:00</li>

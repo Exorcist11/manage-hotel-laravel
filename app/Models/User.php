@@ -56,7 +56,7 @@ class User extends Authenticatable implements AuthenticatableContract
 		return $this->hasMany(Booking::class, 'staff_id');
 	}
 
-	public function profile()
+	public function profiles()
 	{
 		return $this->hasOne(Profile::class);
 	}
