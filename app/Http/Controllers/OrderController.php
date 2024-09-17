@@ -8,6 +8,8 @@ use App\Models\Order;
 use App\Models\Room;
 use App\Models\Booking;
 use App\Models\BookingDetail;
+use App\Mail\OrderSuccessMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -41,13 +43,27 @@ class OrderController extends Controller
                 'number_of_rooms' => $request->number_of_rooms,
                 'start_date' => $request->start_date,
                 'end_date' => $request->end_date,
-            ]);
+            ]);        // Attempt to send the success email
+            try {
+                Mail::to($order->email)->send(new OrderSuccessMail($order));
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Order created, but email failed to send: ' . $e->getMessage(),
+                ], 500);
+            }
             return response()->json([
                 'success' => true,
                 'order' => $order
             ], 201);
         } catch (\Throwable $th){
-            return response()->json($th);
+            \Log::error($th);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred during order creation.',
+                'error' => $th->getMessage()
+            ], 500);
         }
     }
 
