@@ -13,7 +13,6 @@ export default function Products() {
         id: "",
         name: "",
         price: "",
-        quantity: "",
         detail: "",
         url: "",
     });
@@ -47,7 +46,6 @@ export default function Products() {
         const newErrors = {};
         if (!form.name) newErrors.name = "Tên dịch vụ không được để trống";
         if (!form.price) newErrors.price = "Giá dịch vụ không được để trống";
-        if (!form.quantity) newErrors.quantity = "Số lượng là bắt buộc";
         if (!selectedFile) newErrors.image = "Ảnh không được để trống";
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -63,7 +61,6 @@ export default function Products() {
         formData.append("image", selectedFile);
         formData.append("name", form.name);
         formData.append("price", form.price);
-        formData.append("quantity", form.quantity);
         formData.append("detail", form.detail);
 
         try {
@@ -102,7 +99,7 @@ export default function Products() {
                     id: response.data.product.id,
                     name: response.data.product.name,
                     price: response.data.product.price,
-                    quantity: response.data.product.quantity,
+                
                     url: response.data.product.image,
                     detail: response.data.product.detail,
                 })
@@ -118,13 +115,12 @@ export default function Products() {
         }));
     };
 
-    console.log(form.detail);
+    console.log(form);
 
     const handleUpdate = async () => {
         const formData = new FormData();
         formData.append("name", form.name);
         formData.append("price", form.price);
-        formData.append("quantity", form.quantity);
         formData.append("detail", form.detail);
 
         if (selectedFile) {
