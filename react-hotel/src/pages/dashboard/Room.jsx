@@ -6,8 +6,6 @@ import { ClearForm } from "@/middleware/ClearForm";
 import { MdCreate, MdDelete } from "react-icons/md";
 import { fetcher } from "@/lib/fetcher";
 
-
-
 export default function Room() {
     const {
         data: rooms,
@@ -74,11 +72,15 @@ export default function Room() {
             await axios.post("http://127.0.0.1:8000/api/rooms", form);
             toast.success("Thêm mới phòng thành công!");
             mutateRooms();
+            setForm({
+                room_no: "",
+                floor: "",
+                id: "",
+                category_id: "",
+            });
             document.getElementById("add_new_room").close();
         } catch (e) {
             toast.error(e.response.data.message);
-        } finally {
-            ClearForm();
         }
     };
 
