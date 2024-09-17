@@ -13,7 +13,7 @@ export default function Dashboard() {
         { title: "Phòng đặt", res: data?.total_check_out },
         { title: "Yêu cầu", res: data?.order_pending },
         { title: "Phòng chưa check in", res: data?.total_check_in },
-        { title: "Tổng số khách hàng", res: 3000 + data?.total_user },
+        { title: "Tổng số khách hàng", res: data?.total_user },
         { title: "Dịch vụ", res: data?.services },
         {
             title: "Doanh thu",
