@@ -170,7 +170,7 @@ export default function Room() {
             </div>
 
             <div className="overflow-x-auto">
-                <table className="table table-zebra" width="100%">
+                <table className="table" width="100%">
                     <thead>
                         <tr>
                             <th>STT</th>

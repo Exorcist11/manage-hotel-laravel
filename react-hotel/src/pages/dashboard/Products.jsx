@@ -198,7 +198,7 @@ export default function Products() {
                 </div>
             </div>
             <div className="mt-5">
-                <table className="table table-zebra" width="100%">
+                <table className="table " width="100%">
                     {/* head */}
                     <thead>
                         <tr>

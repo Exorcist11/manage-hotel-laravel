@@ -111,7 +111,7 @@ export default function EmptyRoom() {
                 </label>
             </div>
 
-            <table className="table table-zebra">
+            <table className="table ">
                 <thead>
                     <tr>
                         <th>STT</th>

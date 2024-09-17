@@ -251,7 +251,7 @@ export default function RequestRoom() {
                 </div>
 
                 <div className="overflow-x-auto mt-5">
-                    <table className="table table-zebra" width="100%">
+                    <table className="table " width="100%">
                         <thead>
                             <tr>
                                 <th>Tên khách</th>
