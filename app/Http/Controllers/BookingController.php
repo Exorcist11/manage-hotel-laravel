@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingSuccessMail;
 use App\Models\Booking;
 use App\Models\BookingDetail;
 use App\Models\Room;
@@ -53,6 +55,14 @@ class BookingController extends Controller
                 $order->save();
     
                 \DB::commit();
+                try {
+                    Mail::to($order->email)->send(new BookingSuccessMail($booking));
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Order created, but email failed to send: ' . $e->getMessage(),
+                    ], 500);
+                }
     
                 return response()->json([
                     'success' => true,
