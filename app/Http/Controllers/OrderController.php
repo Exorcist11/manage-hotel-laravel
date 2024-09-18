@@ -20,15 +20,12 @@ class OrderController extends Controller
      */
     public function index()
     {
-        // return response()->json([
-        //     'all_orders' => Order::all(),
-        //     'pending_orders' => Order::pending()->get(),
-        //     'accept_orders' => Order::accept()->get(),
-        //     'reject_orders' => Order::reject()->get(),
-        //     'counter_orders' => Order::counter()->with('booking')->get(),
-        // ]);
         return response()->json([
-            'data' => Order::all(),
+            'all_orders' => Order::all(),
+            'pending_orders' => Order::pending()->get(),
+            'accept_orders' => Order::accept()->get(),
+            'reject_orders' => Order::reject()->get(),
+            'counter_orders' => Order::counter()->with('booking')->get(),
         ]);
     }
 
@@ -82,7 +79,7 @@ class OrderController extends Controller
             return response()->json(['message' => 'Order not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $order->category_id = Category::find($order->category_id)->name;
+        // $order->category_id = Category::find($order->category_id)->name;
 
         return response()->json($order);
     }
