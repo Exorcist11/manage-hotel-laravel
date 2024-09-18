@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 
 export default function DetailBill() {
     const [detail, setDetail] = useState({});
+    // console.log(detail.booking_detail.product_services.map((item) => item));
     const { id } = useParams();
 
     const getDetail = async () => {
@@ -127,6 +128,20 @@ export default function DetailBill() {
                         </td>
                     </tr>
                 </table>
+
+                <div>
+                    <ul className="list-disc pl-14">
+                        {detail?.booking_detail?.product_services?.map(
+                            (item, index) => (
+                                <li key={index}>
+                                    {`${item?.product?.name} (${parseInt(
+                                    item?.product?.price
+                                ).toLocaleString("en-US")} VND)`}
+                                </li>
+                            )
+                        )}
+                    </ul>
+                </div>
 
                 <div className="flex font-bold p-1 text-lg justify-between items-center">
                     <h3>Tổng tiền thanh toán</h3>

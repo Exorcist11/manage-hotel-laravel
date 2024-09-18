@@ -43,6 +43,18 @@ export default function RequestRoom() {
         return data.filter((item) => item.status === type);
     };
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 20;
+    const lastIndex = itemsPerPage * currentPage;
+    const firstIndex = lastIndex - itemsPerPage;
+    const records = filterData()
+        ? filterData().slice(firstIndex, lastIndex)
+        : [];
+    const npage = filterData()
+        ? Math.ceil(filterData().length / itemsPerPage)
+        : 0;
+    const numbers = npage > 0 ? [...Array(npage + 1).keys()].slice(1) : [];
+
     const getCurrentDate = () => {
         const now = new Date();
         const year = now.getFullYear();
@@ -66,7 +78,8 @@ export default function RequestRoom() {
             const response = await axios.get(
                 "http://127.0.0.1:8000/api/orders"
             );
-            setData(response.data.pending_orders);
+
+            setData(response.data.data);
         } catch (error) {
             console.error(error);
         }
@@ -118,7 +131,7 @@ export default function RequestRoom() {
     };
 
     const handleAccept = async () => {
-        if (selected.length !== detail.number_of_rooms) {
+        if (selected?.length !== detail.number_of_rooms) {
             toast.error(
                 `Vui lòng chọn đúng số lượng phòng: ${detail.num_of_room}`
             );
@@ -262,8 +275,8 @@ export default function RequestRoom() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filterData().length > 0 ? (
-                                filterData()?.map((item, i) => (
+                            {filterData()?.length > 0 ? (
+                                records?.map((item, i) => (
                                     <tr key={i}>
                                         <td>{item?.fullname}</td>
                                         <td>{item?.phone}</td>
@@ -688,6 +701,27 @@ export default function RequestRoom() {
                         </div>
                     </div>
                 </dialog>
+            </div>
+
+            <div className="flex items-center justify-end mt-5 gap-5">
+                <p className="font-semibold text-xs">
+                    Showing {firstIndex + 1}-{lastIndex} of{" "}
+                    {filterData()?.length}
+                </p>
+
+                <div className="join">
+                    {numbers?.map((n, i) => (
+                        <button
+                            className={`join-item btn  btn-sm ${
+                                currentPage === n ? "btn-active" : ""
+                            }`}
+                            onClick={() => setCurrentPage(n)}
+                            key={i}
+                        >
+                            {n}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );
