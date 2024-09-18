@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { IoCaretBack } from "react-icons/io5";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function DetailCheckIn() {
     const [form, setForm] = useState({});
 
+    const navigate = useNavigate();
     const [total, setTotal] = useState("");
     const { id } = useParams();
     const [selectedValue, setSelectedValue] = useState("Tiền mặt");
@@ -222,18 +223,20 @@ export default function DetailCheckIn() {
                             />
                         </label>
                     </div>
-                    {/* <div>
-                        <h1>Dịch vụ sử dụng</h1>
+                    <div>
+                        <h1 className="font-bold">Dịch vụ sử dụng</h1>
                         <div>
-                            {form?.product_services?.map((item, index) => (
-                                <span key={index}>
-                                    {`${item.product.name} (${item.product.price} VND)`}
-                                    {index < form.product_services.length - 1 &&
-                                        " - "}
-                                </span>
-                            ))}
+                            <ul className="list-disc pl-14">
+                                {form?.product_services?.map((item, index) => (
+                                    <li key={index}>
+                                        {`${item.product.name} (${parseInt(
+                                            item.product.price
+                                        ).toLocaleString("en-US")} VND)`}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                    </div> */}
+                    </div>
                     {form.is_check_out === false &&
                         form.is_check_in === true && (
                             <div>
@@ -336,8 +339,11 @@ export default function DetailCheckIn() {
                             )}
                         {form?.is_check_in === true &&
                             form?.is_check_out === true && (
-                                <button className="btn btn-info disabled">
-                                    Thanh toán thành công
+                                <button
+                                    className="btn btn-info disabled"
+                                    onClick={() => navigate("/check-out")}
+                                >
+                                    Quay về trang chủ
                                 </button>
                             )}
                     </div>
