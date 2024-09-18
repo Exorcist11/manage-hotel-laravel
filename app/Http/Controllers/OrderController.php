@@ -19,12 +19,15 @@ class OrderController extends Controller
      */
     public function index()
     {
+        // return response()->json([
+        //     'all_orders' => Order::all(),
+        //     'pending_orders' => Order::pending()->get(),
+        //     'accept_orders' => Order::accept()->get(),
+        //     'reject_orders' => Order::reject()->get(),
+        //     'counter_orders' => Order::counter()->with('booking')->get(),
+        // ]);
         return response()->json([
-            'all_orders' => Order::all(),
-            'pending_orders' => Order::pending()->get(),
-            'accept_orders' => Order::accept()->get(),
-            'reject_orders' => Order::reject()->get(),
-            'counter_orders' => Order::counter()->with('booking')->get(),
+            'data' => Order::all(),
         ]);
     }
 
