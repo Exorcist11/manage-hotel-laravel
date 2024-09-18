@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Room;
 use App\Models\Booking;
 use App\Models\BookingDetail;
+use App\Models\Category;
 use App\Mail\OrderSuccessMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
@@ -77,6 +78,8 @@ class OrderController extends Controller
         if (!$order) {
             return response()->json(['message' => 'Order not found'], Response::HTTP_NOT_FOUND);
         }
+
+        $order->category_id = Category::find($order->category_id)->name;
 
         return response()->json($order);
     }
