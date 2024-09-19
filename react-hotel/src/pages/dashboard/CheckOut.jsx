@@ -222,7 +222,7 @@ export default function CheckOut() {
                                     </div>{" "}
                                     <div
                                         className="tooltip"
-                                        data-tip="Thêm dịch vụ"
+                                        data-tip="Xóa dịch vụ"
                                     >
                                         <FaTrash
                                             className="hover:text-red-500 cursor-pointer"

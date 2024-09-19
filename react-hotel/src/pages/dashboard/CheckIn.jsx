@@ -34,11 +34,19 @@ export default function CheckIn() {
         return `${day}/${month}/${year}`;
     }
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const lastIndex = itemsPerPage * currentPage;
+    const firstIndex = lastIndex - itemsPerPage;
+    const records = rooms ? rooms.slice(firstIndex, lastIndex) : [];
+    const npage = rooms ? Math.ceil(rooms.length / itemsPerPage) : 0;
+    const numbers = npage > 0 ? [...Array(npage + 1).keys()].slice(1) : [];
+
     function handleDateChange(e) {
         const selectedDate = e.target.value;
         setSelectedDate(selectedDate);
 
-        const filtered = rooms.filter(
+        const filtered = records.filter(
             (room) =>
                 new Date(room.booking.order.start_date)
                     .toISOString()
@@ -83,12 +91,12 @@ export default function CheckIn() {
                         {filteredRooms.length > 0 ? (
                             filteredRooms?.map((item, i) => (
                                 <tr key={i}>
-                                    <td>{i + 1}</td>
+                                    <td>{i +
+                                            1 +
+                                            itemsPerPage * (currentPage - 1)}</td>
                                     <td>{item?.room?.room_no}</td>
                                     <td>{item?.booking?.order?.fullname}</td>
-                                    <td>
-                                        {item?.booking?.order?.phone}
-                                    </td>
+                                    <td>{item?.booking?.order?.phone}</td>
                                     <td>{item?.booking?.order?.status}</td>
                                     <td>
                                         {formatDate(
@@ -123,6 +131,26 @@ export default function CheckIn() {
                         )}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="flex items-center justify-end mt-5 gap-5">
+                <p className="font-semibold text-xs">
+                    Showing {firstIndex + 1}-{lastIndex} of {rooms.length}
+                </p>
+
+                <div className="join">
+                    {numbers?.map((n, i) => (
+                        <button
+                            className={`join-item btn  btn-sm ${
+                                currentPage === n ? "btn-active" : ""
+                            }`}
+                            onClick={() => setCurrentPage(n)}
+                            key={i}
+                        >
+                            {n}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );
