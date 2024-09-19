@@ -267,6 +267,7 @@ export default function RequestRoom() {
                     <table className="table " width="100%">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>Tên khách</th>
                                 <th>Số điện thoại</th>
                                 <th>Số lượng phòng</th>
@@ -278,6 +279,12 @@ export default function RequestRoom() {
                             {filterData()?.length > 0 ? (
                                 records?.map((item, i) => (
                                     <tr key={i}>
+                                        <th>
+                                            {i +
+                                                1 +
+                                                itemsPerPage *
+                                                    (currentPage - 1)}
+                                        </th>
                                         <td>{item?.fullname}</td>
                                         <td>{item?.phone}</td>
                                         <td>{item?.number_of_rooms}</td>

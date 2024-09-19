@@ -21,7 +21,7 @@ class OrderController extends Controller
     public function index()
     {
         return response()->json([
-            'all_orders' => Order::all(),
+            'all_orders' => Order::orderBy('created_at', 'desc')->get(),
             'pending_orders' => Order::pending()->get(),
             'accept_orders' => Order::accept()->get(),
             'reject_orders' => Order::reject()->get(),
