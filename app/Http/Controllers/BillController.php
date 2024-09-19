@@ -22,7 +22,7 @@ class BillController extends Controller
      */
     public function show(string $id)
     {
-        $bill = Bill::with(['booking_detail.room','booking_detail.room.category', 'booking_detail.booking.order', 'booking_detail.product_services'])->find($id);
+        $bill = Bill::with(['booking_detail.room','booking_detail.room.category', 'booking_detail.booking.order', 'booking_detail.product_services.product'])->find($id);
 
         if (!$bill) {
             return response()->json(['message' => 'Không tìm thấy hóa đơn'], 404);

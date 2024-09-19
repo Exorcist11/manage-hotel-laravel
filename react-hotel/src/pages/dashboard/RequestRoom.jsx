@@ -79,7 +79,7 @@ export default function RequestRoom() {
                 "http://127.0.0.1:8000/api/orders"
             );
 
-            setData(response.data.data);
+            setData(response.data.all_orders);
         } catch (error) {
             console.error(error);
         }
