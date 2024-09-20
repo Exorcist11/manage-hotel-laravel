@@ -94,6 +94,8 @@ Route::prefix('categories')->group(function () {
     Route::get('', 'index');
     Route::post('', 'store');
     Route::get('/{id}', 'show');
+    Route::get('/{id}/public', 'show_public');
+    Route::patch('/{id}/addImages', 'addImages');
     Route::patch('/{id}', 'update');
     Route::delete('/{id}', 'destroy');
     Route::get('/{id}/rooms', 'getListRoomByCategory');
