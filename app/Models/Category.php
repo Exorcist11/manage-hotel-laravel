@@ -42,7 +42,8 @@ class Category extends Model
         'description',
         'image',
         'price',
-        'utilities'
+        'utilities',
+        'list_images'
     ];
 
     public function rooms()

@@ -90,7 +90,7 @@ class CategoryController extends Controller
                 'max_occupancy' => $request->max_occupancy,
                 'size' => $request->size,
                 'description' => $request->description,
-                'image' => $imageIdsString, 
+                'list_images' => $imageIdsString, 
                 'price' => $request->price,
                 'utilities' => $request->utilities
             ]);
