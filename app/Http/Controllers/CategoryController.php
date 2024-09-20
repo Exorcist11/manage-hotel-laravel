@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,36 +27,84 @@ class CategoryController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         $imageUrl = null;
+    //         if ($request->hasFile('image')) {
+    //             $image = $request->file('image');
+    //             $imagePath = $image->store('public/images');
+    //             $imageUrl = Storage::url($imagePath);
+    //         }
+
+    //         $category = Category::create([
+    //             'name' => $request->name,
+    //             'max_occupancy' => $request->max_occupancy,
+    //             'size' => $request->size,
+    //             'description' => $request->description,
+    //             'image' => $imageUrl,
+    //             'price' => $request->price,
+    //             'utilities' => $request->utilities
+    //         ]);
+
+    //         return response()->json([
+    //             'success' => true,
+    //             'category' => $category
+    //         ], 201);
+
+    //     } catch (\Throwable $th) {
+    //         // Log lỗi để dễ dàng debug
+    //         \Log::error($th);
+            
+    //         // Trả về lỗi với message chi tiết hơn
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => $th->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+
     public function store(Request $request)
     {
+        \DB::beginTransaction();
         try {
-            $imageUrl = null;
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imagePath = $image->store('public/images');
-                $imageUrl = Storage::url($imagePath);
+            $imageIds = [];
+
+            if ($request->hasFile('images') && is_array($request->file('images'))) {
+                foreach ($request->file('images') as $image) {
+                    $imagePath = $image->store('public/images');
+                    $imageUrl = Storage::url($imagePath);
+
+                    $imageModel = Image::create([
+                        'url' => $imageUrl,
+                    ]);
+
+                    $imageIds[] = $imageModel->id;
+                }
             }
+
+            $imageIdsString = implode(',', $imageIds);
 
             $category = Category::create([
                 'name' => $request->name,
                 'max_occupancy' => $request->max_occupancy,
                 'size' => $request->size,
                 'description' => $request->description,
-                'image' => $imageUrl,
+                'image' => $imageIdsString, 
                 'price' => $request->price,
                 'utilities' => $request->utilities
             ]);
+            \DB::commit();
 
             return response()->json([
                 'success' => true,
-                'category' => $category
+                'category' => $category,
+                'images' => $imageIdsString
             ], 201);
 
         } catch (\Throwable $th) {
-            // Log lỗi để dễ dàng debug
             \Log::error($th);
-            
-            // Trả về lỗi với message chi tiết hơn
+            \DB::rollback();
             return response()->json([
                 'success' => false,
                 'message' => $th->getMessage(),
