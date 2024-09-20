@@ -257,9 +257,11 @@ class BookingController extends Controller
         $bookings = Booking::whereDoesntHave('booking_details', function ($query) {
             $query->where('is_check_in', false)
                   ->orWhere('is_check_out', false);
-        })->with(['booking_details.room', 'order', 'booking_details.bill']) 
-          ->get();
-          
+        })
+        ->with(['booking_details.room', 'order', 'booking_details.bill']) 
+        ->orderBy('updated_at', 'desc')
+        ->get();
+
         return response()->json([
             'success' => true,
             'bookings' => $bookings

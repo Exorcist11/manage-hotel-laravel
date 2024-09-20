@@ -14,7 +14,9 @@ export default function ClientHistory() {
     const itemsPerPage = 10;
     const lastIndex = itemsPerPage * currentPage;
     const firstIndex = lastIndex - itemsPerPage;
-    const records = filteredHistory.slice(firstIndex, lastIndex);
+    const records = filteredHistory
+        .filter((item) => item?.booking_details[0]?.room)
+        .slice(firstIndex, lastIndex);
     const npage = Math.ceil(filteredHistory.length / itemsPerPage);
     const numbers = [...Array(npage + 1).keys()].slice(1);
 
@@ -38,6 +40,7 @@ export default function ClientHistory() {
     useEffect(() => {
         getHistory();
     }, []);
+    console.log(records);
 
     return (
         <div className="flex flex-col gap-5">

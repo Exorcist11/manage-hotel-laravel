@@ -230,7 +230,7 @@ export default function RequestRoom() {
         detail?.end_date,
         detail?.start_date,
     ]);
-    console.log(detail);
+   
 
     return (
         <div className="flex flex-col gap-5">
@@ -467,6 +467,7 @@ export default function RequestRoom() {
                                                                             .name ||
                                                                         ""
                                                                     }
+                                                                    disabled
                                                                 />
                                                             </label>
 
