@@ -11,6 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::table('categories', function (Blueprint $table) {
+            $table->string('list_images')->nullable();
+            $table->string('image')->nullable()->change();
+        });
+
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
             $table->string('url');
@@ -24,5 +29,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('images');
+        
+        Schema::table('categories', function(Blueprint $table) {
+            $table->dropColumn('list_images');
+            $table->string('image')->nullable(false)->change();
+        });
     }
 };
