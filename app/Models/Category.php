@@ -50,4 +50,11 @@ class Category extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function sub_images()
+    {
+        $imageIds = explode(',', $this->list_images);
+        $images = Image::whereIn('id', $imageIds)->get();
+        return $images->pluck('url')->toArray();
+    }
 }

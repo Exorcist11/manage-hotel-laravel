@@ -120,6 +120,45 @@ class CategoryController extends Controller
         }
     }
 
+    public function addImages(Request $request, $id)
+    {
+        \DB::beginTransaction();
+        try {
+            $category = Category::find($id); 
+
+            $imageIds = [];
+            if ($request->hasFile('images') && is_array($request->file('images'))) {
+                foreach ($request->file('images') as $image) {
+                    $imagePath = $image->store('public/images');
+                    $imageUrl = Storage::url($imagePath);
+
+                    $imageModel = Image::create([
+                        'url' => $imageUrl,
+                    ]);
+
+                    $imageIds[] = $imageModel->id;
+                }
+            }
+            
+            $imageIdsString = implode(',', $imageIds);
+
+            $category->list_images = $imageIdsString;
+            $category->save();
+            \DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Images added successfully',
+                'category' => $category,
+            ], 200);
+
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error adding images: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 
     /**
      * Hiển thị chi tiết một thể loại cụ thể.
@@ -140,6 +179,25 @@ class CategoryController extends Controller
         return response()->json([
             'category' => $category,
             'utilities' => $utilities
+        ]);
+    }
+
+    public function show_public($id)
+    {
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $utilities = explode('#', $category->utilities);
+        $all_images = $category->sub_images();
+        array_unshift($all_images, $category->image);
+
+        return response()->json([
+            'category' => $category,
+            'utilities' => $utilities,
+            'all_images' => $all_images,
         ]);
     }
 
