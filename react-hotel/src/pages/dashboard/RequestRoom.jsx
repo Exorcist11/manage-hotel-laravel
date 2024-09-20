@@ -79,7 +79,7 @@ export default function RequestRoom() {
                 "http://127.0.0.1:8000/api/orders"
             );
 
-            setData(response.data.all_orders);
+            setData(response.data.pending_orders);
         } catch (error) {
             console.error(error);
         }
@@ -230,7 +230,6 @@ export default function RequestRoom() {
         detail?.end_date,
         detail?.start_date,
     ]);
-   
 
     return (
         <div className="flex flex-col gap-5">
@@ -250,7 +249,7 @@ export default function RequestRoom() {
                         Đặt phòng tại quầy
                     </label>
 
-                    <select
+                    {/* <select
                         className="select select-bordered w-full max-w-xs"
                         name="type_of_order"
                         onChange={(e) => setType(e.target.value)}
@@ -262,7 +261,7 @@ export default function RequestRoom() {
                         <option value={"Đặt tại quầy"}>Đặt tại quầy</option>
                         <option value={"Chấp nhận"}>Chấp nhận</option>
                         <option value={"Từ chối"}>Từ chối</option>
-                    </select>
+                    </select> */}
                 </div>
 
                 <div className="overflow-x-auto mt-5">
