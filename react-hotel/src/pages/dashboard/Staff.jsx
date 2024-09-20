@@ -103,6 +103,7 @@ export default function Staff() {
                 gender: userData.profiles.gender,
                 phone_number: userData.profiles.phone_number,
                 address: userData.profiles.address,
+                salary: userData.profiles.salary,
             });
             setIsApiSuccess(true);
         } catch (e) {
@@ -208,7 +209,12 @@ export default function Staff() {
                                 <td>{staff?.profiles?.fullname}</td>
                                 <td>{staff?.profiles?.address}</td>
                                 <td>{staff?.profiles?.phone_number}</td>
-                                <td>{staff?.profiles?.salary} VND</td>
+                                <td>
+                                    {parseInt(
+                                        staff?.profiles?.salary
+                                    ).toLocaleString("vn-Vi")}{" "}
+                                    VND
+                                </td>
                                 <td>{staff?.role}</td>
                                 <th className="flex items-center gap-2 max-w-fit">
                                     <div
@@ -525,6 +531,32 @@ export default function Staff() {
                                     className="input input-bordered w-full  focus:outline-none focus:ring-0"
                                     onChange={handleChange}
                                 />
+                            </label>
+
+                            <label className="form-control w-full ">
+                                <div className="label">
+                                    <span className="label-text">
+                                        Lương{" "}
+                                        <span className="text-red-500">*</span>
+                                    </span>
+                                </div>
+                                <input
+                                    type="number"
+                                    name="salary"
+                                    placeholder="Lương"
+                                    value={form.salary}
+                                    className="input input-bordered w-full  focus:outline-none focus:ring-0"
+                                    onChange={handleChange}
+                                />
+                                <div className="label">
+                                    <span className="label-text-alt">
+                                        {errors.salary && (
+                                            <p className="text-red-500 text-sm">
+                                                {errors.salary}
+                                            </p>
+                                        )}
+                                    </span>
+                                </div>
                             </label>
 
                             <label className="form-control w-full ">

@@ -74,13 +74,22 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $order = Order::find($id);
-
+    
         if (!$order) {
             return response()->json(['message' => 'Order not found'], Response::HTTP_NOT_FOUND);
         }
-
-        // $order->category_id = Category::find($order->category_id)->name;
-
+    
+        $category = Category::find($order->category_id);
+    
+        if ($category) {
+            $order->category = [
+                'id' => $category->id,
+                'name' => $category->name,
+            ];
+            unset($order->category_id); 
+        } else {
+            $order->category = null;
+        }
         return response()->json($order);
     }
 

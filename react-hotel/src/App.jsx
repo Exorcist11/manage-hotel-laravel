@@ -3,7 +3,7 @@ import { dashboardRoute, publicRoute } from "./routers";
 import { Fragment } from "react";
 import clientLayout from "./components/Layout/clientLayout";
 import DashboardLayout from "./components/Layout/DashboardLayout";
-
+import { ProtectedRoute } from "./components/protectRoute";
 
 function App() {
     return (
@@ -30,20 +30,26 @@ function App() {
                     const Layout =
                         route.layout === null ? Fragment : DashboardLayout;
                     const Page = route.page;
+
                     return (
                         <Route
                             key={index}
                             path={route?.path}
                             element={
-                                <Layout>
-                                    <Page />
-                                </Layout>
+                                <ProtectedRoute
+                                    element={
+                                        <Layout>
+                                            <Page />
+                                        </Layout>
+                                    }
+                                    isAuthenticated={true} // Thay thế bằng logic xác thực của bạn
+                                    // requiredRole={"Quản lý" || 'Nhân viên'} // Đặt vai trò cần thiết để truy cập
+                                />
                             }
                         />
                     );
                 })}
             </Routes>
-            
         </div>
     );
 }

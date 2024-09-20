@@ -14,7 +14,9 @@ export default function ClientHistory() {
     const itemsPerPage = 10;
     const lastIndex = itemsPerPage * currentPage;
     const firstIndex = lastIndex - itemsPerPage;
-    const records = filteredHistory.slice(firstIndex, lastIndex);
+    const records = filteredHistory
+        .filter((item) => item?.booking_details[0]?.room)
+        .slice(firstIndex, lastIndex);
     const npage = Math.ceil(filteredHistory.length / itemsPerPage);
     const numbers = [...Array(npage + 1).keys()].slice(1);
 
@@ -38,11 +40,12 @@ export default function ClientHistory() {
     useEffect(() => {
         getHistory();
     }, []);
+    console.log(records);
 
     return (
         <div className="flex flex-col gap-5">
             <h1 className="text-2xl uppercase text-center font-bold">
-                Lịch sử phòng đặt
+                Lịch sử đặt phòng
             </h1>
             <div>
                 <label className="input input-bordered flex items-center gap-2">
@@ -51,7 +54,7 @@ export default function ClientHistory() {
                         className="grow"
                         placeholder="Tìm kiếm tên khách hàng"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)} 
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +74,7 @@ export default function ClientHistory() {
                 <table className="table table-sm">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>STT</th>
                             <th>Ngày nhận phòng</th>
                             <th>Ngày trả phòng</th>
                             <th>Phòng</th>

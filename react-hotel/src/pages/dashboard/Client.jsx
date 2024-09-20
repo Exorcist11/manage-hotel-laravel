@@ -56,7 +56,7 @@ export default function Client() {
                 <table className="table table-sm">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>STT</th>
                             <th>Tên khách hàng</th>
                             <th>Số điện thoại</th>
                             <th>CCCD</th>

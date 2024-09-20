@@ -163,7 +163,7 @@ export default function DashboardLayout({ children }) {
             <Toaster
                 toastOptions={{
                     style: {
-                        zIndex: 9999, 
+                        zIndex: 9999,
                     },
                 }}
             />
