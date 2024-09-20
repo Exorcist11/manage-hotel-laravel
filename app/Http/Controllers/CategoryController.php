@@ -83,6 +83,13 @@ class CategoryController extends Controller
                 }
             }
 
+            $imageUrl = null;
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imagePath = $image->store('public/images');
+                $imageUrl = Storage::url($imagePath);
+            }
+
             $imageIdsString = implode(',', $imageIds);
 
             $category = Category::create([
@@ -90,6 +97,7 @@ class CategoryController extends Controller
                 'max_occupancy' => $request->max_occupancy,
                 'size' => $request->size,
                 'description' => $request->description,
+                'image' => $imageUrl,
                 'list_images' => $imageIdsString, 
                 'price' => $request->price,
                 'utilities' => $request->utilities
