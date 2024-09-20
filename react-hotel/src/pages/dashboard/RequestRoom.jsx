@@ -230,6 +230,7 @@ export default function RequestRoom() {
         detail?.end_date,
         detail?.start_date,
     ]);
+    console.log(detail);
 
     return (
         <div className="flex flex-col gap-5">
@@ -259,6 +260,7 @@ export default function RequestRoom() {
                         </option>
                         <option value={"Đang chờ xử lý"}>Đang chờ xử lý</option>
                         <option value={"Đặt tại quầy"}>Đặt tại quầy</option>
+                        <option value={"Chấp nhận"}>Chấp nhận</option>
                         <option value={"Từ chối"}>Từ chối</option>
                     </select>
                 </div>
@@ -267,7 +269,7 @@ export default function RequestRoom() {
                     <table className="table " width="100%">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th>STT</th>
                                 <th>Tên khách</th>
                                 <th>Số điện thoại</th>
                                 <th>Số lượng phòng</th>
@@ -460,7 +462,9 @@ export default function RequestRoom() {
                                                                     placeholder="Type here"
                                                                     className="input input-bordered w-full"
                                                                     defaultValue={
-                                                                        detail?.category_id ||
+                                                                        detail
+                                                                            ?.category
+                                                                            .name ||
                                                                         ""
                                                                     }
                                                                 />
@@ -499,7 +503,9 @@ export default function RequestRoom() {
                                                             detail?.status ===
                                                                 "Đặt tại quầy" ||
                                                             detail?.status ===
-                                                                "Từ chối"
+                                                                "Từ chối" ||
+                                                            detail?.status ===
+                                                                "Chấp nhận"
                                                         ) && (
                                                             <div className="text-center">
                                                                 <button

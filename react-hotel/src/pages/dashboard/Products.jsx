@@ -99,7 +99,7 @@ export default function Products() {
                     id: response.data.product.id,
                     name: response.data.product.name,
                     price: response.data.product.price,
-                
+
                     url: response.data.product.image,
                     detail: response.data.product.detail,
                 })
@@ -161,7 +161,7 @@ export default function Products() {
     return (
         <div>
             <h1 className="text-center text-2xl font-bold uppercase">
-                Dịch vụ
+                Quản Lý Dịch Vụ
             </h1>
             <div className="flex items-center justify-between">
                 <button

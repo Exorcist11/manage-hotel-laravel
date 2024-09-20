@@ -197,7 +197,7 @@ export default function CategoryRoom() {
     return (
         <div className="flex flex-col gap-5">
             <h1 className="font-bold text-2xl text-center uppercase">
-                Thể loại phòng
+                Quản lý Thể loại phòng
             </h1>
             <div className="flex justify-between">
                 <button

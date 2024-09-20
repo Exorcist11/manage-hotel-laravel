@@ -55,7 +55,10 @@ export default function DetailRoom() {
                         <p>
                             <b>Kích thước</b>: {room?.category?.size} m2
                         </p>
-                        <p>
+                        <p
+                            className="tooltip"
+                            data-tip={`Tối đa ${room?.category?.max_occupancy} người lớn.Trẻ em từ 0-5 tuổi được sử dụng chung giường có sẵn.`}
+                        >
                             <b>Sức chứa</b>: {room?.category?.max_occupancy}{" "}
                             người/phòng
                         </p>
@@ -72,7 +75,10 @@ export default function DetailRoom() {
                         </p>
                         <ul className="grid grid-cols-2 gap-3 px-5 mt-2">
                             {room?.utilities?.map((item, index) => (
-                                <li key={index} className="flex items-center gap-1">
+                                <li
+                                    key={index}
+                                    className="flex items-center gap-1"
+                                >
                                     <FaShower />
                                     {item}
                                 </li>

@@ -13,7 +13,7 @@ export default function ListRoomm() {
             console.error("Error from fetch categories: " + error);
         }
     };
-   
+
     useEffect(() => {
         fetchCategories();
     }, []);
@@ -73,7 +73,10 @@ export default function ListRoomm() {
                                         </span>
                                     </strong>
                                 </p>
-                                <p>
+                                <p
+                                    className="tooltip"
+                                    data-tip={`Tối đa ${item?.max_occupancy} người lớn.Trẻ em từ 0-5 tuổi được sử dụng chung giường có sẵn.`}
+                                >
                                     Sức chứa{" "}
                                     <strong>
                                         {item?.max_occupancy} người/phòng

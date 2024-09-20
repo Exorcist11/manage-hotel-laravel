@@ -95,7 +95,7 @@ export default function DetailBill() {
                             Loại phòng:
                         </td>
                         <td>
-                            {detail?.booking_detail?.room?.category?.name} VND
+                            {detail?.booking_detail?.room?.category?.name}
                         </td>
                     </tr>
 
