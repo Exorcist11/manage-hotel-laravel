@@ -7,21 +7,8 @@ import "swiper/css/thumbs";
 import "./styles.css";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
-export default function App() {
+export default function App({images}) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
-
-    const images = [
-        "nature-1.jpg",
-        "nature-2.jpg",
-        "nature-3.jpg",
-        "nature-4.jpg",
-        "nature-5.jpg",
-        "nature-6.jpg",
-        "nature-7.jpg",
-        "nature-8.jpg",
-        "nature-9.jpg",
-        "nature-10.jpg",
-    ];
 
     return (
         <>
@@ -36,10 +23,10 @@ export default function App() {
                 modules={[FreeMode, Navigation, Thumbs]}
                 className="mySwiper2"
             >
-                {images.map((image, index) => (
+                {images?.map((image, index) => (
                     <SwiperSlide key={index}>
                         <img
-                            src={`https://swiperjs.com/demos/images/${image}`}
+                            src={`http://localhost:8000${image}`}
                             alt={`Nature Image ${index + 1}`}
                             loading="lazy"
                         />

@@ -13,7 +13,7 @@ export default function DetailRoom() {
         const fetchRoom = async () => {
             try {
                 await axios
-                    .get(`http://127.0.0.1:8000/api/categories/${category_id}`)
+                    .get(`http://127.0.0.1:8000/api/categories/${category_id}/public`)
                     .then((response) => setRoom(response.data))
                     .catch((error) => console.error(error));
             } catch (error) {
@@ -44,7 +44,7 @@ export default function DetailRoom() {
             </div>
 
             <div className="grid grid-cols-2 gap-5 items-center">
-                <ThumbsGallery />
+                <ThumbsGallery images={room.all_images} />
                 <div className="flex flex-col gap-5">
                     <div className="border-b">
                         <b>Thông tin phòng</b>
