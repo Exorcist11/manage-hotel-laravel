@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaShower } from "react-icons/fa";
 
+import ThumbsGallery from "@/components/Slider/ShowCategory";
+
 export default function DetailRoom() {
     const [room, setRoom] = useState({});
     const { category_id } = useParams();
@@ -42,13 +44,7 @@ export default function DetailRoom() {
             </div>
 
             <div className="grid grid-cols-2 gap-5 items-center">
-                <div className="object-center object-cover w-full ">
-                    <img
-                        className="rounded-xl w-full h-full"
-                        src={"http://127.0.0.1:8000" + room?.category?.image}
-                        alt={room?.category?.name}
-                    />
-                </div>
+                <ThumbsGallery />
                 <div className="flex flex-col gap-5">
                     <div className="border-b">
                         <b>Thông tin phòng</b>
