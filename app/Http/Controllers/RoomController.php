@@ -14,7 +14,7 @@ use Illuminate\Database\QueryException;
 class RoomController extends Controller
 {
     public function index(){
-        $rooms = Room::with('category')->get();;
+        $rooms = Room::with('category')->orderBy('room_no', 'asc')->get();
         return response()->json($rooms);
     }
 
@@ -124,19 +124,22 @@ class RoomController extends Controller
     {
         try {
             $room = Room::findOrFail($id);
+            $muzigio = 'Asia/Ho_Chi_Minh'; 
 
             $bookingDetail = BookingDetail::where('room_id', $id)
-                                        ->whereDate('check_in', '=', Carbon::today()->toDateString())
+                                        ->whereDate('check_in', '=', Carbon::today($muzigio)->toDateString())
                                         ->first();
 
             if (!$bookingDetail) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Chưa đến thời gian đặt phòng'
+                    'message' => 'Chưa đến thời gian đặt phòng',
+                    'time' => Carbon::today($muzigio)->toDateString(),
+                    'booking' => $bookingDetail
                 ], 404);
             }
 
-            $bookingDetail->check_in = Carbon::now();
+            $bookingDetail->check_in = Carbon::now($muzigio);
             $bookingDetail->is_check_in = true;
             $bookingDetail->save();
 
@@ -163,6 +166,7 @@ class RoomController extends Controller
     {
         \DB::beginTransaction();
         try {
+            $muzigio = 'Asia/Ho_Chi_Minh'; 
             $room = Room::findOrFail($id);
 
             $bookingDetail = BookingDetail::where('room_id', $id)
@@ -177,7 +181,7 @@ class RoomController extends Controller
                 ], 404);
             }
 
-            $bookingDetail->check_out = Carbon::now();
+            $bookingDetail->check_out = Carbon::now($muzigio);
             $bookingDetail->is_check_out = true;
             $bookingDetail->save();
 
@@ -221,6 +225,7 @@ class RoomController extends Controller
             'from' => 'nullable|date',
             'to' => 'nullable|date|after_or_equal:from',
         ]);
+        $muzigio = 'Asia/Ho_Chi_Minh'; 
 
         if ($validator->fails()) {
             return response()->json([
@@ -231,7 +236,7 @@ class RoomController extends Controller
         }
 
         try {
-            $now = Carbon::now();
+            $now = Carbon::now($muzigio);
 
             if ($request->has('from') && $request->has('to')) {
                 $from = Carbon::parse($request->input('from'));
@@ -287,9 +292,10 @@ class RoomController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+        $muzigio = 'Asia/Ho_Chi_Minh'; 
 
         try {
-            $now = Carbon::now();
+            $now = Carbon::now($muzigio);
 
             if ($request->has('from') && $request->has('to')) {
                 $from = Carbon::parse($request->input('from'));

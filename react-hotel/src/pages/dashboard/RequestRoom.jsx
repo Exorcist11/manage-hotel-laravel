@@ -129,26 +129,37 @@ export default function RequestRoom() {
             toast.error("Failed to book the room");
         }
     };
+    const [loading, setLoading] = useState(false);
 
     const handleAccept = async () => {
         if (selected?.length !== detail.number_of_rooms) {
             toast.error(
-                `Vui lòng chọn đúng số lượng phòng: ${detail.num_of_room}`
+                `Vui lòng chọn đúng số lượng phòng: ${detail.number_of_rooms}`
             );
             return;
         }
-        await axios
-            .post(`http://127.0.0.1:8000/api/bookings`, {
-                order_id: detail.id,
-                staff_id: currentUser.id,
-                rooms: selected.map((room) => ({ id: room.value })),
-            })
-            .then((response) => {
-                toast.error(response.data.message);
-                getListRoom();
-                document.getElementById("my-drawer-4").checked = false;
-            })
-            .catch((error) => console.error(error));
+
+        setLoading(true);
+
+        try {
+            const response = await axios.post(
+                `http://127.0.0.1:8000/api/bookings`,
+                {
+                    order_id: detail.id,
+                    staff_id: currentUser.id,
+                    rooms: selected.map((room) => ({ id: room.value })),
+                }
+            );
+
+            toast.success(response.data.message);
+            getListRoom();
+            document.getElementById("my-drawer-4").checked = false;
+        } catch (error) {
+            console.error(error);
+            toast.error("Đã xảy ra lỗi, vui lòng thử lại.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleDetailBooking = async (id) => {
@@ -191,7 +202,7 @@ export default function RequestRoom() {
                 `http://127.0.0.1:8000/api/empty-rooms-category`,
                 {
                     params: {
-                        category_id: detail?.category_id,
+                        category_id: detail?.category.id,
                         from: detail?.start_date,
                         to: detail?.end_date,
                     },
@@ -202,6 +213,7 @@ export default function RequestRoom() {
             console.error("Failed to fetch empty rooms:", error);
         }
     };
+    console.log(detail);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -369,6 +381,7 @@ export default function RequestRoom() {
                                                                     detail?.citizen_number ||
                                                                     ""
                                                                 }
+                                                                disabled
                                                             />
                                                         </label>
 
@@ -388,6 +401,7 @@ export default function RequestRoom() {
                                                                         detail?.phone ||
                                                                         ""
                                                                     }
+                                                                    disabled
                                                                 />
                                                             </label>
 
@@ -405,6 +419,7 @@ export default function RequestRoom() {
                                                                         detail?.email ||
                                                                         ""
                                                                     }
+                                                                    disabled
                                                                 />
                                                             </label>
                                                         </div>
@@ -426,6 +441,7 @@ export default function RequestRoom() {
                                                                     defaultValue={formatDate(
                                                                         detail?.start_date
                                                                     )}
+                                                                    disabled
                                                                 />
                                                             </label>
 
@@ -444,6 +460,7 @@ export default function RequestRoom() {
                                                                     defaultValue={formatDate(
                                                                         detail?.end_date
                                                                     )}
+                                                                    disabled
                                                                 />
                                                             </label>
                                                         </div>
@@ -513,8 +530,13 @@ export default function RequestRoom() {
                                                                     onClick={
                                                                         handleAccept
                                                                     }
+                                                                    disabled={
+                                                                        loading
+                                                                    }
                                                                 >
-                                                                    Đặt phòng
+                                                                    {loading
+                                                                        ? "Đang đặt phòng..."
+                                                                        : "Đặt phòng"}
                                                                 </button>
 
                                                                 <button

@@ -23,7 +23,6 @@ export default function Client() {
     useEffect(() => {
         getList();
     }, []);
-    console.log(records);
 
     return (
         <div>

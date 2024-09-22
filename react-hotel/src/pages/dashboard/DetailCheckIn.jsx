@@ -11,7 +11,15 @@ export default function DetailCheckIn() {
     const [total, setTotal] = useState("");
     const { id } = useParams();
     const [selectedValue, setSelectedValue] = useState("Tiền mặt");
-
+    const getDetail = async () => {
+        await axios
+            .get(`http://127.0.0.1:8000/api/bookingDetails/${id}`)
+            .then((response) => {
+                setForm(response.data.booking_detail);
+                setTotal(response.data.total);
+            })
+            .catch((error) => console.error(error));
+    };
     const handleChangeSelect = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -33,6 +41,7 @@ export default function DetailCheckIn() {
             .post(`http://127.0.0.1:8000/api/rooms/${room_id}/check-in`)
             .then((response) => toast.success(response.data.message))
             .catch((error) => toast.error(error.response.data.message));
+        getDetail();
     };
 
     const handleCheckout = async (room_id) => {
@@ -51,15 +60,6 @@ export default function DetailCheckIn() {
     };
 
     useEffect(() => {
-        const getDetail = async () => {
-            await axios
-                .get(`http://127.0.0.1:8000/api/bookingDetails/${id}`)
-                .then((response) => {
-                    setForm(response.data.booking_detail);
-                    setTotal(response.data.total);
-                })
-                .catch((error) => console.error(error));
-        };
         getDetail();
     }, [id]);
 
